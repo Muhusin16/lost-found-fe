@@ -107,6 +107,7 @@ const ReportFound = () => {
             <label className={styles.label}>Remarks (if any)</label>
             <textarea className={styles.textarea}></textarea>
           </div>
+          <button type='button' className={styles.saveButton}>Save & close</button>
         </div>
 
         <div className={styles.sideContainer}>
@@ -144,6 +145,7 @@ const ReportFound = () => {
             </div>
               </div>
           </div>
+          
         </div>
       </form>
     </div>

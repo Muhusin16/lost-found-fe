@@ -142,4 +142,18 @@
   .imagesDescription {
     font-size: small;
   }
+
+  .saveButton {
+    background-color: #102649;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    border: none;
+
+    &:focus {
+      box-shadow: 0 0 0 2px #0a1d3b;
+      outline: none;
+    }
+  }
 }
