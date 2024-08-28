@@ -183,7 +183,7 @@ const ReportFound = () => {
                 ...prevData,title: e.target.value }))} />
             </div>
             <div className={styles.formItem}>
-              <label className={styles.label}>Date Item Lost*</label>
+              <label className={styles.label}>Item Lost Date*</label>
               <input type="date" className={styles.input}
               onChange={(e) => setFormData((prevData) => ({
                 ...prevData,dateLost: e.target.value }))} />
