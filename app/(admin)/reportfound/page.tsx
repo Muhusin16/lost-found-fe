@@ -171,7 +171,7 @@ const ReportFound = () => {
 
   return (
     <div className={`${styles.reportFound} ${styles.container}`}>
-      <h2 className={styles.heading}>Report Found Product</h2>
+      <h4 className={styles.heading}>Report Found Product</h4>
 
       <form className={styles.form}>
         <div className={styles.formGroup}>
@@ -353,17 +353,18 @@ const ReportFound = () => {
           </div>
 
           <div className={styles.imageContainer}>
+           <label className={styles.label}>Image Preview</label>
             <div className={styles.imagePreview}>
-              <label className={styles.label}>Image Preview</label>
               <div className='flex flex-wrap '>
                 <div className={styles.imageWrapper}>
-                  <img src="/placeholder-image.png" alt="Preview" className={styles.image} />
+                  <img src="/paper-bag.svg" alt="Preview" className={styles.image} />
                 </div>
-                {/* <button className={styles.deleteButton}>Delete</button> */}
               </div>
               <div className={styles.imageWrapper}>
-                <img src="/placeholder-image.png" alt="Preview" className={styles.image} />
-                {/* <button className={styles.deleteButton}>Delete</button> */}
+                <img src="/paper-bag.svg" alt="Preview" className={styles.image} />
+              </div>
+              <div className={styles.imageWrapper}>
+                <img src="/paper-bag.svg" alt="Preview" className={styles.image} />
               </div>
             </div>
           </div>
