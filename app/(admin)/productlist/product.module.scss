@@ -1,0 +1,98 @@
+.productListContainer {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.filterSection {
+    flex: 1;
+    max-width: 300px;
+}
+
+.productsSection {
+    flex: 3;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(198px, 1fr));
+    gap: 20px;
+}
+
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+}
+
+.cardHeader {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.cardImage {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+.cardDetails {
+    text-align: center;
+    margin-bottom: 15px;
+
+    p {
+        margin: 5px 0;
+        font-size: 0.9rem;
+    }
+
+    strong {
+        font-weight: bold;
+    }
+}
+
+.cardActions {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: auto;
+
+    button {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        font-size: 1.2rem;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    .editButton {
+        color: #0070f3;
+    }
+
+    .deleteButton {
+        color: #e00;
+    }
+}
