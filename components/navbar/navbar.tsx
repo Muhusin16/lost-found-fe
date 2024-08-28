@@ -1,11 +1,12 @@
 import Link from "next/link";
 import "./navbar.scss";
+import Image from "next/image";
 
 const Navbar = () => {
   return (
     <nav className="navbar flex items-center justify-between p-4">
       <div className="flex items-center">
-        <img src="/ups.svg" alt="" />
+        <Image src="/ups.svg" alt="" width={50} height={50} />
       </div>
       <div className="flex items-center nav-link">
         <Link href="/dashboard" className="mr-6">

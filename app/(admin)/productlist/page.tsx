@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./product.module.scss";
 import ProductFilter from "./productFilter/productFilter";
 
@@ -68,7 +69,7 @@ const ProductCards = () => {
         {products.map((product, index) => (
           <div className={styles.card} key={index}>
             <div className={styles.cardImage}>
-              <img src={product.image} alt={product.name} />
+              <Image src={product.image} alt={product.name} width={100} height={100} />
             </div>
             <div className={styles.cardHeader}>
               <h3>{product.name}</h3>

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import styles from './reportfound.module.scss';
 import axios from 'axios';
+import Image from 'next/image';
 
 
 type CategoryKey = keyof typeof categories;
@@ -357,14 +358,14 @@ const ReportFound = () => {
             <div className={styles.imagePreview}>
               <div className='flex flex-wrap '>
                 <div className={styles.imageWrapper}>
-                  <img src="/paper-bag.svg" alt="Preview" className={styles.image} />
+                  <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100}  height={100}/>
                 </div>
               </div>
               <div className={styles.imageWrapper}>
-                <img src="/paper-bag.svg" alt="Preview" className={styles.image} />
+                <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100}  height={100}/>
               </div>
               <div className={styles.imageWrapper}>
-                <img src="/paper-bag.svg" alt="Preview" className={styles.image} />
+                <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100}  height={100}/>
               </div>
             </div>
           </div>
