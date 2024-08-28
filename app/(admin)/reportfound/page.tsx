@@ -56,20 +56,22 @@ const categories = {
 };
 
 const initialFormData = {
-   title: '',
-    dateLost: '',
-    category: '',
-    subCategory: '',
-    brand: '',
-    model: '',
-    serialNumber: '',
-    primaryColor: '',
-    secondaryColor: '',
-    specificDescription: '',
-    specificLocation: '',
-    imageUrl: [],
-    enteredBy: '',
-}
+  title: "",
+  dateLost: "",
+  category: "",
+  subCategory: "",
+  brand: "",
+  model: "",
+  serialNumber: "",
+  primaryColor: "",
+  secondaryColor: "",
+  specificDescription: "",
+  specificLocation: "",
+  imageUrl: [],
+  enteredBy: "",
+  createdAt: "",
+  remarks:""
+};
 
 const ReportFound = () => {
 
@@ -105,17 +107,66 @@ const ReportFound = () => {
 
   const handleChange = (event: any) => {
     console.log(event.target.value);
-    
+
     setSelectedItemType(event.target.value);
   };
 
   const submitProductForm = async () => {
-    // try {
-    //   const response = await axios.post('http:localhost:5002/api/products', formData);
-    //   console.log('Product created successfully:', response.data);
-    // } catch (error:any) {
-    //   console.error('Error creating product:', error.response?.data || error.message);
-    // }
+    try {
+      // const payload = {
+      //   title: "Blue Leather Suitcase",
+      //   dateLost: "2024-08-20T14:30:00Z",
+      //   category: "Bags",
+      //   subCategory: "Backpack",
+      //   brand: "Gucci",
+      //   model: "GG Supreme",
+      //   serialNumber: "1234567890",
+      //   primaryColor: "Black",
+      //   secondaryColor: "Gray",
+      //   specificDescription: "A medium-sized black leather backpack with Gucci's GG Supreme pattern. Includes a front zip pocket and padded shoulder straps.",
+      //   specificLocation: "Airport Terminal 2, near Gate 12",
+      //   imageUrl: [
+      //     "https://example.com/images/backpack1.jpg",
+      //     "https://example.com/images/backpack2.jpg"
+      //   ],
+      //   enteredBy: "66cdc56c5967826559d6a15c",
+      //   createdAt: "2024-08-20T14:30:00Z"
+      // };
+ 
+      const payload = {
+        title: formData.title,
+        dateLost: formData.dateLost,
+        category: selectedCategory,
+        subCategory: formData.subCategory,
+        brand: selectedBrand,
+        model: formData.model,
+        serialNumber: formData.serialNumber,
+        primaryColor: selectedPrimaryColor,
+        secondaryColor: selectedSecondaryColor,
+        specificDescription: formData.specificDescription,
+        specificLocation: formData.specificLocation,
+        enteredBy: "66cdc56c5967826559d6a15c",
+        createdAt: formData.createdAt,
+        remarks: formData.remarks,
+        itemType: selectedItemType,
+        imageUrl: [
+              "https://example.com/images/backpack1.jpg",
+              "https://example.com/images/backpack2.jpg"
+            ],
+      }
+
+      console.log(payload);
+      // console.log(process.env.NEXT_PUBLIC_API_BASE_URL);
+
+      const response = await axios.post('http://localhost:5002/api/products', payload, {
+        headers: {
+          'Content-Type': 'application/json', // Ensure the correct content type is set
+        },
+      });
+      console.log('Product created successfully:', response.data);
+    } catch (error: any) {
+      console.error('Error creating product:', error.response?.data || error.message);
+    }
   };
 
   return (
@@ -127,11 +178,15 @@ const ReportFound = () => {
           <div className={styles.grid}>
             <div className={styles.formItem}>
               <label className={styles.label}>Item Name*</label>
-              <input type="text" className={styles.input} />
+              <input type="text" name='title' className={styles.input} 
+              onChange={(e) => setFormData((prevData) => ({
+                ...prevData,title: e.target.value }))} />
             </div>
             <div className={styles.formItem}>
               <label className={styles.label}>Date Item Lost*</label>
-              <input type="date" className={styles.input} />
+              <input type="date" className={styles.input}
+              onChange={(e) => setFormData((prevData) => ({
+                ...prevData,dateLost: e.target.value }))} />
             </div>
           </div>
 
@@ -192,81 +247,87 @@ const ReportFound = () => {
           </div>
 
           <div className={styles.radioGroup}>
-          <label className={styles.label}>
-        <input
-          type="radio"
-          name="itemType"
-          className={styles.input}
-          value="non-perishable"
-          checked={selectedItemType === 'non-perishable'}
-          onChange={handleChange}
-        />{" "}
-        Non-Perishable
-      </label>
-      <label className={`${styles.radioLabel} ms-2`}>
-        <input
-          type="radio"
-          name="itemType"
-          className={styles.input}
-          value="perishable"
-          checked={selectedItemType === 'perishable'}
-          onChange={handleChange}
-        />{" "}
-        Perishable
-      </label>
+            <label className={styles.label}>
+              <input
+                type="radio"
+                name="itemType"
+                className={styles.input}
+                value="non-perishable"
+                checked={selectedItemType === 'non-perishable'}
+                onChange={handleChange}
+              />{" "}
+              Non-Perishable
+            </label>
+            <label className={`${styles.radioLabel} ms-2`}>
+              <input
+                type="radio"
+                name="itemType"
+                className={styles.input}
+                value="perishable"
+                checked={selectedItemType === 'perishable'}
+                onChange={handleChange}
+              />{" "}
+              Perishable
+            </label>
           </div>
-         {
-          selectedItemType === 'non-perishable' && (<>
-            <div className={styles.grid}>
-            <div className={styles.formItem}>
-              <label className={styles.label}>Model no. / serial no. / lid no.</label>
-              <input type="text" className={styles.input} />
-            </div>
-          </div>
+          {
+            selectedItemType === 'non-perishable' && (<>
+              <div className={styles.grid}>
+                <div className={styles.formItem}>
+                  <label className={styles.label}>Model no. / serial no. / lid no.</label>
+                  <input type="text" className={styles.input} />
+                </div>
+              </div>
 
-          <div className={styles.grid}>
-            <div className={styles.formItem}>
-              <label htmlFor="primaryColor" className={styles.label}>Primary Color</label>
-              <select id="primaryColor" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
-                <option value="">Select a Primary Color</option>
-                {colors.primary.map((color) => (
-                  <option key={color.hex} value={color.hex}>
-                    {/* <p style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></p> */}
-                    {color.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.formItem}>
-              <label htmlFor="secondaryColor" className={styles.label}>Secondary Color</label>
-              <select id="secondaryColor" className={styles.input} value={selectedSecondaryColor} onChange={handleSecondaryColorChange}>
-                <option value="">Select a Secondary Color</option>
-                {colors.secondary.map((color) => (
-                  <option key={color.hex} value={color.hex}>
-                    {/* <span style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></span> */}
-                    {color.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+              <div className={styles.grid}>
+                <div className={styles.formItem}>
+                  <label htmlFor="primaryColor" className={styles.label}>Primary Color</label>
+                  <select id="primaryColor" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
+                    <option value="">Select a Primary Color</option>
+                    {colors.primary.map((color) => (
+                      <option key={color.hex} value={color.hex}>
+                        {/* <p style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></p> */}
+                        {color.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className={styles.formItem}>
+                  <label htmlFor="secondaryColor" className={styles.label}>Secondary Color</label>
+                  <select id="secondaryColor" className={styles.input} value={selectedSecondaryColor} onChange={handleSecondaryColorChange}>
+                    <option value="">Select a Secondary Color</option>
+                    {colors.secondary.map((color) => (
+                      <option key={color.hex} value={color.hex}>
+                        {/* <span style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></span> */}
+                        {color.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
 
-          </>)
-         }
-        
+            </>)
+          }
+
           <div className={`${styles.formItem} mt-2`}>
             <label className={styles.label}>Specific Description</label>
-            <textarea className={styles.textarea}></textarea>
+            <textarea className={styles.textarea} 
+            onChange={(e) => setFormData((prevData) => ({
+              ...prevData,specificDescription: e.target.value }))}></textarea>
           </div>
 
           <div className={styles.formItem}>
             <label className={styles.label}>Specific Location</label>
-            <input type="text" className={styles.input} />
+            <input type="text" className={styles.input} 
+            onChange={(e) => setFormData((prevData) => ({
+              ...prevData,specificLocation: e.target.value }))} />
           </div>
 
           <div className={styles.formItem}>
             <label className={styles.label}>Remarks (if any)</label>
-            <textarea className={styles.textarea}></textarea>
+            <textarea className={styles.textarea} 
+            onChange={(e) => setFormData((prevData) => ({
+              ...prevData,remarks: e.target.value }))}></textarea>
           </div>
           <button type='button' onClick={submitProductForm} className={styles.saveButton}>Save & close</button>
         </div>
