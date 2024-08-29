@@ -19,12 +19,12 @@ const Navbar = () => {
         <Link href="/productlist" className="mr-6">
           Product List
         </Link>
-        <Link href="/aboutus" className="mr-6">
+        {/* <Link href="/aboutus" className="mr-6">
           About Us
         </Link>
         <Link href="/policy" className="mr-6">
           Policy
-        </Link>
+        </Link> */}
       </div>
       <div className="flex items-center">
         <p className="me-3">User Name </p>

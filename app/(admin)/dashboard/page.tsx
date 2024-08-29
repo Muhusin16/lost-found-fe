@@ -6,7 +6,7 @@ const ProductActivity = () => {
     {
       image: "/inventory.svg", // Replace with your actual image path
       count: 245,
-      label: "Inventory",
+      label: "Items Reported",
     },
     {
       image: "/warehouse.svg", // Replace with your actual image path
