@@ -1,4 +1,7 @@
-
+.productListMain{
+    position: relative;
+    height: 100vh;
+}
 
 .prodDetail p span{
     font-weight: bold;
@@ -14,4 +17,18 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 400px));
     gap: 20px;
+}
+
+.heading{
+    background-color: darkslategray;
+    padding: 10px;
+    color: #fff;
+}
+
+.userForm{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
 }
