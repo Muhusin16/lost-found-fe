@@ -1,14 +1,24 @@
-"use client"
-import Image from "next/image";
+// app/page.tsx
+
+"use client";
+
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
+  const handleRedirect = async () => {
+    const token = await localStorage.getItem('token');
+    if(token) {
+      // User is authenticated, proceed to the dashboard
+      router.push('/dashboard');
+    } else {
+    router.push('/login');
+    }
+  }
   useEffect(() => {
-router.push('/login')
-  },[])
-  return (
-  <></>
-  );
+    handleRedirect();
+  }, []);
+  
+  return null; // Or some placeholder content
 }

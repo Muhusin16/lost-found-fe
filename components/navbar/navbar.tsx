@@ -1,9 +1,18 @@
+'use client'
 import Link from "next/link";
 import "./navbar.scss";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import logoImage from '../../app/assets/zool-logo-black-brand.png'
 
 const Navbar = () => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.setItem('token', '');
+    router.push('/login');
+
+  }
   return (
     <nav className="navbar flex items-center justify-between p-4">
       <div className="flex items-center">
@@ -28,7 +37,7 @@ const Navbar = () => {
       </div>
       <div className="flex items-center">
         <p className="me-3">User Name </p>
-        <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+        <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={handleLogout}>
           Logout
         </button>
       </div>
