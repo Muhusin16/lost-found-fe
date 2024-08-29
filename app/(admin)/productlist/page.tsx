@@ -2,61 +2,66 @@
 import Image from "next/image";
 import styles from "./product.module.scss";
 import ProductFilter from "./productFilter/productFilter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSearch, FaSyncAlt, FaDownload, FaFilter } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { categories, colors } from '@/app/config/data.config';
+import axios from "axios";
+import { apiUrls } from "@/app/config/api.config";
 
+type CategoryKey = keyof typeof categories;
+type ColorKey = keyof typeof colors;
 
 const initialProducts = [
   {
-    name: "Bag",
+    title: "Bag",
     image: "/shopping-bags.svg",
-    colors: ["Pink", "Red"],
+    primaryColor: ["Pink", "Red"],
     category: "Bags, Baggage",
     subCategory: "Shopping bag",
     brand: "-",
     actionIcons: ["edit", "delete"],
   },
   {
-    name: "Iphone 14",
+    title: "Iphone 14",
     image: "/mobile-phone.svg",
-    colors: ["Black", "Grey"],
+    primaryColor: ["Black", "Grey"],
     category: "Electronics",
     subCategory: "Phone",
     brand: "Iphone",
     actionIcons: ["edit", "delete"],
   },
   {
-    name: "Noise Watch 3",
+    title: "Noise Watch 3",
     image: "/smart-watch.svg",
-    colors: ["Pink"],
+    primaryColor: ["Pink"],
     category: "Electronics",
     subCategory: "SmartWatch",
     brand: "Noise",
     actionIcons: ["edit", "delete"],
   },
   {
-    name: "Red Bag",
+    title: "Red Bag",
     image: "/red-purse.svg",
-    colors: ["Red"],
+    primaryColor: ["Red"],
     category: "Bags, Baggage",
     subCategory: "Purse",
     brand: "-",
     actionIcons: ["edit", "delete"],
   },
   {
-    name: "Laptop",
+    title: "Laptop",
     image: "/laptop.svg",
-    colors: ["Grey"],
+    primaryColor: ["Grey"],
     category: "Electronics",
     subCategory: "Laptop",
     brand: "Dell",
     actionIcons: ["edit", "delete"],
   },
   {
-    name: "Grocery Bag",
+    title: "Grocery Bag",
     image: "/paper-bag.svg",
-    colors: ["Purple", "Blue"],
+    primaryColor: ["Purple", "Blue"],
     category: "Bags, Baggage",
     subCategory: "Shopping bag",
     brand: "Puma",
@@ -67,12 +72,17 @@ const initialProducts = [
 
 
 const ProductCards = () => {
- 
+
   const router = useRouter();
   const [searchedTerm, setSearchedTerm] = useState(''); // abcdef
   const [products, setProducts] = useState(initialProducts);
   const [filterProducts, setFilterProducts] = useState(products);
   const [noResultFound, setNoResultFound] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<string>(''); // Default to an empty string
+  const [subCategories, setSubCategories] = useState<string[]>([]); // Empty array for subcategories initially
+  const [brands, setBrands] = useState<string[]>([]); // Empty array for brands initially
+  const [selectedBrand, setSelectedBrand] = useState<string>(''); // Default to an empty string
+  const [selectedPrimaryColor, setSelectedPrimaryColor] = useState<string>('');
 
   const handleSearchChange = (e: any) => {
     console.log('Searchterm', e.target.value);
@@ -84,12 +94,12 @@ const ProductCards = () => {
       setNoResultFound('');
     }
 
-    const searchItem = products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    const searchItem = products.filter((p:any) => p.title.toLowerCase().includes(searchTerm.toLowerCase()));
     setFilterProducts(searchItem)
     console.log(searchItem)
     setNoResultFound('');
 
-    const noSearchItemFound = products.find(p => p.name.toLowerCase().includes(searchedTerm.toLowerCase()));
+    const noSearchItemFound = products.find((p:any) => p.title.toLowerCase().includes(searchedTerm.toLowerCase()));
     console.log('No search result found', noSearchItemFound);
     if (!noSearchItemFound) {
       setNoResultFound('Oops! Sorry, No search result found :(');
@@ -105,16 +115,100 @@ const ProductCards = () => {
     setNoResultFound('');
   }
 
-  const handleProductDetails = (product:any) => {
+  const handleProductDetails = (product: any) => {
     console.log('Product details', product);
     router.push(`/productlist/1`); // Navigate to product page with product name as query parameter
-
   }
+
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const category = event.target.value as CategoryKey;
+    setSelectedCategory(category);
+    setSubCategories(categories[category]?.subCategories || []); // Set subcategories based on selected category
+    setBrands(categories[category]?.brands || []); // Set brands based on selected category
+    setSelectedBrand(''); // Reset selected brand when category changes
+  };
+
+  const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedBrand(event.target.value);
+  };
+
+  const handlePrimaryColorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedPrimaryColor(event.target.value);
+  };
+
+  const fetchAllProducts = async () => {
+  try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.products}`)
+    console.log(response.data);
+    setProducts(response.data);
+    setFilterProducts(response.data);
+    
+  } catch (error) {
+    console.log(error);
+  }
+  }
+  useEffect(() => {
+    // fetchAllProducts()
+  },[])
 
   return (
     <div className={styles.cardContainer}>
       <div className={styles.filterSection}>
-        <ProductFilter />
+        <div className={styles.filterContainer}>
+          <h3>Filter The Product</h3>
+          <form>
+            <div className={styles.formGroup}>
+              <label htmlFor="category" >Category</label>
+              <select id="category" value={selectedCategory} onChange={handleCategoryChange}>
+                {Object.keys(categories).map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="subCategory" >Subcategory</label>
+              <select id="subCategory" >
+                {subCategories.map((subCategory) => (
+                  <option key={subCategory} value={subCategory}>
+                    {subCategory}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="brand" className={styles.label} >Brand</label>
+              <select id="brand" value={selectedBrand} className={styles.input} onChange={handleBrandChange} disabled={brands.length === 0}>
+                <option value="">Select a Brand</option> {/* Default option */}
+                {brands.length > 0 ? (
+                  brands.map((brand) => (
+                    <option key={brand} value={brand}>
+                      {brand}
+                    </option>
+                  ))
+                ) : (
+                  <option value="">No Brands Available</option>
+                )}
+              </select>
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="primaryColor" className={styles.label}>Color</label>
+              <select id="primaryColor" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
+                <option value="">Select Color</option>
+                {colors.primary.map((color) => (
+                  <option key={color.hex} value={color.hex}>
+                    {/* <p style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></p> */}
+                    {color.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button type="submit" className={styles.searchButton}>
+              Search
+            </button>
+          </form>
+        </div>
       </div>
       <div className={styles.mainSection}>
         <div className={styles.productSearchContainer}>
@@ -139,28 +233,28 @@ const ProductCards = () => {
               <FaFilter />
             </button> */}
           </div>
-          
+
         </div>
         <div className="text-center mt-5 flex flex-column justify-center align-center">
-            <p className="text-xl">{noResultFound}</p>
+          <p className="text-xl">{noResultFound}</p>
         </div>
         <div className={styles.productsSection}>
-          {filterProducts.map((product, index) => (
+          {filterProducts.map((product:any, index) => (
             <div className={styles.card} key={index} onClick={() => handleProductDetails(product)}>
               <div className={styles.cardImage}>
                 <Image
                   src={product.image}
-                  alt={product.name}
+                  alt={product.title}
                   width={100}
                   height={100}
                 />
               </div>
               <div className={styles.cardHeader}>
-                <h3>{product.name}</h3>
+                <h3>{product.title}</h3>
               </div>
               <div className={styles.cardDetails}>
                 <p>
-                  <strong>Colors:</strong> {product.colors.join(", ")}
+                  <strong>Colors:</strong> {product?.primaryColor}
                 </p>
                 <p>
                   <strong>Category:</strong> {product.category}
@@ -173,10 +267,10 @@ const ProductCards = () => {
                 </p>
               </div>
               <div className={styles.cardActions}>
-                {product.actionIcons.includes("edit") && (
+                {true && (
                   <button className={styles.editButton}>✏️</button>
                 )}
-                {product.actionIcons.includes("delete") && (
+                {true && (
                   <button className={styles.deleteButton}>🗑️</button>
                 )}
               </div>
