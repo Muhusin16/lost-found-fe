@@ -62,16 +62,16 @@ const ResetPassword = () => {
     try {
       // const token = localStorage.getItem('token');
       // console.log(token);
-      
-     if (password && email) {
-      const response =  await axios.post('http://localhost:5002/api/admin/reset-password', { newPassword:password, email });
-      if (response) {
-        setMessage('Password reset successful. Redirecting to login...');
-        router.push('/login')
-      }
-     }
 
-      
+      if (password && email) {
+        const response = await axios.post('http://localhost:5002/api/admin/reset-password', { newPassword: password, email });
+        if (response) {
+          setMessage('Password reset successful. Redirecting to login...');
+          router.push('/login')
+        }
+      }
+
+
     } catch (error) {
       console.error(error);
       setMessage('Failed to reset password. Please try again.');
@@ -82,82 +82,94 @@ const ResetPassword = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Password Recovery</h1>
+      <h1>Find Your Account</h1>
+      <h5>Please enter your email address to search for your account.</h5>
       {step === 'forgot' && (
-        <form onSubmit={handleForgotPasswordSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Sending...' : 'Send Reset Link'}
-          </button>
-          {message && <p className={styles.message}>{message}</p>}
-        </form>
+        <div className="login-page__content">
+          <form onSubmit={handleForgotPasswordSubmit} className={styles.form}>
+            <div className={styles.formGroup}>
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="form-control"
+              />
+            </div>
+            <button className="hfmn-btn hfmn-btn--primary" style={{ width: "100%" }} type="submit" disabled={loading}>
+              {loading ? 'Sending...' : 'Send Otp'}
+            </button>
+            {message && <p className={styles.message}>{message}</p>}
+          </form>
+        </div>
       )}
 
       {step === 'verify' && (
-        <form onSubmit={handleVerifyOtpSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label htmlFor="otp">OTP:</label>
-            <input
-              type="text"
-              id="otp"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Verifying...' : 'Verify OTP'}
-          </button>
-          {message && <p className={styles.message}>{message}</p>}
-        </form>
+        <div className="login-page__content">
+          <form onSubmit={handleVerifyOtpSubmit} className={styles.form}>
+            <div className={styles.formGroup}>
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="form-control"
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="otp">OTP:</label>
+              <input
+                type="text"
+                id="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+                className="form-control"
+              />
+            </div>
+            <button className="hfmn-btn hfmn-btn--primary" style={{ width: "100%" }} type="submit" disabled={loading}>
+              {loading ? 'Verifying...' : 'Verify OTP'}
+            </button >
+            {message && <p className={styles.message}>{message}</p>}
+          </form>
+        </div>
       )}
 
       {step === 'reset' && (
-        <form onSubmit={handleResetPasswordSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label htmlFor="password">New Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label htmlFor="confirmPassword">Confirm Password:</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Resetting...' : 'Reset Password'}
-          </button>
-          {message && <p className={styles.message}>{message}</p>}
-        </form>
+        <div className="login-page__content">
+          <form onSubmit={handleResetPasswordSubmit} className={styles.form}>
+            <div className={styles.formGroup}>
+              <label htmlFor="password">New Password:</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="form-control"
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="confirmPassword">Confirm Password:</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                className="form-control"
+              />
+            </div>
+            <button className="hfmn-btn hfmn-btn--primary" style={{ width: "100%" }} type="submit" disabled={loading}>
+              {loading ? 'Resetting...' : 'Reset Password'}
+            </button>
+            {message && <p className={styles.message}>{message}</p>}
+          </form>
+        </div>
       )}
     </div>
   );

@@ -5,8 +5,6 @@
 @tailwind utilities;
 
 
-
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -42,7 +40,12 @@ $h4-size: 20px;
 $h5-size: 18px;
 $h6-size: 16px;
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'YourFontFamily', sans-serif;
   color: $heading-color;
   margin: 0 0 $heading-margin-bottom;
@@ -51,28 +54,215 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-  h1 {
-    font-size: $h1-size;
+h1 {
+  font-size: $h1-size;
+}
+
+h2 {
+  font-size: $h2-size;
+}
+
+h3 {
+  font-size: $h3-size;
+}
+
+h4 {
+  font-size: $h4-size;
+}
+
+h5 {
+  font-size: $h5-size;
+}
+
+h6 {
+  font-size: $h6-size;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  color: var(--ls-color-black);
+  background: var(--ls-color-white);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.login-page {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.register-page{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.login-page__content {
+  width: 100%;
+  background: #f5f5f5;
+  padding: 40px;
+  border-radius: 16px;
+  max-width: 640px;
+}
+
+.login-page .form-field input.form-control {
+  background: var(--hfmn-color-white);
+}
+
+.feedback-container {
+  height: 68px;
+}
+
+.feedback-container .success-msg,
+.feedback-container .error-msg {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.feedback-container .go-to-login {
+  border-bottom: 2px solid #0a3622;
+}
+
+.form-container .form-control {
+  padding: 12px 16px;
+}
+
+.form-container .form-label {
+  text-align: left;
+  width: 100%;
+}
+
+.form-container .eye-view {
+  background-color: transparent;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a7a0a0;
+  z-index: 11;
+}
+
+.form-container .eye-view svg {
+  font-size: 24px;
+}
+
+/* Form fields */
+.form-control {
+  background: white;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #033b5a;
+  margin-bottom: 24px;
+  width: 100%;
+
+  &:focus {
+    // color: var(--hfmn-color-primary);
+    // background-color: #F5F5F5;
+    // border-color: #F5F5F5;
+    outline: 0;
+    box-shadow: none;
+  }
+}
+
+.hfmn-btn {
+  font-weight: 500;
+  border-radius: 4px;
+  padding: 10px 20px;
+  margin: 2px 5px;
+  transition: background-color 0.3s, color 0.3s, border 0.3s;
+  line-height: normal;
+  font-size: 14px;
+
+  &--primary {
+    background-color: var(--hfmn-color-primary);
+    color: var(--hfmn-color-contrast-primary);
+    border: 1px solid var(--hfmn-color-contrast-primary);
+
+    &:hover {
+      background-color: var(--hfmn-color-contrast-primary);
+      color: var(--hfmn-color-primary);
+      border: 1px solid var(--hfmn-color-primary);
+    }
   }
 
-  h2 {
-    font-size: $h2-size;
+  &--danger {
+    background-color: #E21E2C;
+    border: none !important;
+    color: var(--hfmn-color-white);
+    border-radius: 20px;
+    font-weight: bold;
   }
 
-  h3 {
-    font-size: $h3-size;
+  &--danger-delete {
+    background-color: #E21E2C;
+    border: none !important;
+    color: var(--hfmn-color-white);
+    border-radius: 4px;
+    font-weight: bold;
   }
 
-  h4 {
-    font-size: $h4-size;
+  &--roundish-dark {
+    background-color: var(--hfmn-color-primary);
+    color: var(--hfmn-color-white);
+    border-radius: 20px;
   }
 
-  h5 {
-    font-size: $h5-size;
+  &--outline {
+    background-color: var(--hfmn-color-contrast-primary);
+    color: var(--hfmn-color-primary);
+    border: 1px solid var(--hfmn-color-primary);
+
+    &:hover {
+      background-color: var(--hfmn-color-primary);
+      color: var(--hfmn-color-contrast-primary);
+      border: 1px solid var(--hfmn-color-contrast-primary);
+    }
   }
 
-  h6 {
-    font-size: $h6-size;
+  &--transparent {
+    background-color: transparent;
+    color: inherit;
+    border: none;
+
+    &:hover {
+      background-color: rgba(var(--hfmn-color-primary), 0.2);
+    }
   }
 
-  
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &--roundish {
+    border-radius: 20px !important;
+  }
+}
+
+.link {
+  color: var(--hfmn-color-primary)
+}
+
