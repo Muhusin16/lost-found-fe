@@ -12,7 +12,7 @@ import styles from './productId.module.scss'
 
 import Image from 'next/image';
 
-const page = () => {
+const ProductId = () => {
     const imageCollection = [image1, image1, image1, image1];
     const [showForm, setShowForm] = useState(false);
 
@@ -168,4 +168,4 @@ const page = () => {
     )
 }
 
-export default page
+export default ProductId
