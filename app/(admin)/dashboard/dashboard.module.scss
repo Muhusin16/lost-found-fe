@@ -1,0 +1,50 @@
+.activityContainer {
+    margin-top: 20px;
+
+    h2 {
+        text-align: left;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .activities {
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+
+        .activityCard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 300px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all ease .3s;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+
+            .activityImage {
+                margin-bottom: 10px;
+            }
+
+            .activityCount {
+                font-size: 2rem;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .activityLabel {
+                font-size: 1rem;
+                color: #666;
+            }
+        }
+    }
+}
