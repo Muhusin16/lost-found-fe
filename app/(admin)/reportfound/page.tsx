@@ -3,6 +3,8 @@ import { useState } from 'react';
 import styles from './reportfound.module.scss';
 import axios from 'axios';
 import Image from 'next/image';
+import { apiUrls } from '@/app/config/api.config';
+import { useRouter } from 'next/navigation';
 
 
 type CategoryKey = keyof typeof categories;
@@ -27,32 +29,36 @@ const colors = {
 
 const categories = {
   Electronics: {
-    subCategories: ['Mobile Phones', 'Laptops', 'Tablets', 'Cameras', 'Accessories'],
-    brands: ['Apple', 'Samsung', 'Sony', 'Dell', 'HP']
+    subCategories: ['Mobile Phones', 'Laptops', 'Tablets', 'Cameras', 'Accessories', 'Others'],
+    brands: ['Apple', 'Samsung', 'Sony', 'Dell', 'HP', 'Others']
   },
   'Personal Items': {
-    subCategories: ['Wallets', 'Keys', 'Watches', 'Jewelry', 'Eyewear'],
-    brands: ['Fossil', 'Ray-Ban', 'Tissot', 'Gucci', 'Prada']
+    subCategories: ['Wallets', 'Keys', 'Watches', 'Jewelry', 'Eyewear', 'Others'],
+    brands: ['Fossil', 'Ray-Ban', 'Tissot', 'Gucci', 'Prada', 'Others']
   },
   Bags: {
-    subCategories: ['Backpacks', 'Handbags', 'Suitcases', 'Wallets', 'Purses'],
-    brands: ['Samsonite', 'American Tourister', 'VIP', 'Wildcraft', 'Tommy Hilfiger']
+    subCategories: ['Backpacks', 'Handbags', 'Suitcases', 'Wallets', 'Purses', 'Others'],
+    brands: ['Samsonite', 'American Tourister', 'VIP', 'Wildcraft', 'Tommy Hilfiger', 'Others']
   },
   Documents: {
-    subCategories: ['Passports', 'ID Cards', 'Driving Licenses', 'Credit/Debit Cards', 'Other Official Papers'],
+    subCategories: ['Passports', 'ID Cards', 'Driving Licenses', 'Credit/Debit Cards', 'Other Official Papers', 'Others'],
     brands: [] // No specific brands for documents
   },
   Clothing: {
-    subCategories: ['Jackets', 'Hats', 'Scarves', 'Gloves', 'Shoes'],
-    brands: ['Nike', 'Adidas', 'Puma', 'Levi\'s', 'Zara']
+    subCategories: ['Jackets', 'Hats', 'Scarves', 'Gloves', 'Shoes', 'Others'],
+    brands: ['Nike', 'Adidas', 'Puma', 'Levi\'s', 'Zara', 'Others']
   },
   Accessories: {
-    subCategories: ['Umbrellas', 'Belts', 'Sunglasses', 'Hats'],
-    brands: ['Ray-Ban', 'Oakley', 'Gucci', 'Louis Vuitton', 'Hermes']
+    subCategories: ['Umbrellas', 'Belts', 'Sunglasses', 'Hats', 'Others'],
+    brands: ['Ray-Ban', 'Oakley', 'Gucci', 'Louis Vuitton', 'Hermes', 'Others']
   },
   Miscellaneous: {
     subCategories: ['Toys', 'Books', 'Stationery', 'Musical Instruments'],
-    brands: ['Lego', 'Fisher-Price', 'Crayola', 'Yamaha', 'Casio']
+    brands: ['Lego', 'Fisher-Price', 'Crayola', 'Yamaha', 'Casio', 'Others']
+  },
+  Others: {
+    subCategories: ['Others'],
+    brands: ['Others'] 
   }
 };
 
@@ -76,6 +82,7 @@ const initialFormData = {
 
 const ReportFound = () => {
 
+  const router = useRouter();
   const [tagsList, setTagsList] = useState<any>([])
   const [selectedTag, setSelectedTag] = useState('');
   const [formData, setFormData] = useState(initialFormData)
@@ -160,8 +167,8 @@ const ReportFound = () => {
         secondaryColor: selectedSecondaryColor,
         specificDescription: formData.specificDescription,
         specificLocation: formData.specificLocation,
-        enteredBy: "66cdc56c5967826559d6a15c",
-        createdAt: formData.createdAt,
+        enteredBy: "admin",
+        createdAt: new Date(),
         remarks: formData.remarks,
         itemType: selectedItemType,
         imageUrl: [
@@ -171,14 +178,15 @@ const ReportFound = () => {
       }
 
       console.log(payload);
-      // console.log(process.env.NEXT_PUBLIC_API_BASE_URL);
-
-      const response = await axios.post('http://localhost:5002/api/products', payload, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.products}`, payload, {
         headers: {
           'Content-Type': 'application/json', // Ensure the correct content type is set
         },
       });
       console.log('Product created successfully:', response.data);
+      if (response.data) {
+        router.push('/productlist')
+      }
     } catch (error: any) {
       console.error('Error creating product:', error.response?.data || error.message);
     }
@@ -207,7 +215,70 @@ const ReportFound = () => {
             </div>
           </div>
 
-          <div className={styles.grid}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>
+              <input
+                type="radio"
+                name="itemType"
+                className={styles.input}
+                value="non-perishable"
+                checked={selectedItemType === 'non-perishable'}
+                onChange={handleChange}
+              />{" "}
+              Non-Perishable
+            </label>
+            <label className={`${styles.radioLabel} ms-2`}>
+              <input
+                type="radio"
+                name="itemType"
+                className={styles.input}
+                value="perishable"
+                checked={selectedItemType === 'perishable'}
+                onChange={handleChange}
+              />{" "}
+              Perishable
+            </label>
+          </div>
+          {
+            selectedItemType === 'non-perishable' && (<div className={styles.nonPerishableContainer}>
+              <div className={styles.grid}>
+                <div className={styles.formItem}>
+                  <label className={styles.label}>Model no. / serial no.</label>
+                  <input type="text" className={styles.input} />
+                </div>
+              </div>
+
+              <div className={styles.grid}>
+                <div className={styles.formItem}>
+                  <label htmlFor="primaryColor" className={styles.label}>Primary Color</label>
+                  <select id="primaryColor" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
+                    <option value="">Select a Primary Color</option>
+                    {colors.primary.map((color) => (
+                      <option key={color.hex} value={color.hex}>
+                        {/* <p style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></p> */}
+                        {color.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className={styles.formItem}>
+                  <label htmlFor="secondaryColor" className={styles.label}>Secondary Color</label>
+                  <select id="secondaryColor" className={styles.input} value={selectedSecondaryColor} onChange={handleSecondaryColorChange}>
+                    <option value="">Select a Secondary Color</option>
+                    {colors.secondary.map((color) => (
+                      <option key={color.hex} value={color.hex}>
+                        {/* <span style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></span> */}
+                        {color.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+            </div>)
+          }
+
+          <div className={`${styles.grid} mt-2`}>
             <div className={styles.formItem}>
               <label htmlFor="category" className={styles.label}>Category</label>
               <select id="category" className={styles.input} value={selectedCategory} onChange={handleCategoryChange}>
@@ -252,79 +323,6 @@ const ReportFound = () => {
             </div>
           </div>
 
-
-          <div className='flex flex-col'>
-            <div>
-              <label className={styles.label}>Image upload</label>
-              <p className={styles.imagesDescription}>Pictures paint a thousand words! Please upload a picture for your listing. You can upload up to 4 pictures. The first will be your primary for your listing. Image Size should not me more than 2 MB.</p>
-            </div>
-            <div className={styles.formItem}>
-              <input type="file" multiple className={styles.input} />
-            </div>
-          </div>
-
-          <div className={styles.radioGroup}>
-            <label className={styles.label}>
-              <input
-                type="radio"
-                name="itemType"
-                className={styles.input}
-                value="non-perishable"
-                checked={selectedItemType === 'non-perishable'}
-                onChange={handleChange}
-              />{" "}
-              Non-Perishable
-            </label>
-            <label className={`${styles.radioLabel} ms-2`}>
-              <input
-                type="radio"
-                name="itemType"
-                className={styles.input}
-                value="perishable"
-                checked={selectedItemType === 'perishable'}
-                onChange={handleChange}
-              />{" "}
-              Perishable
-            </label>
-          </div>
-          {
-            selectedItemType === 'non-perishable' && (<>
-              <div className={styles.grid}>
-                <div className={styles.formItem}>
-                  <label className={styles.label}>Model no. / serial no. / lid no.</label>
-                  <input type="text" className={styles.input} />
-                </div>
-              </div>
-
-              <div className={styles.grid}>
-                <div className={styles.formItem}>
-                  <label htmlFor="primaryColor" className={styles.label}>Primary Color</label>
-                  <select id="primaryColor" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
-                    <option value="">Select a Primary Color</option>
-                    {colors.primary.map((color) => (
-                      <option key={color.hex} value={color.hex}>
-                        {/* <p style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></p> */}
-                        {color.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className={styles.formItem}>
-                  <label htmlFor="secondaryColor" className={styles.label}>Secondary Color</label>
-                  <select id="secondaryColor" className={styles.input} value={selectedSecondaryColor} onChange={handleSecondaryColorChange}>
-                    <option value="">Select a Secondary Color</option>
-                    {colors.secondary.map((color) => (
-                      <option key={color.hex} value={color.hex}>
-                        {/* <span style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></span> */}
-                        {color.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-            </>)
-          }
 
           <div className={`${styles.formItem} mt-2`}>
             <label className={styles.label}>Specific Description</label>
@@ -380,6 +378,16 @@ const ReportFound = () => {
                 ))
               }
 
+            </div>
+          </div>
+
+          <div className='flex flex-col'>
+            <div>
+              <label className={styles.label}>Image upload</label>
+              <p className={styles.imagesDescription}>Pictures paint a thousand words! Please upload a picture for your listing. You can upload up to 4 pictures. The first will be your primary for your listing. Image Size should not me more than 2 MB.</p>
+            </div>
+            <div className={styles.formItem}>
+              <input type="file" multiple className={styles.input} />
             </div>
           </div>
 

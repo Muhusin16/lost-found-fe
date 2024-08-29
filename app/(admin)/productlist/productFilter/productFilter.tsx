@@ -3,7 +3,7 @@ import styles from "./productFilter.module.scss";
 const ProductFilter = () => {
   return (
     <div className={styles.filterContainer}>
-      <h3>Information of Product</h3>
+      <h3>Filter The Product</h3>
       <form>
         <div className={styles.formGroup}>
           <label htmlFor="category">Category</label>

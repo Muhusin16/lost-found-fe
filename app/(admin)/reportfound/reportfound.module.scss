@@ -54,7 +54,7 @@
     .radioGroup {
       display: flex;
       justify-content: flex-start;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
 
       .radioLabel {
         display: flex;
@@ -170,5 +170,12 @@
       box-shadow: 0 0 0 2px #0a1d3b;
       outline: none;
     }
+  }
+
+  .nonPerishableContainer {
+    border: 1px solid #000000;
+    border-radius:10px ;
+    padding: 10px;
+    margin: 10px 0;
   }
 }

@@ -1,3 +1,3 @@
 export const apiUrls = {
-assets:'assets',
+products:'/api/products',
 }
