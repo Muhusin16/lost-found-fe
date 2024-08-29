@@ -9,3 +9,9 @@
     border: 1px solid lightgray;
     width: 100%;
 }
+
+.productsSection {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 400px));
+    gap: 20px;
+}

@@ -75,6 +75,37 @@
       .tagsContainer {
         margin-bottom: 1rem;
 
+        .tags{
+          display: flex;
+          gap: 10px;
+          display: flex;
+          flex-wrap: wrap;
+          // justify-content: space-between;
+          align-items: center;
+          // border: 1px solid gray;
+          padding: 10px;
+          margin-top: 10px;
+          border-radius: 6px;
+          
+        }
+
+        .tagsList{
+          padding: 10px;
+          font-size: 16px;
+          background-color: #f4f4f4;
+          border-radius: 5px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          cursor: pointer;
+          border: none;
+          gap: 20px;
+          transition: background-color 0.3s ease-in-out;
+          &:hover {
+            background-color: #e6e6e6;
+          }
+        }
+
         .tagInputGroup {
           display: flex;
           align-items: center;

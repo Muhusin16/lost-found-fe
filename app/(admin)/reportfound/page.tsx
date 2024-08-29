@@ -71,13 +71,14 @@ const initialFormData = {
   imageUrl: [],
   enteredBy: "",
   createdAt: "",
-  remarks:""
+  remarks: ""
 };
 
 const ReportFound = () => {
 
-  const [formData, setFormData] = useState(initialFormData)
+  const [tagsList, setTagsList] = useState<any>([])
   const [selectedTag, setSelectedTag] = useState('');
+  const [formData, setFormData] = useState(initialFormData)
   const [selectedCategory, setSelectedCategory] = useState<string>(''); // Default to an empty string
   const [subCategories, setSubCategories] = useState<string[]>([]); // Empty array for subcategories initially
   const [brands, setBrands] = useState<string[]>([]); // Empty array for brands initially
@@ -85,6 +86,19 @@ const ReportFound = () => {
   const [selectedPrimaryColor, setSelectedPrimaryColor] = useState<string>('');
   const [selectedSecondaryColor, setSelectedSecondaryColor] = useState<string>('');
   const [selectedItemType, setSelectedItemType] = useState('non-perishable');
+
+  const addNewTags = () => {
+    setTagsList((prv: any) =>
+      [...prv, selectedTag]
+    )
+  }
+
+  const removeTag = (tag:any) => {
+    const updatedTagList = tagsList.filter((tagName:any) =>
+      tagName != tag
+    )
+    setTagsList(updatedTagList)
+  }
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const category = event.target.value as CategoryKey;
@@ -133,7 +147,7 @@ const ReportFound = () => {
       //   enteredBy: "66cdc56c5967826559d6a15c",
       //   createdAt: "2024-08-20T14:30:00Z"
       // };
- 
+
       const payload = {
         title: formData.title,
         dateLost: formData.dateLost,
@@ -151,9 +165,9 @@ const ReportFound = () => {
         remarks: formData.remarks,
         itemType: selectedItemType,
         imageUrl: [
-              "https://example.com/images/backpack1.jpg",
-              "https://example.com/images/backpack2.jpg"
-            ],
+          "https://example.com/images/backpack1.jpg",
+          "https://example.com/images/backpack2.jpg"
+        ],
       }
 
       console.log(payload);
@@ -179,15 +193,17 @@ const ReportFound = () => {
           <div className={styles.grid}>
             <div className={styles.formItem}>
               <label className={styles.label}>Item Name*</label>
-              <input type="text" name='title' className={styles.input} 
-              onChange={(e) => setFormData((prevData) => ({
-                ...prevData,title: e.target.value }))} />
+              <input type="text" name='title' className={styles.input}
+                onChange={(e) => setFormData((prevData) => ({
+                  ...prevData, title: e.target.value
+                }))} />
             </div>
             <div className={styles.formItem}>
               <label className={styles.label}>Item Lost Date*</label>
               <input type="date" className={styles.input}
-              onChange={(e) => setFormData((prevData) => ({
-                ...prevData,dateLost: e.target.value }))} />
+                onChange={(e) => setFormData((prevData) => ({
+                  ...prevData, dateLost: e.target.value
+                }))} />
             </div>
           </div>
 
@@ -312,23 +328,26 @@ const ReportFound = () => {
 
           <div className={`${styles.formItem} mt-2`}>
             <label className={styles.label}>Specific Description</label>
-            <textarea className={styles.textarea} 
-            onChange={(e) => setFormData((prevData) => ({
-              ...prevData,specificDescription: e.target.value }))}></textarea>
+            <textarea className={styles.textarea}
+              onChange={(e) => setFormData((prevData) => ({
+                ...prevData, specificDescription: e.target.value
+              }))}></textarea>
           </div>
 
           <div className={styles.formItem}>
             <label className={styles.label}>Specific Location</label>
-            <input type="text" className={styles.input} 
-            onChange={(e) => setFormData((prevData) => ({
-              ...prevData,specificLocation: e.target.value }))} />
+            <input type="text" className={styles.input}
+              onChange={(e) => setFormData((prevData) => ({
+                ...prevData, specificLocation: e.target.value
+              }))} />
           </div>
 
           <div className={styles.formItem}>
             <label className={styles.label}>Remarks (if any)</label>
-            <textarea className={styles.textarea} 
-            onChange={(e) => setFormData((prevData) => ({
-              ...prevData,remarks: e.target.value }))}></textarea>
+            <textarea className={styles.textarea}
+              onChange={(e) => setFormData((prevData) => ({
+                ...prevData, remarks: e.target.value
+              }))}></textarea>
           </div>
           <button type='button' onClick={submitProductForm} className={styles.saveButton}>Save & close</button>
         </div>
@@ -346,26 +365,37 @@ const ReportFound = () => {
               <button
                 type="button"
                 className={styles.addButton}
-                onClick={() => console.log('Add Tag:', selectedTag)}
+                onClick={() => addNewTags()}
               >
                 Add Tag
               </button>
             </div>
+            <div className={styles.tags}>
+              {
+                tagsList.map((tag: any, index: any) => (<>
+                  <div key={index} className={styles.tagsList}>
+                    <p>{tag}</p>
+                    <p onClick={() => removeTag(tag)}>X</p>
+                  </div></>
+                ))
+              }
+
+            </div>
           </div>
 
           <div className={styles.imageContainer}>
-           <label className={styles.label}>Image Preview</label>
+            <label className={styles.label}>Image Preview</label>
             <div className={styles.imagePreview}>
               <div className='flex flex-wrap '>
                 <div className={styles.imageWrapper}>
-                  <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100}  height={100}/>
+                  <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100} height={100} />
                 </div>
               </div>
               <div className={styles.imageWrapper}>
-                <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100}  height={100}/>
+                <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100} height={100} />
               </div>
               <div className={styles.imageWrapper}>
-                <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100}  height={100}/>
+                <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100} height={100} />
               </div>
             </div>
           </div>
