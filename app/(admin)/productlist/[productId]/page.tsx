@@ -1,6 +1,6 @@
 import React from 'react';
-import image1 from '../../../assets/335a.jpg'
-import image2 from '../../../assets/335b.jpg'
+import image1 from '../../../../public/paper-bag.svg'
+import image2 from '../../../../public/paper-bag.svg'
 import image3 from '../../../assets/335c.jpg'
 import image4 from '../../../assets/335d.jpg'
 import image5 from '../../../assets/335e.jpg'
@@ -12,7 +12,7 @@ import styles from './productId.module.scss'
 import Image from 'next/image';
 
 const page = () => {
-    const imageCollection = [image1, image2, image3, image4, image5, image6, image7];
+    const imageCollection = [image1, image1, image1, image1];
 
     return (
         <>

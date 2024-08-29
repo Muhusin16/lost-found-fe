@@ -1,12 +1,13 @@
 import Link from "next/link";
 import "./navbar.scss";
 import Image from "next/image";
+import logoImage from '../../app/assets/zool-logo-black-brand.png'
 
 const Navbar = () => {
   return (
     <nav className="navbar flex items-center justify-between p-4">
       <div className="flex items-center">
-        <Image src="/ups.svg" alt="" width={50} height={50} />
+        <Image src={logoImage} alt="" width={100} height={100} />
       </div>
       <div className="flex items-center nav-link">
         <Link href="/dashboard" className="mr-6">

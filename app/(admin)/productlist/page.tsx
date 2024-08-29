@@ -1,9 +1,13 @@
+"use client"
 import Image from "next/image";
 import styles from "./product.module.scss";
 import ProductFilter from "./productFilter/productFilter";
-import ProductSearch from "./productSearch/productSearch";
+import { useState } from "react";
+import { FaSearch, FaSyncAlt, FaDownload, FaFilter } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
-const products = [
+
+const initialProducts = [
   {
     name: "Bag",
     image: "/shopping-bags.svg",
@@ -60,18 +64,89 @@ const products = [
   },
 ];
 
+
+
 const ProductCards = () => {
+ 
+  const router = useRouter();
+  const [searchedTerm, setSearchedTerm] = useState(''); // abcdef
+  const [products, setProducts] = useState(initialProducts);
+  const [filterProducts, setFilterProducts] = useState(products);
+  const [noResultFound, setNoResultFound] = useState('')
+
+  const handleSearchChange = (e: any) => {
+    console.log('Searchterm', e.target.value);
+    let searchTerm = e.target.value;
+    setSearchedTerm(searchTerm);
+
+    if (!searchTerm) {
+      setFilterProducts(products)
+      setNoResultFound('');
+    }
+
+    const searchItem = products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    setFilterProducts(searchItem)
+    console.log(searchItem)
+    setNoResultFound('');
+
+    const noSearchItemFound = products.find(p => p.name.toLowerCase().includes(searchedTerm.toLowerCase()));
+    console.log('No search result found', noSearchItemFound);
+    if (!noSearchItemFound) {
+      setNoResultFound('Oops! Sorry, No search result found :(');
+    }
+
+  };
+
+  // Reset searched product filter
+
+  const handleSearchReset = () => {
+    setFilterProducts(products);
+    setSearchedTerm('');
+    setNoResultFound('');
+  }
+
+  const handleProductDetails = (product:any) => {
+    console.log('Product details', product);
+    router.push(`/productlist/1`); // Navigate to product page with product name as query parameter
+
+  }
+
   return (
     <div className={styles.cardContainer}>
       <div className={styles.filterSection}>
         <ProductFilter />
       </div>
       <div className={styles.mainSection}>
-        <ProductSearch />
-
+        <div className={styles.productSearchContainer}>
+          <div className={styles.searchBox}>
+            <FaSearch className={styles.searchIcon} />
+            <input
+              type="text"
+              value={searchedTerm}
+              placeholder="Find products"
+              onChange={handleSearchChange}
+              className={styles.searchInput}
+            />
+          </div>
+          <div className={styles.actions}>
+            <button className={styles.actionButton} onClick={handleSearchReset}>
+              <FaSyncAlt />
+            </button>
+            {/* <button className={styles.actionButton}>
+              <FaDownload />
+            </button>
+            <button className={styles.actionButton}>
+              <FaFilter />
+            </button> */}
+          </div>
+          
+        </div>
+        <div className="text-center mt-5 flex flex-column justify-center align-center">
+            <p className="text-xl">{noResultFound}</p>
+        </div>
         <div className={styles.productsSection}>
-          {products.map((product, index) => (
-            <div className={styles.card} key={index}>
+          {filterProducts.map((product, index) => (
+            <div className={styles.card} key={index} onClick={() => handleProductDetails(product)}>
               <div className={styles.cardImage}>
                 <Image
                   src={product.image}
