@@ -1,12 +1,10 @@
-// app/(auth)/login/page.tsx
-
 "use client";
 
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import styles from './login.module.scss';
 import Link from 'next/link';
+import "../../styles/app.scss";
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -38,39 +36,41 @@ const Login = () => {
   };
 
   return (
-    <div className={styles.loginContainer}>
+    <div className="login-page">
       <h1>Login</h1>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className={styles.input}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className={styles.input}
-          />
-        </div>
-        <div>
-          <Link href="/forgot-password">Forgot Password?</Link>
-        </div>
-        <button type="submit" disabled={loading} className={styles.button}>
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-        {message && <p>{message}</p>}
-      </form>
+      <div className="login-page__content">
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="form-control"
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="form-control"
+            />
+          </div>
+          <div style={{ marginBottom: "8px" }}>
+            <Link className='link' href="/forgot-password">Forgot Password?</Link>
+          </div>
+          <button className="hfmn-btn hfmn-btn--primary" style={{ width: "100%" }} type="submit" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+          {message && <p>{message}</p>}
+        </form>
+      </div>
     </div>
   );
 };

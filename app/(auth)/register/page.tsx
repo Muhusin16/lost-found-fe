@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import axios, { AxiosError } from 'axios';
-import styles from './register.module.scss'; 
+import styles from './register.module.scss';
 import { apiUrls } from '@/app/config/api.config';
 import { useRouter } from 'next/navigation';
-
+import '../../styles/app.scss';
 
 export default function Register() {
   const router = useRouter();
@@ -24,10 +24,10 @@ export default function Register() {
     e.preventDefault();
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.register}`, formData);
-      
-      if(response) {
+
+      if (response) {
         console.log('Registration successful:', response.data);
-       router.push('/login');
+        router.push('/login');
       }
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -39,38 +39,43 @@ export default function Register() {
   };
 
   return (
-    <div className={styles.registerContainer}>
+    <div className="login-page">
       <h1>Register</h1>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          value={username}
-          onChange={handleChange}
-          placeholder="Username"
-          required
-          className={styles.input}
-        />
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleChange}
-          placeholder="Email"
-          required
-          className={styles.input}
-        />
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={handleChange}
-          placeholder="Password"
-          required
-          className={styles.input}
-        />
-        <button type="submit" className={styles.button}>Register</button>
-      </form>
+      <div className="login-page__content">
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <label htmlFor="username">Name:</label>
+          <input
+            type="text"
+            name="username"
+            value={username}
+            onChange={handleChange}
+            placeholder="Username"
+            required
+            className="form-control"
+          />
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={handleChange}
+            placeholder="Email"
+            required
+            className="form-control"
+          />
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={handleChange}
+            placeholder="Password"
+            required
+            className="form-control"
+          />
+          <button className="hfmn-btn hfmn-btn--primary" style={{ width: "100%" }} type="submit">Register</button>
+        </form>
+      </div>
     </div>
   );
 }

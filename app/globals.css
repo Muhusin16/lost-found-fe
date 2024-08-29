@@ -7,3 +7,52 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
+.login-page {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+}
+.login-page__content {
+  width: 100%;
+  background: var(--hfmn-color-f5f5f5);
+  padding: 24px;
+  border-radius: 16px;
+  max-width: 530px;
+}
+.login-page .form-field input.form-control {
+  background: var(--hfmn-color-white);
+}
+.feedback-container {
+  height: 68px;
+}
+.feedback-container .success-msg, .feedback-container .error-msg {
+  font-size: 18px;
+  font-weight: 500;
+}
+.feedback-container .go-to-login {
+  border-bottom: 2px solid #0a3622;
+}
+.form-container .form-control {
+  padding: 12px 16px;
+}
+.form-container .form-label {
+  text-align: left;
+  width: 100%;
+}
+.form-container .eye-view {
+  background-color: transparent;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a7a0a0;
+  z-index: 11;
+}
+.form-container .eye-view svg {
+  font-size: 24px;
+}
