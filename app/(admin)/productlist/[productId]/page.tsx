@@ -16,21 +16,20 @@ const page = () => {
 
     return (
         <>
-            <div className="container mx-auto" >
+            <div className="" >
                 <div className="flex">
-                    <div className="flex-1 bg-gray-100">
-                        <div className="flex flex-wrap gap-5 p-5 items-center justify-center">
+                    <div className="flex-1">
+                        <div className={styles.productsSection }>
                             {
                                 imageCollection.map((item, index) => (
-                                    <div className="" key={index}>
+                                    <div className='' key={index}>
                                         <Image src={item} alt="Image 1" className="w-full h-auto" />
                                     </div>
                                 ))
                             }
-
                         </div>
                     </div>
-                    <div className="flex-1 bg-gray-200">
+                    <div className="flex-1 bg-gray-100">
                         <div className='m-5'>
                             <h4>Product Info</h4>
                             <hr className={styles.hrStyle} />
