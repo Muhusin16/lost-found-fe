@@ -167,17 +167,20 @@ const ProductId = ({ params }: any) => {
                                     <h2>User Information Form</h2>
                                     <form action="/submit-form" method="post" className='flex justify-between'>
                                         <div>
-                                            <label htmlFor="name">Name:</label><br />
+                                            <label htmlFor="name">Title:</label><br />
+                                            <input placeholder='Mr/Miss/Mrs' className='p-1' type="text" id="name" name="name" required /><br /><br />
+
+                                            <label htmlFor="name">Full Name:</label><br />
                                             <input className='p-1' type="text" id="name" name="name" required /><br /><br />
 
-                                            <label htmlFor="address">Address:</label><br />
+                                            <label htmlFor="address">Email:</label><br />
                                             <input className='p-1' type="text" id="address" name="address" required /><br /><br />
-
-                                            <label htmlFor="idCard">ID Card Number:</label><br />
-                                            <input className='p-1' type="text" id="idCard" name="idCard" required /><br /><br />
 
                                             <label htmlFor="phoneNumber">Phone Number:</label><br />
                                             <input className='p-1' type="tel" id="phoneNumber" name="phoneNumber" required /><br /><br />
+
+                                            <label htmlFor="idCard">Upload ID Card:</label><br />
+                                            <input className='p-1' type="text" id="idCard" name="idCard" required /><br /><br />
 
                                             <button type="button" onClick={() => setShowForm(false)} className="flex my-10 px-4 py-2 bg-red-700 text-white font-semibold rounded">
                                                 Cancel
@@ -185,16 +188,16 @@ const ProductId = ({ params }: any) => {
                                         </div>
 
                                         <div>
-                                            <label htmlFor="location">Location:</label><br />
+                                            <label htmlFor="location">Address</label><br />
                                             <input className='p-1' type="text" id="location" name="location" required /><br /><br />
 
                                             <label htmlFor="city">City:</label><br />
                                             <input className='p-1' type="text" id="city" name="city" required /><br /><br />
 
-                                            <label htmlFor="country">Country:</label><br />
+                                            <label htmlFor="country">State:</label><br />
                                             <input className='p-1' type="text" id="country" name="country" required /><br /><br />
 
-                                            <label htmlFor="email">Email:</label><br />
+                                            <label htmlFor="email">Pincode:</label><br />
                                             <input className='p-1' type="email" id="email" name="email" required /><br /><br />
 
                                             <input onClick={() => setShowForm(false)} className="flex my-10 px-4 py-2 bg-gray-700 text-white font-semibold rounded" type="submit" value="Submit" />
