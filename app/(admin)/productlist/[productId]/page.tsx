@@ -200,6 +200,9 @@ const ProductId = ({ params }: any) => {
                                             <label htmlFor="email">Pincode:</label><br />
                                             <input className='p-1' type="email" id="email" name="email" required /><br /><br />
 
+                                            <label htmlFor="email">Location:</label><br />
+                                            <input className='p-1' type="email" id="email" name="email" required /><br /><br />
+
                                             <input onClick={() => setShowForm(false)} className="flex my-10 px-4 py-2 bg-gray-700 text-white font-semibold rounded" type="submit" value="Submit" />
 
                                         </div>
