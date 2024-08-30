@@ -75,7 +75,7 @@ const ProductCards = () => {
 
   const router = useRouter();
   const [searchedTerm, setSearchedTerm] = useState(''); // abcdef
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState([]);
   const [filterProducts, setFilterProducts] = useState(products);
   const [noResultFound, setNoResultFound] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>(''); // Default to an empty string
@@ -94,15 +94,14 @@ const ProductCards = () => {
       setNoResultFound('');
     }
 
-    const searchItem = products.filter((p:any) => p.title.toLowerCase().includes(searchTerm.toLowerCase()));
-    setFilterProducts(searchItem)
-    console.log(searchItem)
-    setNoResultFound('');
+    const searchItem = products.filter((p:any) => p.title.toLowerCase().includes(searchTerm.toLowerCase().trim()));
 
-    const noSearchItemFound = products.find((p:any) => p.title.toLowerCase().includes(searchedTerm.toLowerCase()));
-    console.log('No search result found', noSearchItemFound);
-    if (!noSearchItemFound) {
+    if (searchItem.length == 0) {
       setNoResultFound('Oops! Sorry, No search result found :(');
+    } else {
+      setFilterProducts(searchItem)
+      console.log(searchItem)
+      setNoResultFound('');
     }
 
   };
@@ -125,7 +124,13 @@ const ProductCards = () => {
     setSelectedCategory(category);
     setSubCategories(categories[category]?.subCategories || []); // Set subcategories based on selected category
     setBrands(categories[category]?.brands || []); // Set brands based on selected category
-    setSelectedBrand(''); // Reset selected brand when category changes
+    setSelectedBrand(''); // Reset selected brand when category changes;
+    const filteredProducts = filterProducts.filter((p:any) => p.category.toLocaleLowerCase().includes(category.toLocaleLowerCase()))
+    if (filteredProducts.length == 0) {
+      setNoResultFound('Oops! Sorry, No products found for this category :(');
+    } else {
+      setFilterProducts(filteredProducts);
+    }
   };
 
   const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -140,16 +145,27 @@ const ProductCards = () => {
   try {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.products}`)
     console.log(response.data);
-    setProducts(response.data);
-    setFilterProducts(response.data);
+    setProducts(response.data.reverse());
+    setFilterProducts(response.data.reverse());
     
   } catch (error) {
     console.log(error);
   }
   }
   useEffect(() => {
-    // fetchAllProducts()
+    fetchAllProducts()
   },[])
+
+  const getImageUrl = (title:any) => {
+   
+    const imageUrl = initialProducts.filter((product:any) => product.title.toLocaleLowerCase().includes(title.toLocaleLowerCase()))
+
+    if (imageUrl.length > 0) {
+    return imageUrl[0]?.image;
+    } else {
+     return "/shopping-bags.svg"
+  }
+}
 
   return (
     <div className={styles.cardContainer}>
@@ -236,14 +252,14 @@ const ProductCards = () => {
 
         </div>
         <div className="text-center mt-5 flex flex-column justify-center align-center">
-          <p className="text-xl">{noResultFound}</p>
+          <p className="text-xl mb-2">{noResultFound}</p>
         </div>
         <div className={styles.productsSection}>
           {filterProducts.map((product:any, index) => (
             <div className={styles.card} key={index} onClick={() => handleProductDetails(product)}>
               <div className={styles.cardImage}>
                 <Image
-                  src={product.image}
+                  src={getImageUrl(product.title)}
                   alt={product.title}
                   width={100}
                   height={100}

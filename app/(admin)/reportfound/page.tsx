@@ -204,7 +204,7 @@ const ReportFound = () => {
                   <select id="primaryColor" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
                     <option value="">Select a Primary Color</option>
                     {colors.primary.map((color) => (
-                      <option key={color.hex} value={color.hex}>
+                      <option key={color.name} value={color.name}>
                         {/* <p style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></p> */}
                         {color.name}
                       </option>
@@ -216,7 +216,7 @@ const ReportFound = () => {
                   <select id="secondaryColor" className={styles.input} value={selectedSecondaryColor} onChange={handleSecondaryColorChange}>
                     <option value="">Select a Secondary Color</option>
                     {colors.secondary.map((color) => (
-                      <option key={color.hex} value={color.hex}>
+                      <option key={color.name} value={color.name}>
                         {/* <span style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></span> */}
                         {color.name}
                       </option>
