@@ -86,7 +86,7 @@ const ProductId = ({ params }: any) => {
                                     </div>
                                     <div className='flex justify-start'>
                                         <p className='mb-3 w-1/2'><span>Item Worth: </span></p>
-                                        <p>INR 10 Lakhs</p>
+                                        <p>INR 1.5 Lakhs</p>
                                     </div>
                                     <div className='flex justify-start'>
                                         <p className='mb-3 w-1/2'><span>Quantity: </span></p>
@@ -101,7 +101,7 @@ const ProductId = ({ params }: any) => {
 
                                     <div className='flex justify-start'>
                                         <p className='mb-3 w-1/2'><span>Specific Location: </span></p>
-                                        <p className='mb-3'>Bengaluru Airport T2</p>
+                                        <p className='mb-3'>{product.specificLocation}</p>
                                     </div>
                                     <div className='flex justify-start'>
                                         <p className='w-1/2'><span>Date Updated: </span></p>
@@ -121,8 +121,8 @@ const ProductId = ({ params }: any) => {
                                         <p className='mb-3'>{product.subCategory}</p>
                                     </div>
                                     <div className='flex justify-start'>
-                                        <p className='mb-3 w-1/2'><span>Brand: </span></p>
-                                        <p className='mb-3'>iPhone Pro Max</p>
+                                        <p className='mb-3 w-1/2'><span>Brand Name: </span></p>
+                                        <p className='mb-3'>{product.brand}</p>
                                     </div>
                                     <div className='flex justify-start'>
                                         <p className='mb-3 w-1/2'><span>Item S/No. or Modal No.: </span></p>
