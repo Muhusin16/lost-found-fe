@@ -49,8 +49,8 @@ const ReportFound = () => {
     )
   }
 
-  const removeTag = (tag:any) => {
-    const updatedTagList = tagsList.filter((tagName:any) =>
+  const removeTag = (tag: any) => {
+    const updatedTagList = tagsList.filter((tagName: any) =>
       tagName != tag
     )
     setTagsList(updatedTagList)
@@ -240,7 +240,7 @@ const ReportFound = () => {
               </select>
             </div>
             <div className={styles.formItem}>
-              <label htmlFor="subCategory" className={styles.label} onChange={(e:any) => setFormData({...formData, subCategory: e.target.value})}>Subcategory</label>
+              <label htmlFor="subCategory" className={styles.label} onChange={(e: any) => setFormData({ ...formData, subCategory: e.target.value })}>Subcategory</label>
               <select id="subCategory" className={styles.input} >
                 {subCategories.map((subCategory) => (
                   <option key={subCategory} value={subCategory}>

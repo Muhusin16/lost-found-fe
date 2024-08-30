@@ -49,3 +49,71 @@ export const colors = {
       brands: ['Others'] 
     }
   };
+
+  export const initialProducts = [
+    {
+      title: "Bag",
+      image: "/shopping-bags.svg",
+      primaryColor: ["Pink", "Red"],
+      category: "Bags, Baggage",
+      subCategory: "Shopping bag",
+      brand: "-",
+      actionIcons: ["edit", "delete"],
+    },
+    {
+      title: "Iphone 14",
+      image: "/mobile-phone.svg",
+      primaryColor: ["Black", "Grey"],
+      category: "Electronics",
+      subCategory: "Phone",
+      brand: "Iphone",
+      actionIcons: ["edit", "delete"],
+    },
+    {
+      title: "Noise Watch 3",
+      image: "/smart-watch.svg",
+      primaryColor: ["Pink"],
+      category: "Electronics",
+      subCategory: "SmartWatch",
+      brand: "Noise",
+      actionIcons: ["edit", "delete"],
+    },
+    {
+      title: "Red Bag",
+      image: "/red-purse.svg",
+      primaryColor: ["Red"],
+      category: "Bags, Baggage",
+      subCategory: "Purse",
+      brand: "-",
+      actionIcons: ["edit", "delete"],
+    },
+    {
+      title: "Laptop",
+      image: "/laptop.svg",
+      primaryColor: ["Grey"],
+      category: "Electronics",
+      subCategory: "Laptop",
+      brand: "Dell",
+      actionIcons: ["edit", "delete"],
+    },
+    {
+      title: "Grocery Bag",
+      image: "/paper-bag.svg",
+      primaryColor: ["Purple", "Blue"],
+      category: "Bags, Baggage",
+      subCategory: "Shopping bag",
+      brand: "Puma",
+      actionIcons: ["edit", "delete"],
+      
+    },
+  
+    {
+      title: "Peace",
+      image: "/peace.jpg",
+      primaryColor: ["Purple", "Blue"],
+      category: "Intangible",
+      subCategory: "Shopping bag",
+      brand: "Self Owned",
+      actionIcons: ["edit", "delete"],
+    }
+  ];
