@@ -240,8 +240,8 @@ const ReportFound = () => {
               </select>
             </div>
             <div className={styles.formItem}>
-              <label htmlFor="subCategory" className={styles.label}>Subcategory</label>
-              <select id="subCategory" className={styles.input}>
+              <label htmlFor="subCategory" className={styles.label} onChange={(e:any) => setFormData({...formData, subCategory: e.target.value})}>Subcategory</label>
+              <select id="subCategory" className={styles.input} >
                 {subCategories.map((subCategory) => (
                   <option key={subCategory} value={subCategory}>
                     {subCategory}
