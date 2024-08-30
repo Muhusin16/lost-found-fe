@@ -5,62 +5,11 @@ import axios from 'axios';
 import Image from 'next/image';
 import { apiUrls } from '@/app/config/api.config';
 import { useRouter } from 'next/navigation';
+import { categories, colors } from '@/app/config/data.config';
 
 
 type CategoryKey = keyof typeof categories;
 type ColorKey = keyof typeof colors;
-
-const colors = {
-  primary: [
-    { name: 'Red', hex: '#FF5733' },
-    { name: 'Blue', hex: '#3498DB' },
-    { name: 'Green', hex: '#1ABC9C' },
-    { name: 'Purple', hex: '#9B59B6' },
-    { name: 'Orange', hex: '#E74C3C' },
-  ],
-  secondary: [
-    { name: 'Dark Red', hex: '#C70039' },
-    { name: 'Dark Blue', hex: '#2980B9' },
-    { name: 'Teal', hex: '#16A085' },
-    { name: 'Dark Purple', hex: '#8E44AD' },
-    { name: 'Maroon', hex: '#C0392B' },
-  ],
-};
-
-const categories = {
-  Electronics: {
-    subCategories: ['Mobile Phones', 'Laptops', 'Tablets', 'Cameras', 'Accessories', 'Others'],
-    brands: ['Apple', 'Samsung', 'Sony', 'Dell', 'HP', 'Others']
-  },
-  'Personal Items': {
-    subCategories: ['Wallets', 'Keys', 'Watches', 'Jewelry', 'Eyewear', 'Others'],
-    brands: ['Fossil', 'Ray-Ban', 'Tissot', 'Gucci', 'Prada', 'Others']
-  },
-  Bags: {
-    subCategories: ['Backpacks', 'Handbags', 'Suitcases', 'Wallets', 'Purses', 'Others'],
-    brands: ['Samsonite', 'American Tourister', 'VIP', 'Wildcraft', 'Tommy Hilfiger', 'Others']
-  },
-  Documents: {
-    subCategories: ['Passports', 'ID Cards', 'Driving Licenses', 'Credit/Debit Cards', 'Other Official Papers', 'Others'],
-    brands: [] // No specific brands for documents
-  },
-  Clothing: {
-    subCategories: ['Jackets', 'Hats', 'Scarves', 'Gloves', 'Shoes', 'Others'],
-    brands: ['Nike', 'Adidas', 'Puma', 'Levi\'s', 'Zara', 'Others']
-  },
-  Accessories: {
-    subCategories: ['Umbrellas', 'Belts', 'Sunglasses', 'Hats', 'Others'],
-    brands: ['Ray-Ban', 'Oakley', 'Gucci', 'Louis Vuitton', 'Hermes', 'Others']
-  },
-  Miscellaneous: {
-    subCategories: ['Toys', 'Books', 'Stationery', 'Musical Instruments'],
-    brands: ['Lego', 'Fisher-Price', 'Crayola', 'Yamaha', 'Casio', 'Others']
-  },
-  Others: {
-    subCategories: ['Others'],
-    brands: ['Others'] 
-  }
-};
 
 const initialFormData = {
   title: "",
@@ -167,13 +116,14 @@ const ReportFound = () => {
         secondaryColor: selectedSecondaryColor,
         specificDescription: formData.specificDescription,
         specificLocation: formData.specificLocation,
-        enteredBy: "admin",
+        enteredBy: "66cdc56c5967826559d6a15c",
         createdAt: new Date(),
         remarks: formData.remarks,
         itemType: selectedItemType,
         imageUrl: [
-          "https://example.com/images/backpack1.jpg",
-          "https://example.com/images/backpack2.jpg"
+          "/paper-bag.svg",
+          "/smart-watch.svg",
+          "/shopping-bags.svg"
         ],
       }
 
@@ -254,7 +204,7 @@ const ReportFound = () => {
                   <select id="primaryColor" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
                     <option value="">Select a Primary Color</option>
                     {colors.primary.map((color) => (
-                      <option key={color.hex} value={color.hex}>
+                      <option key={color.name} value={color.name}>
                         {/* <p style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></p> */}
                         {color.name}
                       </option>
@@ -266,7 +216,7 @@ const ReportFound = () => {
                   <select id="secondaryColor" className={styles.input} value={selectedSecondaryColor} onChange={handleSecondaryColorChange}>
                     <option value="">Select a Secondary Color</option>
                     {colors.secondary.map((color) => (
-                      <option key={color.hex} value={color.hex}>
+                      <option key={color.name} value={color.name}>
                         {/* <span style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></span> */}
                         {color.name}
                       </option>

@@ -1,5 +1,8 @@
 import styles from "./productFilter.module.scss";
+import { categories, colors } from '@/app/config/data.config';
 
+type CategoryKey = keyof typeof categories;
+type ColorKey = keyof typeof colors;
 const ProductFilter = () => {
   return (
     <div className={styles.filterContainer}>
