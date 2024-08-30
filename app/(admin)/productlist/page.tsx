@@ -8,72 +8,17 @@ import { useRouter } from "next/navigation";
 import { categories, colors } from '@/app/config/data.config';
 import axios from "axios";
 import { apiUrls } from "@/app/config/api.config";
+import {initialProducts} from '../../config/data.config'
 
 type CategoryKey = keyof typeof categories;
 type ColorKey = keyof typeof colors;
 
-const initialProducts = [
-  {
-    title: "Bag",
-    image: "/shopping-bags.svg",
-    primaryColor: ["Pink", "Red"],
-    category: "Bags, Baggage",
-    subCategory: "Shopping bag",
-    brand: "-",
-    actionIcons: ["edit", "delete"],
-  },
-  {
-    title: "Iphone 14",
-    image: "/mobile-phone.svg",
-    primaryColor: ["Black", "Grey"],
-    category: "Electronics",
-    subCategory: "Phone",
-    brand: "Iphone",
-    actionIcons: ["edit", "delete"],
-  },
-  {
-    title: "Noise Watch 3",
-    image: "/smart-watch.svg",
-    primaryColor: ["Pink"],
-    category: "Electronics",
-    subCategory: "SmartWatch",
-    brand: "Noise",
-    actionIcons: ["edit", "delete"],
-  },
-  {
-    title: "Red Bag",
-    image: "/red-purse.svg",
-    primaryColor: ["Red"],
-    category: "Bags, Baggage",
-    subCategory: "Purse",
-    brand: "-",
-    actionIcons: ["edit", "delete"],
-  },
-  {
-    title: "Laptop",
-    image: "/laptop.svg",
-    primaryColor: ["Grey"],
-    category: "Electronics",
-    subCategory: "Laptop",
-    brand: "Dell",
-    actionIcons: ["edit", "delete"],
-  },
-  {
-    title: "Grocery Bag",
-    image: "/paper-bag.svg",
-    primaryColor: ["Purple", "Blue"],
-    category: "Bags, Baggage",
-    subCategory: "Shopping bag",
-    brand: "Puma",
-    actionIcons: ["edit", "delete"],
-  },
-];
+
 
 
 
 const ProductCards = () => {
-
-  const router = useRouter();
+ const router = useRouter();
   const [searchedTerm, setSearchedTerm] = useState(''); // abcdef
   const [products, setProducts] = useState([]);
   const [filterProducts, setFilterProducts] = useState(products);
@@ -116,7 +61,7 @@ const ProductCards = () => {
 
   const handleProductDetails = (product: any) => {
     console.log('Product details', product);
-    router.push(`/productlist/1`); // Navigate to product page with product name as query parameter
+    router.push(`/productlist/${product._id}`); // Navigate to product page with product name as query parameter
   }
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -158,7 +103,7 @@ const ProductCards = () => {
 
   const getImageUrl = (title:any) => {
    
-    const imageUrl = initialProducts.filter((product:any) => product.title.toLocaleLowerCase().includes(title.toLocaleLowerCase()))
+    const imageUrl = initialProducts?.filter((product:any) => product.title.toLowerCase().includes(title.toLowerCase()))
 
     if (imageUrl.length > 0) {
     return imageUrl[0]?.image;
