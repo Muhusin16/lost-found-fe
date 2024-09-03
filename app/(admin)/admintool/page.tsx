@@ -1,5 +1,6 @@
 'use client'
 import { apiUrls } from '@/app/config/api.config'
+import axiosInstance from '@/app/services/axiosInterceptor'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
@@ -11,12 +12,7 @@ const AdminTool = () => {
     const getCategories = async () => {
         console.log('categories')
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.categories}`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json', // Ensure the correct content type is set
-                    },
-                });
+            const response = await axiosInstance.get(`${apiUrls.categories}`)
             console.log(response.data)
             setCategory(response.data);
 
@@ -43,10 +39,6 @@ const AdminTool = () => {
             console.log(error)
         }
     }
-
-
-
-
 
     useEffect(() => {
         getCategories();

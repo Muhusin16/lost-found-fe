@@ -1,14 +1,13 @@
 "use client"
 import Image from "next/image";
 import styles from "./product.module.scss";
-import ProductFilter from "./productFilter/productFilter";
 import { useEffect, useState } from "react";
 import { FaSearch, FaSyncAlt, FaDownload, FaFilter } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { categories, colors } from '@/app/config/data.config';
-import axios from "axios";
 import { apiUrls } from "@/app/config/api.config";
 import {initialProducts} from '../../config/data.config'
+import axiosInstance from "@/app/services/axiosInterceptor";
 
 type CategoryKey = keyof typeof categories;
 type ColorKey = keyof typeof colors;
@@ -88,7 +87,7 @@ const ProductCards = () => {
 
   const fetchAllProducts = async () => {
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.products}`)
+    const response = await axiosInstance.get(`${apiUrls.products}`)
     console.log(response.data);
     setProducts(response.data.reverse());
     setFilterProducts(response.data.reverse());

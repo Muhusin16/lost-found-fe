@@ -14,6 +14,7 @@ import { initialProducts } from '../../../config/data.config'
 import Image from 'next/image';
 import axios from 'axios';
 import { apiUrls } from '@/app/config/api.config';
+import axiosInstance from '@/app/services/axiosInterceptor';
 // import { useRouter } from 'next/';
 const ProductId = ({ params }: any) => {
 
@@ -28,9 +29,11 @@ const ProductId = ({ params }: any) => {
 
     const fetchProductData = async () => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.products}/${productId}`);
-            console.log('Product Data...........', response.data);
+            const response = await axios.get(`http://localhost:5002/api/product/${productId}`);
             setProduct(response.data);
+            // const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.products}/${productId}`);
+            // console.log('Product Data...........', response.data);
+            // setProduct(response.data);
 
         } catch (error) {
             console.log(error);
