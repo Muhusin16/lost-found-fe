@@ -202,8 +202,8 @@ const ProductCards = () => {
           {filterProducts.map((product:any, index) => (
             <div className={styles.card} key={index} onClick={() => handleProductDetails(product)}>
               <div className={styles.cardImage}>
-                <Image
-                  src={getImageUrl(product.title)}
+                <img
+                  src={product.imageUrl[0]}
                   alt={product.title}
                   width={100}
                   height={100}

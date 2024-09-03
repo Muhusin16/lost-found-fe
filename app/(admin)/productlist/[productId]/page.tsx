@@ -25,15 +25,15 @@ const ProductId = ({ params }: any) => {
     // 
     const imageCollection = [image1, image1, image1, image1];
     const [product, setProduct] = useState<any>({});
-    const [prodImage, setProdImage] = useState(image3)
+    const [prodImage, setProdImage] = useState(image3);
+    const [imageUrls, setImageUrls] = useState([]);
 
     const fetchProductData = async () => {
         try {
-            const response = await axios.get(`http://localhost:5002/api/product/${productId}`);
+            const response = await axiosInstance.get(`${apiUrls.products}/${productId}`);
+            console.log('Product Data...........', response.data);
             setProduct(response.data);
-            // const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.products}/${productId}`);
-            // console.log('Product Data...........', response.data);
-            // setProduct(response.data);
+            setImageUrls(response.data.imageUrl);
 
         } catch (error) {
             console.log(error);
@@ -60,11 +60,21 @@ const ProductId = ({ params }: any) => {
             <div className={styles.productListMain} >
 
 
-                <div className="flex">
-                    <div className="flex-1">
-                        <div className={styles.productsSection}>
-                            <div className='' >
-                                <Image src={getImageUrl(product.title)} width={100} height={100} alt="Image 1" className="w-full h-auto" />
+                    <div className="flex">
+                        <div className="flex-1">
+                            <div className={styles.productsSection}>
+                                <div className='' >
+                                   { imageUrls && imageUrls.length > 0 &&
+                                     <img src={imageUrls[1]} width={100} height={100} alt="Image 1" className="w-full h-auto" />
+                                   }
+                                </div>
+                            </div>
+                            <div className='flex gap-10 mt-10'>
+                            {product?.imageUrl && product?.imageUrl.map((image:any) => (
+
+                            <img src={image} width={100} height={100} alt="Image 1" className="w-full h-auto" />
+                            )) }
+                    
                             </div>
                         </div>
                         <div className='flex gap-10 mt-10'>
@@ -163,7 +173,7 @@ const ProductId = ({ params }: any) => {
 
 
                 
-            </div>
+           
 
         </>
     )
