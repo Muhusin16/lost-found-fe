@@ -36,6 +36,9 @@ const Navbar = () => {
         </Link> */}
       </div>
       <div className="flex items-center">
+      <Link href="/admintool" className="mr-6">
+          Super Admin
+        </Link>
         <p className="me-3">User Name </p>
         <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={handleLogout}>
           Logout
