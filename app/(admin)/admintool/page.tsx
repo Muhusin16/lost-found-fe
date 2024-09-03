@@ -27,14 +27,9 @@ const AdminTool = () => {
 
     const addCategory = async () => {
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.categories}`,
-                { name: newCategory },
-                {
-                    headers: {
-                        'Content-Type': 'application/json', // Ensure the correct content type is set
-                    },
-                });
-                setNewCategory('');
+            const response = await axiosInstance.post(`${apiUrls.categories}`,
+                { name: newCategory });
+            setNewCategory('')
         } catch (error) {
             console.log(error)
         }
@@ -43,7 +38,7 @@ const AdminTool = () => {
     useEffect(() => {
         getCategories();
         addCategory();
-    }, [])
+    }, []);
 
     return (
         <>
