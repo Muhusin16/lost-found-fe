@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
 import styles from './reportfound.module.scss';
-import axios from 'axios';
 import Image from 'next/image';
 import { apiUrls } from '@/app/config/api.config';
 import { useRouter } from 'next/navigation';
 import { categories, colors } from '@/app/config/data.config';
+import axiosInstance from '@/app/services/axiosInterceptor';
 
 
 type CategoryKey = keyof typeof categories;
@@ -128,11 +128,8 @@ const ReportFound = () => {
       }
 
       console.log(payload);
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.products}`, payload, {
-        headers: {
-          'Content-Type': 'application/json', // Ensure the correct content type is set
-        },
-      });
+    
+      const response = await axiosInstance.post(`${apiUrls.products}`, payload)
       console.log('Product created successfully:', response.data);
       if (response.data) {
         router.push('/productlist')
