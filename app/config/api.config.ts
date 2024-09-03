@@ -1,5 +1,5 @@
 export const apiUrls = {
-products:'/api/products',
+products:'/products',
 register:'/api/admin/register',
 login: '/api/admin/login',
 resetPassword: '/api/admin/reset-password',

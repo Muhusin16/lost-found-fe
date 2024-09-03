@@ -1,13 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 import styles from './reportfound.module.scss';
-import axios from 'axios';
 import Image from 'next/image';
 import { apiUrls } from '@/app/config/api.config';
 import { useRouter } from 'next/navigation';
 import { categories, colors } from '@/app/config/data.config';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import app from '../../config/firebase';
+import axiosInstance from '@/app/services/axiosInterceptor';
+
 
 type CategoryKey = keyof typeof categories;
 type ColorKey = keyof typeof colors;
@@ -125,11 +126,8 @@ const ReportFound = () => {
       };
 
       console.log(payload);
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.products}`, payload, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    
+      const response = await axiosInstance.post(`${apiUrls.products}`, payload)
       console.log('Product created successfully:', response.data);
       if (response.data) {
         router.push('/productlist');
