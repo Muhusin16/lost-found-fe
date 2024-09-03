@@ -121,7 +121,7 @@ const ReportFound = () => {
         secondaryColor: selectedSecondaryColor,
         itemType: selectedItemType,
         imageUrl: previewImages,
-        enteredBy: "66cdc56c5967826559d6a15c",
+        enteredBy: "66d169b8cad2d67bca5aec0d",
         createdAt: new Date(),
       };
 
@@ -139,165 +139,230 @@ const ReportFound = () => {
 
   return (
     <div className={`${styles.reportFound} ${styles.container}`}>
-      <h4 className={styles.heading}>Report Found Product</h4>
+    <h4 className={styles.heading}>Report Found Product</h4>
 
-      <form className={styles.form}>
+    <form className={styles.form}>
+      <div className={styles.formGroup}>
+        <div className={styles.grid}>
+          <div className={styles.formItem}>
+            <label className={styles.label}>Item Name*</label>
+            <input type="text" name='title' className={styles.input}
+              onChange={(e) => setFormData((prevData) => ({
+                ...prevData, title: e.target.value
+              }))} />
+          </div>
+          <div className={styles.formItem}>
+            <label className={styles.label}>Item Lost Date*</label>
+            <input type="date" className={styles.input}
+              onChange={(e) => setFormData((prevData) => ({
+                ...prevData, dateLost: e.target.value
+              }))} />
+          </div>
+        </div>
+
         <div className={styles.formGroup}>
-          <div className={styles.grid}>
-            <div className={styles.formItem}>
-              <label className={styles.label}>Item Name*</label>
-              <input type="text" name='title' className={styles.input}
-                onChange={(e) => setFormData(prevData => ({
-                  ...prevData, title: e.target.value
-                }))} />
-            </div>
-            <div className={styles.formItem}>
-              <label className={styles.label}>Item Lost Date*</label>
-              <input type="date" className={styles.input}
-                onChange={(e) => setFormData(prevData => ({
-                  ...prevData, dateLost: e.target.value
-                }))} />
-            </div>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.label}>
-              <input
-                type="radio"
-                name="itemType"
-                className={styles.input}
-                value="non-perishable"
-                checked={selectedItemType === 'non-perishable'}
-                onChange={handleChange}
-              />{" "}
-              Non-Perishable
-            </label>
-            <label className={`${styles.radioLabel} ms-2`}>
-              <input
-                type="radio"
-                name="itemType"
-                className={styles.input}
-                value="perishable"
-                checked={selectedItemType === 'perishable'}
-                onChange={handleChange}
-              />{" "}
-              Perishable
-            </label>
-          </div>
-          {
-            selectedItemType === 'non-perishable' && (<div className={styles.nonPerishableContainer}>
-              <div className={styles.grid}>
-                <div className={styles.formItem}>
-                  <label className={styles.label}>Model no. / serial no.</label>
-                  <input type="text" className={styles.input}
-                    onChange={(e) => setFormData(prevData => ({
-                      ...prevData, model: e.target.value
-                    }))} />
-                </div>
+          <label className={styles.label}>
+            <input
+              type="radio"
+              name="itemType"
+              className={styles.input}
+              value="non-perishable"
+              checked={selectedItemType === 'non-perishable'}
+              onChange={handleChange}
+            />{" "}
+            Non-Perishable
+          </label>
+          <label className={`${styles.radioLabel} ms-2`}>
+            <input
+              type="radio"
+              name="itemType"
+              className={styles.input}
+              value="perishable"
+              checked={selectedItemType === 'perishable'}
+              onChange={handleChange}
+            />{" "}
+            Perishable
+          </label>
+        </div>
+        {
+          selectedItemType === 'non-perishable' && (<div className={styles.nonPerishableContainer}>
+            <div className={styles.grid}>
+              <div className={styles.formItem}>
+                <label className={styles.label}>Model no. / serial no.</label>
+                <input type="text" className={styles.input} />
               </div>
+            </div>
 
-              <div className={styles.grid}>
-                <div className={styles.formItem}>
-                  <label htmlFor="primaryColor" className={styles.label}>Primary Color</label>
-                  <select id="primaryColor" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
-                    <option value="">Select a Primary Color</option>
-                    {colors.primary.map((color) => (
-                      <option key={color.name} value={color.name}>
-                        {color.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className={styles.formItem}>
-                  <label htmlFor="secondaryColor" className={styles.label}>Secondary Color</label>
-                  <select id="secondaryColor" className={styles.input} value={selectedSecondaryColor} onChange={handleSecondaryColorChange}>
-                    <option value="">Select a Secondary Color</option>
-                    {colors.secondary.map((color) => (
-                      <option key={color.name} value={color.name}>
-                        {color.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+            <div className={styles.grid}>
+              <div className={styles.formItem}>
+                <label htmlFor="primaryColor" className={styles.label}>Primary Color</label>
+                <select id="primaryColor" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
+                  <option value="">Select a Primary Color</option>
+                  {colors.primary.map((color) => (
+                    <option key={color.name} value={color.name}>
+                      {/* <p style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></p> */}
+                      {color.name}
+                    </option>
+                  ))}
+                </select>
               </div>
-
-            </div>)
-          }
-
-          <div className={`${styles.grid} mt-2`}>
-            <div className={styles.formItem}>
-              <label htmlFor="category" className={styles.label}>Category</label>
-              <select id="category" className={styles.input} value={selectedCategory} onChange={handleCategoryChange}>
-                {Object.keys(categories).map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
+              <div className={styles.formItem}>
+                <label htmlFor="secondaryColor" className={styles.label}>Secondary Color</label>
+                <select id="secondaryColor" className={styles.input} value={selectedSecondaryColor} onChange={handleSecondaryColorChange}>
+                  <option value="">Select a Secondary Color</option>
+                  {colors.secondary.map((color) => (
+                    <option key={color.name} value={color.name}>
+                      {/* <span style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></span> */}
+                      {color.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <div className={styles.formItem}>
-              <label htmlFor="subCategory" className={styles.label}>Subcategory</label>
-              <select id="subCategory" className={styles.input} value={formData.subCategory} onChange={(e) => setFormData(prevData => ({
-                ...prevData, subCategory: e.target.value
-              }))}>
-                {subCategories.map((subCategory) => (
-                  <option key={subCategory} value={subCategory}>
-                    {subCategory}
-                  </option>
-                ))}
-              </select>
-            </div>
+
+          </div>)
+        }
+
+        <div className={`${styles.grid} mt-2`}>
+          <div className={styles.formItem}>
+            <label htmlFor="category" className={styles.label}>Category</label>
+            <select id="category" className={styles.input} value={selectedCategory} onChange={handleCategoryChange}>
+              {Object.keys(categories).map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
+          <div className={styles.formItem}>
+            <label htmlFor="subCategory" className={styles.label} onChange={(e: any) => setFormData({ ...formData, subCategory: e.target.value })}>Subcategory</label>
+            <select id="subCategory" className={styles.input} >
+              {subCategories.map((subCategory) => (
+                <option key={subCategory} value={subCategory}>
+                  {subCategory}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
 
-          <div className={styles.grid}>
-            <div className={styles.formItem}>
-              <label className={styles.label}>Brand</label>
-              <select id="brand" className={styles.input} value={selectedBrand} onChange={handleBrandChange}>
-                <option value="">Select a Brand</option>
-                {brands.map((brand) => (
+        <div className={styles.grid}>
+          <div className={styles.formItem}>
+            <label htmlFor="brand" className={styles.label} >Brand</label>
+            <select id="brand" value={selectedBrand} className={styles.input} onChange={handleBrandChange} disabled={brands.length === 0}>
+              <option value="">Select a Brand</option> {/* Default option */}
+              {brands.length > 0 ? (
+                brands.map((brand) => (
                   <option key={brand} value={brand}>
                     {brand}
                   </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.formItem}>
-              <label htmlFor="specificDescription" className={styles.label}>Specific Description</label>
-              <input type="text" className={styles.input}
-                onChange={(e) => setFormData(prevData => ({
-                  ...prevData, specificDescription: e.target.value
-                }))} />
-            </div>
+                ))
+              ) : (
+                <option value="">No Brands Available</option>
+              )}
+            </select>
           </div>
-
-          <div className={styles.grid}>
-            <div className={styles.formItem}>
-              <label htmlFor="specificLocation" className={styles.label}>Specific Location</label>
-              <input type="text" className={styles.input}
-                onChange={(e) => setFormData(prevData => ({
-                  ...prevData, specificLocation: e.target.value
-                }))} />
-            </div>
-            <div className={styles.formItem}>
-              <label htmlFor="imageUrl" className={styles.label}>Upload Image</label>
-              <input type="file" id="imageUrl" className={styles.input} accept="image/*" multiple onChange={handleImageChange} />
-              {uploading && <p>Uploading...</p>}
-            </div>
-          </div>
-          <div className={styles.imagePreview}>
-            {previewImages.map((url, index) => (
-              <div key={index} className={styles.imageContainer}>
-                <Image src={url} alt={`Uploaded image ${index + 1}`} width={100} height={100} className={styles.image} />
-              </div>
-            ))}
-          </div>
-
           <div className={styles.formItem}>
-            <button type="button" className={styles.button} onClick={submitProductForm}>Submit</button>
+            <label className={styles.label}>New Category (if any)</label>
+            <input type="text" className={styles.input} />
           </div>
         </div>
-      </form>
-    </div>
+
+
+        <div className={`${styles.formItem} mt-2`}>
+          <label className={styles.label}>Specific Description</label>
+          <textarea className={styles.textarea}
+            onChange={(e) => setFormData((prevData) => ({
+              ...prevData, specificDescription: e.target.value
+            }))}></textarea>
+        </div>
+
+        <div className={styles.formItem}>
+          <label className={styles.label}>Specific Location</label>
+          <input type="text" className={styles.input}
+            onChange={(e) => setFormData((prevData) => ({
+              ...prevData, specificLocation: e.target.value
+            }))} />
+        </div>
+
+        <div className={styles.formItem}>
+          <label className={styles.label}>Remarks (if any)</label>
+          <textarea className={styles.textarea}
+            onChange={(e) => setFormData((prevData) => ({
+              ...prevData, remarks: e.target.value
+            }))}></textarea>
+        </div>
+        <button type='button' onClick={submitProductForm} className={styles.saveButton}>Save & close</button>
+      </div>
+
+      <div className={styles.sideContainer}>
+        <div className={styles.tagsContainer}>
+          <label className={styles.label}>Add Tags to Products</label>
+          <div className={styles.tagInputGroup}>
+            <input
+              type="text"
+              className={styles.input}
+              value={selectedTag}
+              onChange={(e) => setSelectedTag(e.target.value)}
+            />
+            <button
+              type="button"
+              className={styles.addButton}
+              onClick={() => addNewTags()}
+            >
+              Add Tag
+            </button>
+          </div>
+          <div className={styles.tags}>
+            {
+              tagsList.map((tag: any, index: any) => (<>
+                <div key={index} className={styles.tagsList}>
+                  <p>{tag}</p>
+                  <p onClick={() => removeTag(tag)}>X</p>
+                </div></>
+              ))
+            }
+
+          </div>
+        </div>
+
+        <div className='flex flex-col'>
+          <div>
+            <label className={styles.label}>Image upload</label>
+            <p className={styles.imagesDescription}>Pictures paint a thousand words! Please upload a picture for your listing. You can upload up to 4 pictures. The first will be your primary for your listing. Image Size should not me more than 2 MB.</p>
+          </div>
+          <div className={styles.formItem}>
+            <input type="file" multiple className={styles.input} onChange={handleImageChange} />
+          </div>
+        </div>
+
+        <div className={styles.imageContainer}>
+          <label className={styles.label}>Image Preview</label>
+          <div className={styles.imagePreview}>
+            {previewImages && previewImages.length > 0 && previewImages.map((previewImage:any) => (
+              <div className='flex flex-wrap '>
+              <div className={styles.imageWrapper}>
+                <img src={previewImage} alt="Preview" className={styles.image} width={100} height={100} />
+              </div>
+            </div>
+            ))}
+            <div className='flex flex-wrap '>
+              <div className={styles.imageWrapper}>
+                <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100} height={100} />
+              </div>
+            </div>
+            <div className={styles.imageWrapper}>
+              <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100} height={100} />
+            </div>
+            <div className={styles.imageWrapper}>
+              <Image src="/paper-bag.svg" alt="Preview" className={styles.image} width={100} height={100} />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
   );
 };
 
