@@ -8,6 +8,7 @@ import { categories, colors } from '@/app/config/data.config';
 import { apiUrls } from "@/app/config/api.config";
 import {initialProducts} from '../../config/data.config'
 import axiosInstance from "@/app/services/axiosInterceptor";
+import placeholderImage from '../../assets/placeholder-img.jpg'
 
 type CategoryKey = keyof typeof categories;
 type ColorKey = keyof typeof colors;
@@ -202,12 +203,12 @@ const ProductCards = () => {
           {filterProducts.map((product:any, index) => (
             <div className={styles.card} key={index} onClick={() => handleProductDetails(product)}>
               <div className={styles.cardImage}>
-                <img
+                {product.imageUrl && product.imageUrl.length > 0 ? (<img
                   src={product.imageUrl[0]}
                   alt={product.title}
                   width={100}
                   height={100}
-                />
+                />): (<Image src={placeholderImage} alt="img"></Image>) }
               </div>
               <div className={styles.cardHeader}>
                 <h3>{product.title}</h3>
