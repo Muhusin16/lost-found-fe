@@ -9,6 +9,10 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import app from '../../config/firebase';
 import axiosInstance from '@/app/services/axiosInterceptor';
 import placeholderImg from '../../assets/placeholder-img.jpg'
+import { addProductAsync } from '../../store/productsSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/app/store/store';
+
 
 
 // type CategoryKey = keyof typeof categories;
@@ -34,6 +38,7 @@ const initialFormData = {
 
 const ReportFound = () => {
   const router = useRouter();
+  const dispatch: AppDispatch = useDispatch();
   const [tagsList, setTagsList] = useState<string[]>([]);
   const [selectedTag, setSelectedTag] = useState('');
   const [formData, setFormData] = useState(initialFormData);
@@ -121,7 +126,7 @@ const ReportFound = () => {
 
   const submitProductForm = async () => {
     try {
-      const payload = {
+      const payload: any = {
         ...formData,
         category: selectedCategory,
         subCategory: formData.subCategory,
@@ -133,14 +138,14 @@ const ReportFound = () => {
         enteredBy: "66d169b8cad2d67bca5aec0d",
         createdAt: new Date(),
       };
-
       console.log(payload);
-
-      const response = await axiosInstance.post(`${apiUrls.products}`, payload)
-      console.log('Product created successfully:', response.data);
-      if (response.data) {
-        router.push('/productlist');
-      }
+      await dispatch(addProductAsync(payload)).unwrap();
+      router.push('/productlist');
+      // const response = await axiosInstance.post(`${apiUrls.products}`, payload)
+      // console.log('Product created successfully:', response.data);
+      // if (response.data) {
+      //   router.push('/productlist');
+      // }
     } catch (error: any) {
       console.error('Error creating product:', error.response?.data || error.message);
     }

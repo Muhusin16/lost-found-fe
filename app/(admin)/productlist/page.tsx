@@ -9,6 +9,9 @@ import { apiUrls } from "@/app/config/api.config";
 import {initialProducts} from '../../config/data.config'
 import axiosInstance from "@/app/services/axiosInterceptor";
 import placeholderImage from '../../assets/placeholder-img.jpg'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllProducts } from '../../store/productsSlice';
+import { RootState,AppDispatch  } from '../../store/store';
 
 type CategoryKey = keyof typeof categories;
 type ColorKey = keyof typeof colors;
@@ -20,14 +23,17 @@ type ColorKey = keyof typeof colors;
 const ProductCards = () => {
  const router = useRouter();
   const [searchedTerm, setSearchedTerm] = useState(''); // abcdef
-  const [products, setProducts] = useState([]);
-  const [filterProducts, setFilterProducts] = useState(products);
+  // const [products, setProducts] = useState([]);
   const [noResultFound, setNoResultFound] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>(''); // Default to an empty string
   const [subCategories, setSubCategories] = useState<string[]>([]); // Empty array for subcategories initially
   const [brands, setBrands] = useState<string[]>([]); // Empty array for brands initially
   const [selectedBrand, setSelectedBrand] = useState<string>(''); // Default to an empty string
   const [selectedPrimaryColor, setSelectedPrimaryColor] = useState<string>('');
+
+  const dispatch = useDispatch<AppDispatch>(); // Make sure you type the dispatch correctly
+  const { products, status } = useSelector((state: RootState) => state.products);
+  const [filterProducts, setFilterProducts] = useState(products);
 
   const handleSearchChange = (e: any) => {
     console.log('Searchterm', e.target.value);
@@ -86,20 +92,30 @@ const ProductCards = () => {
     setSelectedPrimaryColor(event.target.value);
   };
 
-  const fetchAllProducts = async () => {
-  try {
-    const response = await axiosInstance.get(`${apiUrls.products}`)
-    console.log(response.data);
-    setProducts(response.data.reverse());
-    setFilterProducts(response.data.reverse());
+  // const fetchAllProducts = async () => {
+  // try {
+  //   const response = await axiosInstance.get(`${apiUrls.products}`)
+  //   console.log(response.data);
+  //   setProducts(response.data.reverse());
+  //   setFilterProducts(response.data.reverse());
     
-  } catch (error) {
-    console.log(error);
-  }
-  }
+  // } catch (error) {
+  //   console.log(error);
+  // }
+  // }
+  
   useEffect(() => {
-    fetchAllProducts()
-  },[])
+    if (status === 'idle') {
+      dispatch(fetchAllProducts());
+      console.log("hello")
+    }
+  }, [dispatch, status]);
+
+  useEffect(() => {
+    // fetchAllProducts()
+    setFilterProducts(products);
+      console.log(products,filterProducts,"pro")
+  },[products])
 
   const getImageUrl = (title:any) => {
    
