@@ -4,6 +4,8 @@ import { Card, Typography } from "@material-tailwind/react";
 import { fetchAllProducts } from '@/app/store/productsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
+import { HiRefresh } from "react-icons/hi";
+import styles from './dashboard.module.scss'
 
 
 const TABLE_HEAD = ["Id No.", "Date", "Location", "Name"];
@@ -107,7 +109,8 @@ const Dashboard = () => {
               Search within the date
             </button>
           </div>
-          <div className=" my-5">
+          <div className="flex justify-center items-center my-5">
+          <HiRefresh onClick={() => setItemList([])} className={`${styles.refreshIcon} me-5 text-xl`} />
             <input
               onChange={(e) => setKeyword(e.target.value)}
               className="border border-gray-300 px-4 py-2"
