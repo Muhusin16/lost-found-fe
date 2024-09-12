@@ -1,10 +1,13 @@
 "use client";
-
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import "../../styles/app.scss";
+import axiosInstance from '@/app/services/axiosInterceptor';
+import { apiUrls } from '@/app/config/api.config';
+import { setJsonValueInLocalStorage } from '@/app/services/coreServices';
+import { jwtDecode} from 'jwt-decode'
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,23 +18,25 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage('');
-
     try {
-      const response = await axios.post('http://localhost:5002/api/admin/login', { email, password });
-      console.log(response);
-      // debugger;
-      localStorage.setItem('token', response.data.token); // Store token in local storage
-      router.replace('/dashboard');
+      const response = await axiosInstance.post(`${apiUrls.login}`,{email, password});
+
+     if(response.data.success) {
+      let token = response.data.data.token;
+      if (token) {
+        setJsonValueInLocalStorage('token',token);
+        const decodedToken: any = jwtDecode(token);
+        const userRole = decodedToken?.role;
+
+        if (userRole == 'user') {
+          router.push('/user/dashboard');
+        } else if (userRole == 'admin') {
+          router.push('/dashboard');
+        }
+      }
+     }
     } catch (error) {
       console.error(error);
-      setMessage('Login failed. Redirecting to Forgot Password.');
-      setTimeout(() => {
-        router.push('/forgot-password'); // Redirect to forgot password page
-      }, 2000); // Redirect after 2 seconds
-    } finally {
-      setLoading(false);
     }
   };
 

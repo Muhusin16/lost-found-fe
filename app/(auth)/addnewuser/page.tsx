@@ -1,21 +1,19 @@
 'use client';
-
 import { useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import styles from './register.module.scss';
 import { apiUrls } from '@/app/config/api.config';
 import { useRouter } from 'next/navigation';
 import '../../styles/app.scss';
+import axiosInstance from '@/app/services/axiosInterceptor';
 
-export default function Register() {
+export default function AddNewUser() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    username: '',
+    user_name: '',
     email: '',
     password: '',
   });
-
-  const { username, email, password } = formData;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,7 +21,7 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}${apiUrls.register}`, formData);
+      const response = await axiosInstance.post(`${apiUrls.addNewUser}`, formData);
 
       if (response) {
         console.log('Registration successful:', response.data);
@@ -43,11 +41,11 @@ export default function Register() {
       <h1>Register</h1>
       <div className="login-page__content">
         <form className={styles.form} onSubmit={handleSubmit}>
-          <label htmlFor="username">Name:</label>
+          <label htmlFor="username">User Name:</label>
           <input
             type="text"
-            name="username"
-            value={username}
+            name="user_name"
+            value={formData.user_name}
             onChange={handleChange}
             placeholder="Username"
             required
@@ -57,7 +55,7 @@ export default function Register() {
           <input
             type="email"
             name="email"
-            value={email}
+            value={formData.email}
             onChange={handleChange}
             placeholder="Email"
             required
@@ -67,7 +65,7 @@ export default function Register() {
           <input
             type="password"
             name="password"
-            value={password}
+            value={formData.password}
             onChange={handleChange}
             placeholder="Password"
             required
