@@ -56,16 +56,13 @@ const ProductId = ({ params }: any) => {
     }, []);
 
     return (
-        <>
-            <div className={styles.productListMain} >
-
-
-                    <div className="flex">
+             <div className={styles.productListMain} >
+                    <div className="flex max-w-fit mx-6">
                         <div className="flex-1">
                             <div className={styles.productsSection}>
                                 <div className='' >
                                    { imageUrls && imageUrls.length > 0 &&
-                                     <img src={imageUrls[1]} width={100} height={100} alt="Image 1" className="w-full h-auto" />
+                                     <img src={imageUrls[0]} width={100} height={100} alt="Image 1" className="w-full h-auto" />
                                    }
                                 </div>
                             </div>
@@ -76,12 +73,6 @@ const ProductId = ({ params }: any) => {
                             )) }
                     
                             </div>
-                        </div>
-                        <div className='flex gap-10 mt-10'>
-                            <Image src={getImageUrl(product.title)} width={100} height={100} alt="Image 1" className="w-full h-auto" />
-                            <Image src={getImageUrl(product.title)} width={100} height={100} alt="Image 1" className="w-full h-auto" />
-                            <Image src={getImageUrl(product.title)} width={100} height={100} alt="Image 1" className="w-full h-auto" />
-
                         </div>
                     </div>
                     <div className="flex-1 bg-gray-100">
@@ -171,11 +162,6 @@ const ProductId = ({ params }: any) => {
 
                 </div>
 
-
-                
-           
-
-        </>
     )
 }
 

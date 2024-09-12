@@ -14,8 +14,6 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/app/store/store';
 
 
-
-// type CategoryKey = keyof typeof categories;
 type ColorKey = keyof typeof colors;
 
 const initialFormData = {
@@ -125,6 +123,7 @@ const ReportFound = () => {
   };
 
   const submitProductForm = async () => {
+
     try {
       const payload: any = {
         ...formData,
@@ -138,18 +137,15 @@ const ReportFound = () => {
         enteredBy: "66d169b8cad2d67bca5aec0d",
         createdAt: new Date(),
       };
-      console.log(payload);
+      
       await dispatch(addProductAsync(payload)).unwrap();
       router.push('/productlist');
-      // const response = await axiosInstance.post(`${apiUrls.products}`, payload)
-      // console.log('Product created successfully:', response.data);
-      // if (response.data) {
-      //   router.push('/productlist');
-      // }
+
     } catch (error: any) {
       console.error('Error creating product:', error.response?.data || error.message);
     }
   };
+
   const getAllCategories = async () => {
     try {
       const response = await axiosInstance.get(`${apiUrls.categories}`);
@@ -225,8 +221,8 @@ const ReportFound = () => {
                   <label htmlFor="primaryColor" className={styles.label}>Primary Color</label>
                   <select id="primaryColor" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
                     <option value="">Select a Primary Color</option>
-                    {colors.primary.map((color) => (
-                      <option key={color.name} value={color.name}>
+                    {colors.primary.map((color,index) => (
+                      <option key={index} value={color.name}>
                         {/* <p style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></p> */}
                         {color.name}
                       </option>
@@ -237,8 +233,8 @@ const ReportFound = () => {
                   <label htmlFor="secondaryColor" className={styles.label}>Secondary Color</label>
                   <select id="secondaryColor" className={styles.input} value={selectedSecondaryColor} onChange={handleSecondaryColorChange}>
                     <option value="">Select a Secondary Color</option>
-                    {colors.secondary.map((color) => (
-                      <option key={color.name} value={color.name}>
+                    {colors.secondary.map((color,index) => (
+                      <option key={index} value={color.name}>
                         {/* <span style={{ backgroundColor: color.hex }} className="inline-block w-4 h-4 rounded-full mr-2"></span> */}
                         {color.name}
                       </option>
@@ -254,8 +250,8 @@ const ReportFound = () => {
             <div className={styles.formItem}>
               <label htmlFor="category" className={styles.label}>Category</label>
               <select id="category" className={styles.input} value={selectedCategory} onChange={handleCategoryChange}>
-                {categories && categories.map((category: any) => (
-                  <option key={category} value={category.name}>
+                {categories && categories.map((category: any,index) => (
+                  <option key={index} value={category.name}>
                     {category.name}
                   </option>
                 ))}
@@ -264,8 +260,8 @@ const ReportFound = () => {
             <div className={styles.formItem}>
               <label htmlFor="subCategory" className={styles.label} onChange={(e: any) => setFormData({ ...formData, subCategory: e.target.value })}>Subcategory</label>
               <select id="subCategory" className={styles.input} >
-                {subCategories && subCategories.map((subCategory: any) => (
-                  <option key={subCategory.id} value={subCategory.name}>
+                {subCategories && subCategories.map((subCategory: any,index:number) => (
+                  <option key={index} value={subCategory.name}>
                     {subCategory.name}
                   </option>
                 ))}
@@ -279,8 +275,8 @@ const ReportFound = () => {
               <select id="brand" value={selectedBrand} className={styles.input} onChange={handleBrandChange} disabled={brands.length === 0}>
                 <option value="">Select a Brand</option> {/* Default option */}
                 {brands.length > 0 ? (
-                  brands.map((brand) => (
-                    <option key={brand} value={brand}>
+                  brands.map((brand,index) => (
+                    <option key={index} value={brand}>
                       {brand}
                     </option>
                   ))
