@@ -6,21 +6,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
 import { HiRefresh } from "react-icons/hi";
 import styles from './dashboard.module.scss'
+import { useRouter } from 'next/navigation';
 
-
-const TABLE_HEAD = ["Id No.", "Date", "Location", "Name"];
+const TABLE_HEAD = ["Id No.", "Date", "Location", "Item Name", "Action"];
 
 const Dashboard = () => {
 
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [itemList, setItemList] = useState([]);
+  const [keyword, setKeyword] = useState('');
   const [dateRange, setDateRange] = useState({
     to: '',
     from: ''
   });
-  const [keyword, setKeyword] = useState('');
 
   const { products, status } = useSelector((state: RootState) => state.products);
+
+  const handleClaimItem = (item: any) => {
+    console.log(item);
+    router.push(`/user/dashboard/${item}`);
+  }
 
   const showResultByName = () => {
     if (keyword) {
@@ -53,15 +59,21 @@ const Dashboard = () => {
   const showResultByDate = () => {
     let toDate = new Date(dateRange.to);
     let fromDate = new Date(dateRange.from);
+
     if (dateRange.to && dateRange.from) {
+
+      // Storing the from and to dates in local storage
+      localStorage.setItem('dateRangeFrom', dateRange.from);
+      localStorage.setItem('dateRangeTo', dateRange.to);
+
       filterByDate = products.filter((item: any) => {
         let itemDate = new Date(item.dateLost);
         // console.log(toDate, fromDate, itemDate);
 
         return itemDate >= fromDate && itemDate <= toDate;
       });
-      let filterByAscendingDate = filterByDate.sort((date1:any, date2:any) => {
-        console.log(new Date(date2.dateLost).getTime(),new Date(date1.dateLost).getTime())
+      let filterByAscendingDate = filterByDate.sort((date1: any, date2: any) => {
+        console.log(new Date(date2.dateLost).getTime(), new Date(date1.dateLost).getTime())
         return new Date(date2.dateLost).getTime() - new Date(date1.dateLost).getTime();
 
       })
@@ -110,7 +122,7 @@ const Dashboard = () => {
             </button>
           </div>
           <div className="flex justify-center items-center my-5">
-          <HiRefresh onClick={() => setItemList([])} className={`${styles.refreshIcon} me-5 text-xl`} />
+            <HiRefresh onClick={() => setItemList([])} className={`${styles.refreshIcon} me-5 text-xl`} />
             <input
               onChange={(e) => setKeyword(e.target.value)}
               className="border border-gray-300 px-4 py-2"
@@ -123,7 +135,8 @@ const Dashboard = () => {
         </div>
         {
           itemList.length > 0 ?
-            <Card className="h-full w-full overflow-scroll w-2/3" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Card className="h-full w-full w-2/3"
+              placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <table className="w-full min-w-max table-auto text-left">
                 <thead>
                   <tr>
@@ -152,7 +165,7 @@ const Dashboard = () => {
                           <Typography
                             variant="small"
                             color="blue-gray"
-                            className="font-normal" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                  >
+                            className="text-md" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                  >
                             {product._id}
                           </Typography>
                         </td>
@@ -160,7 +173,7 @@ const Dashboard = () => {
                           <Typography
                             variant="small"
                             color="blue-gray"
-                            className="font-normal" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                  >
+                            className="text-md" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                  >
                             {formatDate(product.dateLost)}
                           </Typography>
                         </td>
@@ -168,7 +181,7 @@ const Dashboard = () => {
                           <Typography
                             variant="small"
                             color="blue-gray"
-                            className="font-normal" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                  >
+                            className="text-md" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                  >
                             {product.specificLocation}
                           </Typography>
                         </td>
@@ -178,9 +191,16 @@ const Dashboard = () => {
                             href="#"
                             variant="small"
                             color="blue-gray"
-                            className="font-medium" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                  >
+                            className="text-md" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                  >
                             {product.title}
                           </Typography>
+                        </td>
+                        <td className={classes}>
+                          <button
+                            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                            onClick={(e) => handleClaimItem(product._id)}>
+                            Claim Item
+                          </button>
                         </td>
                       </tr>
                     );

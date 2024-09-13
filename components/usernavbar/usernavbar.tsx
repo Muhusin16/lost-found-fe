@@ -23,8 +23,8 @@ const UserNavbar = () => {
         <Link href="/user/dashboard" className="mr-6">
           Dashboard
         </Link>
-        <Link href="/user/claimitem" className="mr-6">
-          Claim Item
+        <Link href="/user/claimrequest" className="mr-6">
+          Claim Request
         </Link>
         <Link href="/productlist" className="mr-6">
           Product List
