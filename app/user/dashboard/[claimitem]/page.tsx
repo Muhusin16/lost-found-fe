@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/app/store/store';
 import axiosInstance from '@/app/services/axiosInterceptor';
 import { apiUrls } from '@/app/config/api.config';
-import { log } from 'console';
 import { useRouter } from 'next/navigation';
 
 const ClaimItem = ({ params }: any) => {
@@ -39,23 +38,10 @@ const ClaimItem = ({ params }: any) => {
         const storedFromDate = localStorage.getItem('dateRangeFrom');
         const storedToDate = localStorage.getItem('dateRangeTo');
 
-        console.log('from date.....', storedFromDate);
-        console.log('to date...........', storedToDate);
-
-
         if (storedFromDate && storedToDate) {
             setDateRange({ to: storedToDate, from: storedFromDate });
         }
     }, []);
-
-    useEffect(() => {
-        console.log('Item data.......', itemData);
-    }, [itemData]);
-
-    useEffect(() => {
-
-    }, []);
-
 
     return (
         <div className={styles.userForm}>
