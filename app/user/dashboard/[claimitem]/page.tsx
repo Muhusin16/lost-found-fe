@@ -24,8 +24,8 @@ const ClaimItem = ({ params }: any) => {
 
     const fetchItemData = async () => {
         try {
-            const response = await axiosInstance.get(`${apiUrls.products}/${itemId}`);
-            setItemData(response.data)
+            const response = await axiosInstance.get(`${apiUrls.products}/${itemId}`);           
+            setItemData(response.data.item)
         } catch (error) {
             console.error(error)
         }
@@ -54,14 +54,14 @@ const ClaimItem = ({ params }: any) => {
                             <input readOnly value={dateRange.from} className={`${styles.inputField} p-2 w-full border border-gray-300 bg-gray-300 text-gray-600 rounded mt-1`} type="date" id="title" required /><br /><br />
 
                             <label className={styles.labelStyle} htmlFor="fullName">Item Name:</label><br />
-                            <input readOnly className={`${styles.inputField} p-2 w-full border border-gray-300 bg-gray-300 text-gray-600 rounded mt-1`} value={itemData.title} type="text" id="fullName" required /><br /><br />
+                            <input readOnly className={`${styles.inputField} p-2 w-full border border-gray-300 bg-gray-300 text-gray-600 rounded mt-1`} value={itemData?.item_name} type="text" id="fullName" required /><br /><br />
                         </div>
                         <div>
                             <label className={styles.labelStyle} htmlFor="state">To:</label><br />
                             <input readOnly value={dateRange.to} className={`${styles.inputField} p-2 w-full border border-gray-300 bg-gray-300 text-gray-600 rounded mt-1`} type="date" id="state" name="state" required /><br /><br />
 
                             <label className={styles.labelStyle} htmlFor="address">Location:</label><br />
-                            <input readOnly className={`${styles.inputField} p-2 w-full border border-gray-300 bg-gray-300 text-gray-600 rounded mt-1`} value={itemData.specificLocation} type="text" id="address" name="address" required /><br /><br />
+                            <input readOnly className={`${styles.inputField} p-2 w-full border border-gray-300 bg-gray-300 text-gray-600 rounded mt-1`} value={itemData.location_description} type="text" id="address" name="address" required /><br /><br />
                         </div>
                         <br />
                     </div>

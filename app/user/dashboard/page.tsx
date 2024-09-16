@@ -24,16 +24,19 @@ const Dashboard = () => {
   const { products, status } = useSelector((state: RootState) => state.products);
 
   const handleClaimItem = (item: any) => {
-    console.log(item);
+    console.log('Item ID......', item);
     router.push(`/user/dashboard/${item}`);
   }
 
   const showResultByName = () => {
     if (keyword) {
       let filterByName: any = products.filter((item: any) => {
-        return item.title.toLowerCase().includes(keyword.toLowerCase())
+        if (item.item_name == null || item.location_description == null) {
+          return false;
+        }
+        return item.item_name.toLowerCase().includes(keyword)
           ||
-          item.specificLocation.toLowerCase().includes(keyword.toLowerCase());
+          item.location_description?.includes(keyword.toLowerCase());
       });
       if (!filterByName.length) {
         alert('No products found for the selected keyword')
@@ -67,14 +70,14 @@ const Dashboard = () => {
       localStorage.setItem('dateRangeTo', dateRange.to);
 
       filterByDate = products.filter((item: any) => {
-        let itemDate = new Date(item.dateLost);
+        let itemDate = new Date(item.item_lost_date);
         // console.log(toDate, fromDate, itemDate);
 
         return itemDate >= fromDate && itemDate <= toDate;
       });
       let filterByAscendingDate = filterByDate.sort((date1: any, date2: any) => {
-        console.log(new Date(date2.dateLost).getTime(), new Date(date1.dateLost).getTime())
-        return new Date(date2.dateLost).getTime() - new Date(date1.dateLost).getTime();
+        console.log(new Date(date2.item_lost_date).getTime(), new Date(date1.item_lost_date).getTime())
+        return new Date(date2.item_lost_date).getTime() - new Date(date1.item_lost_date).getTime();
 
       })
       // console.log(filterByDate);
@@ -96,8 +99,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchAllProducts())
-      console.log("Products")
     }
+    console.log("Products",products)
   }, [dispatch, status])
 
   return (
@@ -174,7 +177,7 @@ const Dashboard = () => {
                             variant="small"
                             color="blue-gray"
                             className="text-md" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                  >
-                            {formatDate(product.dateLost)}
+                            {formatDate(product.item_lost_date)}
                           </Typography>
                         </td>
                         <td className={classes}>
@@ -192,7 +195,7 @@ const Dashboard = () => {
                             variant="small"
                             color="blue-gray"
                             className="text-md" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                  >
-                            {product.title}
+                            {product.item_name}
                           </Typography>
                         </td>
                         <td className={classes}>
