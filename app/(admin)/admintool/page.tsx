@@ -8,16 +8,16 @@ import {
     AccordionHeader,
     AccordionBody,
 } from "@material-tailwind/react";
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/store/store'
 
 const AdminTool = () => {
 
     const [category, setCategory] = useState([]);
     const [newCategory, setNewCategory] = useState('');
     const [newSubCategory, setNewSubCategory] = useState('');
-
+    const role = useSelector((state:RootState) => state.role.role)
    
-
-    
     const getCategories = async () => {
         console.log('categories')
         try {

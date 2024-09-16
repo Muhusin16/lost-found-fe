@@ -28,7 +28,7 @@ const initialFormData = {
   secondaryColor: "",
   specificDescription: "",
   specificLocation: "",
-  imageUrl: [],
+  image_url: null,
   enteredBy: "",
   createdAt: "",
   remarks: ""

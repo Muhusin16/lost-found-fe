@@ -1,7 +1,7 @@
 export const apiUrls = {
-products:'/products',
-// register:'/api/admin/register',
-// login: '/api/admin/login',
+products:'/products/items',
+reportProduct : '/products/report-found',
+getAllClaims : '/products/claim',
 login: '/auth/login',
 addNewUser: '/auth/users',
 getAllUsers: '/users',
