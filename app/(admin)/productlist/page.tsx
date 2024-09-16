@@ -197,7 +197,7 @@ const ProductsList = () => {
           <p className="text-xl mb-2">{noResultFound}</p>
         </div>
         <div className={styles.productsSection}>
-          {filterProducts.map((product:any, index) => (
+          {filterProducts?.length > 0 && filterProducts.map((product:any, index) => (
             <div className={styles.card} key={index} onClick={() => handleProductDetails(product)}>
               <div className={styles.cardImage}>
                 {product.imageUrl && product.imageUrl.length > 0 ? (<img
@@ -220,17 +220,6 @@ const ProductsList = () => {
                 <p>
                   <strong>Sub-category:</strong> {product.subCategory}
                 </p>
-                <p>
-                  <strong>Brand:</strong> {product.brand}
-                </p>
-              </div>
-              <div className={styles.cardActions}>
-                {true && (
-                  <button className={styles.editButton}>✏️</button>
-                )}
-                {true && (
-                  <button className={styles.deleteButton}>🗑️</button>
-                )}
               </div>
             </div>
           ))}

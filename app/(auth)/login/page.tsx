@@ -8,8 +8,12 @@ import axiosInstance from '@/app/services/axiosInterceptor';
 import { apiUrls } from '@/app/config/api.config';
 import { setJsonValueInLocalStorage } from '@/app/services/coreServices';
 import { jwtDecode} from 'jwt-decode'
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/app/store/store';
+import { setRole } from '@/app/store/roleSlice';
 
 const Login = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -27,12 +31,14 @@ const Login = () => {
         setJsonValueInLocalStorage('token',token);
         const decodedToken: any = jwtDecode(token);
         const userRole = decodedToken?.role;
-
         if (userRole == 'user') {
           router.push('/user/dashboard');
         } else if (userRole == 'admin') {
           router.push('/dashboard');
+        } else if( userRole == 'super_admin') {
+          router.push('/dashboard');
         }
+        dispatch(setRole(userRole));
       }
      }
     } catch (error) {
