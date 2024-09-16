@@ -6,6 +6,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import productsReducer from './productsSlice';
 import roleReducer from './roleSlice';
+import userDetailsReducer from './userDetailsSlice';
 import { combineReducers } from 'redux';
 
 // Persist configuration
@@ -19,6 +20,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
   products: productsReducer,
   role: roleReducer,
+  user:userDetailsReducer
+
 });
 
 // Persist the root reducer

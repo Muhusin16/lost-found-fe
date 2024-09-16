@@ -10,8 +10,9 @@ import { RootState } from '@/app/store/store'
 const Navbar = () => {
   const router = useRouter();
   const role = useSelector((state:RootState) => state.role.role)
+  const userDetails = useSelector((state: RootState) => state.user.userDetails);
 
-
+  console.log(userDetails);
   const handleLogout = () => {
     localStorage.setItem('token', '');
     router.push('/login');

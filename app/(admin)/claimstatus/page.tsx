@@ -8,6 +8,7 @@ import Image from 'next/image';
 import placeholderImage from '../../assets/placeholder-img.jpg'
 import axiosInstance from '@/app/services/axiosInterceptor';
 import { apiUrls } from '@/app/config/api.config';
+import { useRouter } from 'next/navigation';
 
 const claimStatus = [
     {
@@ -29,6 +30,7 @@ const claimStatus = [
 ];
 const ClaimStatus: FC = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
     const { products, status } = useSelector((state: RootState) => state.products)
     const [activeTab, setActiveTab] = useState("NEW_REQUEST");
     const [allClaims, setAllClaims] = useState([]);
@@ -37,6 +39,10 @@ const ClaimStatus: FC = () => {
     const handleProductClaimRequest = (product: any) => {
         console.log('Clicked Product:', product)
         // Add your logic to handle product claim request here.
+    }
+
+    const handleClaimRequestDetail = (claimId:any) => {
+        router.push('/claimverification');
     }
 
     const handleClaimStatusChange = (claimStatus: any): void => {
@@ -107,7 +113,7 @@ const ClaimStatus: FC = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {filteredClaimRequests && filteredClaimRequests.map(({item_details,claim_details,createdAt}:any) => (
+                                            {filteredClaimRequests && filteredClaimRequests.map(({item_details,claim_details,createdAt,_id}:any) => (
                                                 <tr key={item_details?._id} className="border-t">
                                                      <td className="px-4 py-2 text-gray-800">{item_details?._id}</td>
                                                     <td className="px-4 py-2 text-gray-800">{item_details?.item_name}</td>
@@ -116,7 +122,8 @@ const ClaimStatus: FC = () => {
                                                     <td className="px-4 py-2 text-gray-800">{claim_details?.user_id?.user_name}</td>
                                                    
                                                     <td className="px-4 py-2">
-                                                        <button className="bg-deep-purple-600 hover:bg-deep-purple-900 text-white font-bold py-2 px-4 rounded-lg">
+                                                        <button className="bg-deep-purple-600 hover:bg-deep-purple-900 text-white font-bold py-2 px-4 rounded-lg"
+                                                        onClick={() => handleClaimRequestDetail(_id)}>
                                                             View Details
                                                         </button>
                                                     </td>
