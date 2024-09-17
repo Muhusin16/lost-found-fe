@@ -42,7 +42,7 @@ const ClaimStatus: FC = () => {
     }
 
     const handleClaimRequestDetail = (claimId:any) => {
-        router.push('/claimverification');
+        router.push(`/claimverification?claimId=${claimId}`);
     }
 
     const handleClaimStatusChange = (claimStatus: any): void => {

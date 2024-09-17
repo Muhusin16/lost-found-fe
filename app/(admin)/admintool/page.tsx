@@ -52,7 +52,7 @@ const AdminTool = () => {
     const addSubCategory = async (category: any) => {
         try {
             const subCategory = category.sub_categories;
-            const updatedSubCategory = [...subCategory, { id: subCategory.length + 1, name: newSubCategory }]
+            const updatedSubCategory = [...subCategory, { name: newSubCategory }]
 
             const response = await axiosInstance.put(`${apiUrls.categories}/${category._id}`, { sub_categories: updatedSubCategory })
             console.log(response.data)

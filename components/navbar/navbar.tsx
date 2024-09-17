@@ -6,15 +6,16 @@ import { useRouter } from "next/navigation";
 import logoImage from '../../app/assets/zool-logo-black-brand.png'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store/store'
+import { clearLocalStorage} from "@/app/services/coreServices";
 
 const Navbar = () => {
   const router = useRouter();
   const role = useSelector((state:RootState) => state.role.role)
   const userDetails = useSelector((state: RootState) => state.user.userDetails);
-
+  const userName = userDetails && userDetails?.user_name;
   console.log(userDetails);
   const handleLogout = () => {
-    localStorage.setItem('token', '');
+    clearLocalStorage();
     router.push('/login');
 
   }
@@ -34,22 +35,18 @@ const Navbar = () => {
           Product List
         </Link>
         <Link href='/claimstatus' className="mr-6">Claim Status</Link>
-        {/* <Link href="/aboutus" className="mr-6">
-          About Us
-        </Link>
-        <Link href="/policy" className="mr-6">
-          Policy
-        </Link> */}
       </div>
       <div className="flex items-center">
       <Link href="/admintool" className="mr-6">
-          Super Admin
+          Admin Tools
         </Link>
-        <p className="me-3">User Name | {role} </p>
+       <Link href='/profile'>
+       <p className="me-3 text-deep-purple-900 font-semibold"> {userName?.toUpperCase()} | {role?.toUpperCase()} </p>
+       </Link>
         <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={handleLogout}>
           Logout
         </button>
-      </div>
+      </div>  
     </nav>
   );
 };
