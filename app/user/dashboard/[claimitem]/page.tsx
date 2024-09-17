@@ -1,11 +1,11 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import styles from './claimitem.module.scss'
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/app/store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/app/store/store';
 import axiosInstance from '@/app/services/axiosInterceptor';
 import { apiUrls } from '@/app/config/api.config';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const ClaimItem = ({ params }: any) => {
 
@@ -17,9 +17,27 @@ const ClaimItem = ({ params }: any) => {
         from: '',
         to: ''
     })
+    const userDetails = useSelector((state:RootState) => state.user.userDetails)
+    const [claimFormData, setClaimFormData] = useState({description:'',location:''})
 
-    const handleClaimRequest = () => {
-        router.push(`/user/claimrequest`)
+    const handleClaimRequest = async () => {
+        const payload = {
+            claim_details: {
+              user_id: userDetails._id,
+              item_details: claimFormData,
+            },
+            item_details: itemId,
+          }
+        try {
+           const response =  await axiosInstance.post(`${apiUrls.claimItemById}/${itemId}`,claimFormData)
+           console.log(response.data);
+           if (response.data.success) {
+               router.push(`/user/claimrequest`)
+           }
+        } catch (error) {
+           console.log(error);
+            
+        }
     }
 
     const fetchItemData = async () => {
@@ -47,7 +65,7 @@ const ClaimItem = ({ params }: any) => {
         <div className={styles.userForm}>
             <div className="bg-gray-100 p-10 rounded-lg shadow-lg w-2/3">
                 <h2 className={`${styles.userFormHeading} font-bold mb-6 text-center`}>Lost and Found Claim Form</h2>
-                <form action="/submit-form" method="post" >
+                <form  method="post" >
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className={styles.labelStyle} htmlFor="title">From:</label><br />
@@ -114,24 +132,26 @@ const ClaimItem = ({ params }: any) => {
 
                     <div className="grid grid-cols-1 gap-4">
                         <div>
-                            <label className={styles.labelStyle} htmlFor="description">Date and Time of Loss:</label><br />
-                            <textarea className={`${styles.inputField} p-2 w-full border border-gray-300 rounded mt-1`} id="description" name="description" rows={4} required></textarea><br /><br />
+                            <label className={styles.labelStyle} htmlFor="description">Specific Lost Item Description:</label><br />
+                            <textarea className={`${styles.inputField} p-2 w-full border border-gray-300 rounded mt-1`} id="description" name="description" placeholder='Enter complete Details of item' rows={4} required
+                            onChange={(e) => {setClaimFormData((prev:any) =>({...prev,description:e.target.value}))}}></textarea><br /><br />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
                         <div>
-                            <label className={styles.labelStyle} htmlFor="description">Circumstances of Loss:</label><br />
-                            <textarea className={`${styles.inputField} p-2 w-full border border-gray-300 rounded mt-1`} id="description" name="description" rows={4} required></textarea><br /><br />
+                            <label className={styles.labelStyle} htmlFor="description">Specific Lost Item Location:</label><br />
+                            <textarea className={`${styles.inputField} p-2 w-full border border-gray-300 rounded mt-1`} id="description" name="description" placeholder='Enter specific location where you lost item' rows={4} required
+                            onChange={(e) => {setClaimFormData((prev:any) =>({...prev,location:e.target.value}))}}></textarea><br /><br />
                         </div>
                     </div>
 
-                    <div className="flex items-center mb-4">
+                    {/* <div className="flex items-center mb-4">
                         <input id="default-checkbox" type="checkbox" value={'representative'} onChange={() => setShowAdditionalForm(!showAdditionalForm)} checked={showAdditionalForm === true} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                         <label htmlFor="default-checkbox" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"><h4 className='mt-3'>Collecting on behalf of someone else?</h4></label>
-                    </div>
+                    </div> */}
 
-                    {
+                    {/* {
                         showAdditionalForm &&
                         <div className="bg-gray-200 rounded-lg p-5 grid grid-cols-1 gap-4">
                             <div>
@@ -145,13 +165,13 @@ const ClaimItem = ({ params }: any) => {
                                 <input className={`${styles.inputField} p-2 w-full border border-gray-300 rounded mt-1`} type="text" id="city" name="city" required /><br /><br />
                             </div>
                         </div>
-                    }
+                    } */}
 
                     <div className=" mt-5 col-span-2 text-center">
                         <button type="button" className={`${styles.button} px-4 py-2 bg-gray-500 text-white font-semibold rounded mx-2`}>
                             Show Preview
                         </button>
-                        <button onClick={() => handleClaimRequest()} type="submit" className={`${styles.button} px-4 py-2 bg-green-500 text-white font-semibold rounded mx-2`}>
+                        <button onClick={() => handleClaimRequest()} type="button" className={`${styles.button} px-4 py-2 bg-green-500 text-white font-semibold rounded mx-2`}>
                             Submit
                         </button>
                     </div>
