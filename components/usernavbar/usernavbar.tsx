@@ -7,13 +7,16 @@ import logoImage from '../../app/assets/zool-logo-black-brand.png';
 import '../../app/styles/app.scss'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store/store'
+import { clearLocalStorage } from "@/app/services/coreServices";
 
 const UserNavbar = () => {
   const router = useRouter();
   const role = useSelector((state:RootState) => state.role.role)
+  const userDetails = useSelector((state:RootState) => state.user.userDetails);
+  const userName = userDetails?.user_name;
   
   const handleLogout = () => {
-    localStorage.setItem('token', '');
+   clearLocalStorage();
     router.push('/login');
   }
   
@@ -29,21 +32,14 @@ const UserNavbar = () => {
         <Link href="/user/claimrequest" className="mr-6">
           Claim Request
         </Link>
-        <Link href="/productlist" className="mr-6">
+        {/* <Link href="/productlist" className="mr-6">
           Product List
-        </Link>
-        {/* <Link href="/aboutus" className="mr-6">
-          About Us
-        </Link>
-        <Link href="/policy" className="mr-6">
-          Policy
         </Link> */}
       </div>
       <div className="flex items-center">
-      {/* <Link href="/admintool" className="mr-6">
-          Super Admin
-        </Link> */}
-        <p className="me-3">User Name | {role} </p>
+      <Link href="/user/userprofile" className="mr-6">
+        <p className="me-3  text-deep-purple-900 font-semibold"> {userName?.toUpperCase()} | {role?.toUpperCase()} </p>
+        </Link>
         <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={handleLogout}>
           Logout
         </button>
