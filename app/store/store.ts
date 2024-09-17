@@ -13,7 +13,7 @@ import { combineReducers } from 'redux';
 const persistConfig = {
   key: 'root',
   storage, // Using localStorage
-  whitelist: ['role', 'products'], // Choose which reducers to persist
+  whitelist: ['role', 'products', 'user'], // Choose which reducers to persist
 };
 
 // Combine reducers
