@@ -25,6 +25,7 @@ const Login = () => {
   const response = await axiosInstance.get(`${apiUrls.getUserDetails}/${userId}`);
   if (response.data.success) {
     dispatch(setUserDetails(response.data.data))
+    setJsonValueInLocalStorage('userDetails',response.data.data);
   }
   }
   const handleSubmit = async (e: React.FormEvent) => {
