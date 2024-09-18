@@ -17,21 +17,27 @@ import { AppDispatch } from '@/app/store/store';
 type ColorKey = keyof typeof colors;
 
 const initialFormData = {
-  title: "",
-  dateLost: "",
+  item_name: "",
+  item_lost_date: "",
   category: "",
-  subCategory: "",
+  sub_category: "",
+  new_category: "",
   brand: "",
-  model: "",
-  serialNumber: "",
-  primaryColor: "",
-  secondaryColor: "",
-  specificDescription: "",
-  specificLocation: "",
-  image_url: null,
-  enteredBy: "",
-  createdAt: "",
-  remarks: ""
+  model_number: "",
+  serial_number: "",
+  primary_color: "",
+  secondary_color: "",
+  item_description: "",
+  location_description: "",
+  image_urls: null,
+  additional_remarks: "",
+  tags:[],
+  retention_period_days:90,
+  storage_info: {
+    shelf_no : '',
+    rack_no : ''
+  }
+
 };
 
 const ReportFound = () => {
@@ -128,15 +134,12 @@ const ReportFound = () => {
       const payload: any = {
         ...formData,
         category: selectedCategory,
-        subCategory: formData.subCategory,
-        brand: selectedBrand,
-        primaryColor: selectedPrimaryColor,
-        secondaryColor: selectedSecondaryColor,
-        itemType: selectedItemType,
-        imageUrl: previewImages,
-        enteredBy: "66d169b8cad2d67bca5aec0d",
-        createdAt: new Date(),
-      };
+        sub_category: formData.sub_category,
+        primary_color: selectedPrimaryColor,
+        secondary_color: selectedSecondaryColor,
+        item_type: selectedItemType,
+        image_url: previewImages,
+        };
       
       await dispatch(addProductAsync(payload)).unwrap();
       router.push('/productlist');
@@ -169,16 +172,16 @@ const ReportFound = () => {
           <div className={styles.grid}>
             <div className={styles.formItem}>
               <label className={styles.label}>Item Name*</label>
-              <input type="text" name='title' className={styles.input}
+              <input type="text" name='item_name' className={styles.input}
                 onChange={(e) => setFormData((prevData) => ({
-                  ...prevData, title: e.target.value
+                  ...prevData, item_name: e.target.value
                 }))} />
             </div>
             <div className={styles.formItem}>
               <label className={styles.label}>Item Lost Date*</label>
-              <input type="date" className={styles.input}
+              <input type="date" name='item_lost_date' className={styles.input}
                 onChange={(e) => setFormData((prevData) => ({
-                  ...prevData, dateLost: e.target.value
+                  ...prevData, item_lost_date: e.target.value
                 }))} />
             </div>
           </div>
@@ -218,8 +221,8 @@ const ReportFound = () => {
 
               <div className={styles.grid}>
                 <div className={styles.formItem}>
-                  <label htmlFor="primaryColor" className={styles.label}>Primary Color</label>
-                  <select id="primaryColor" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
+                  <label htmlFor="primary_color" className={styles.label}>Primary Color</label>
+                  <select id="primary_color" className={styles.input} value={selectedPrimaryColor} onChange={handlePrimaryColorChange}>
                     <option value="">Select a Primary Color</option>
                     {colors.primary.map((color,index) => (
                       <option key={index} value={color.name}>
@@ -230,8 +233,8 @@ const ReportFound = () => {
                   </select>
                 </div>
                 <div className={styles.formItem}>
-                  <label htmlFor="secondaryColor" className={styles.label}>Secondary Color</label>
-                  <select id="secondaryColor" className={styles.input} value={selectedSecondaryColor} onChange={handleSecondaryColorChange}>
+                  <label htmlFor="secondary_color" className={styles.label}>Secondary Color</label>
+                  <select id="secondary_color" className={styles.input} value={selectedSecondaryColor} onChange={handleSecondaryColorChange}>
                     <option value="">Select a Secondary Color</option>
                     {colors.secondary.map((color,index) => (
                       <option key={index} value={color.name}>
@@ -258,7 +261,7 @@ const ReportFound = () => {
               </select>
             </div>
             <div className={styles.formItem}>
-              <label htmlFor="subCategory" className={styles.label} onChange={(e: any) => setFormData({ ...formData, subCategory: e.target.value })}>Subcategory</label>
+              <label htmlFor="subCategory" className={styles.label} onChange={(e: any) => setFormData({ ...formData, sub_category: e.target.value })}>Subcategory</label>
               <select id="subCategory" className={styles.input} >
                 {subCategories && subCategories.map((subCategory: any,index:number) => (
                   <option key={index} value={subCategory.name}>
@@ -288,31 +291,32 @@ const ReportFound = () => {
           </div>}
           <div className={styles.formItem}>
             <label className={styles.label}>New Category (if any)</label>
-            <input type="text" className={styles.input} />
+            <input type="text" name='new_category' className={styles.input} 
+            onChange={(e) => setFormData((prev:any) => ({...prev,new_category:e.target.value}))}/>
           </div>
 
 
           <div className={`${styles.formItem} mt-2`}>
             <label className={styles.label}>Specific Description</label>
-            <textarea className={styles.textarea}
+            <textarea className={styles.textarea} name='item_description'
               onChange={(e) => setFormData((prevData) => ({
-                ...prevData, specificDescription: e.target.value
+                ...prevData, item_description: e.target.value
               }))}></textarea>
           </div>
 
           <div className={styles.formItem}>
             <label className={styles.label}>Specific Location</label>
-            <input type="text" className={styles.input}
+            <input type="text" className={styles.input} name='location_description'
               onChange={(e) => setFormData((prevData) => ({
-                ...prevData, specificLocation: e.target.value
+                ...prevData, location_description: e.target.value
               }))} />
           </div>
 
           <div className={styles.formItem}>
             <label className={styles.label}>Remarks (if any)</label>
-            <textarea className={styles.textarea}
+            <textarea className={styles.textarea} name='additional_remarks'
               onChange={(e) => setFormData((prevData) => ({
-                ...prevData, remarks: e.target.value
+                ...prevData, additional_remarks: e.target.value
               }))}></textarea>
           </div>
           <button type='button' onClick={submitProductForm} className={styles.saveButton}>Save & close</button>
@@ -324,6 +328,7 @@ const ReportFound = () => {
             <div className={styles.tagInputGroup}>
               <input
                 type="text"
+                name='tags'
                 className={styles.input}
                 value={selectedTag}
                 onChange={(e) => setSelectedTag(e.target.value)}

@@ -6,6 +6,7 @@ import { apiUrls } from '@/app/config/api.config';
 import { useRouter } from 'next/navigation';
 import '../../styles/app.scss';
 import axiosInstance from '@/app/services/axiosInterceptor';
+import Link from 'next/link';
 
 export default function AddNewUser() {
   const router = useRouter();
@@ -73,6 +74,9 @@ export default function AddNewUser() {
           />
           <button className="hfmn-btn hfmn-btn--primary" style={{ width: "100%" }} type="submit">Register</button>
         </form>
+        <div className='my-3'>
+            <Link className='link' href="/login"><span>All ready have account?</span> Go To Login </Link>
+          </div>
       </div>
     </div>
   );
