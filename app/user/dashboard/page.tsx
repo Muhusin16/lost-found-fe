@@ -97,9 +97,9 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    // if (status === 'idle') {
+    if (status === 'idle') {
       dispatch(fetchAllProducts())
-    // }
+    }
     console.log("Products",products)
   }, [dispatch, status])
 

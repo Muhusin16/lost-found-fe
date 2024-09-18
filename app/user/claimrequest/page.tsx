@@ -1,5 +1,8 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState} from 'react'
 import styles from './claimrequest.module.scss'
+import axiosInstance from '@/app/services/axiosInterceptor';
+import { apiUrls } from '@/app/config/api.config';
 
 const ClaimRequest = () => {
 
@@ -8,34 +11,32 @@ const ClaimRequest = () => {
         "Item ID",
         "Location",
         "Date of Claim",
-        "Edit",
+        "Edit", 
         "Status",
         "Action"
     ];
+    const [userClaimRequests, setUserClaimRequests] = useState([]);
 
-    const TABLE_DATA = [
-        {
-            itemName: "Laptop",
-            itemId: "12345",
-            location: "Room 101",
-            dateOfClaim: "2022-01-01",
-            edit: <a href="#"><i className="fas fa-edit"></i></a>,
-            status: "Pending",
-            action: <a href="#"><i className="fas fa-check"></i></a>
-        },
-        {
-            itemName: "Mobile",
-            itemId: "67890",
-            location: "Room 202",
-            dateOfClaim: "2022-02-01",
-            edit: <a href="#"><i className="fas fa-edit"></i></a>,
-            status: "Closed",
-            action: <a href="#"><i className="fas fa-check"></i></a>
+    const getUserClaimRequests = async () => {
+       try {
+        const response = await axiosInstance.get(`${apiUrls.getClaimByUser}`);
+        if (response.data.success) {
+            const userClaimRequests = response.data.data;
+            setUserClaimRequests(userClaimRequests);
+            console.log(userClaimRequests);
         }
-    ];
+        console.log(response.data);
+       } catch (error) {
+        console.log(error);
+        
+       }
+    }
+    useEffect(() => {
+        getUserClaimRequests();
+    },[])
     return (
         <div className="container mx-auto p-4">
-            <div className="overflow-x-auto shadow-lg rounded-lg">
+            <div className="shadow-lg rounded-lg">
                 <table className="min-w-full table-auto bg-white border border-gray-200 rounded-lg">
                     <thead className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
                         <tr>
@@ -47,19 +48,21 @@ const ClaimRequest = () => {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {
-                            TABLE_DATA.map((item: any) => (
+                        {   userClaimRequests && userClaimRequests.length > 0 &&
+                            userClaimRequests.map((claim: any) => (
                                 <>
                                     <tr className="hover:bg-gray-100 transition duration-300 ease-in-out">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.itemName}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.itemId}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.location}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.dateOfClaim}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{claim?.item_details?.item_name}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{claim?.item_details?._id}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{claim?.claim_details?.item_details?.location}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{claim?.createdAt}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <button className="text-blue-600 hover:text-blue-800 font-semibold text-sm">Edit</button>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                            <span className="inline-block px-3 py-1 rounded-full bg-green-100 text-green-800">{item.status}</span>
+                                            <span className="inline-block px-3 py-1 rounded-full bg-green-100 text-green-800">
+                                                {claim?.status == 'NEW_REQUEST' || claim?.status == 'IN_PROGRESS'  ? 'In Progress' : claim?.status == 'CLOSED' ? 'Approved' :  claim?.status == 'RETURNED' ? 'Returned' : 'Rejected'}
+                                                </span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <button className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-gray-800 px-4 py-2 rounded-md hover:from-yellow-500 hover:to-yellow-700 text-sm shadow-md">

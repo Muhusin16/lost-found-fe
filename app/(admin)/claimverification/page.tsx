@@ -41,7 +41,7 @@ const claimVerification = () => {
   if (response.data.success) {
     const itemDetails = response.data?.data?.item_details || {};
     const userDetails = response.data?.data?.claim_details?.user_id || {};
-    const userClaimDetails = response.data?.data?.claim_details?.claim_details || {};
+    const userClaimDetails = response.data?.data?.claim_details?.item_details || {};
     setAdminRemark(response.data?.data?.admin_remarks)
      setItemDetails(itemDetails);
      setUserDetails(userDetails);
