@@ -6,41 +6,39 @@ const axiosInstance = axios.create({
     headers: {
         'Content-type': 'application/json',
     }
-})
+});
 
+// Request interceptor to add token
 axiosInstance.interceptors.request.use(
     (config) => {
-     const fToken = getJsonValueFromLocalStorage('token');
-     if (fToken) {
-        config.headers['Authorization'] = fToken;
-     }
-
-      config.headers.Authorization = fToken;
-      return config;
+        const token = getJsonValueFromLocalStorage('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`; // Ensure proper Bearer format
+        }
+        return config;
     },
-    (error) => {
-        Promise.reject(error);
-    }
-)
+    (error) => Promise.reject(error)
+);
 
+// Response interceptor for handling errors and retry logic
 axiosInstance.interceptors.response.use(
-    (response) => {
-        return response;
-    },
+    (response) => response,
     (error) => {
-
         const originalRequest = error.config;
 
-        if (error.response && (error.response.status === 400 || error.response.status === 401 && originalRequest._retry)) {
-           originalRequest._retry = true;
-           try {
-            originalRequest.headers.Authorization = getJsonValueFromLocalStorage('token')
-           } catch (refreshError) {
-            return Promise.reject(refreshError);
-           }
+        // Retry the request if 401 Unauthorized and no retry attempt yet
+        if (error.response && error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            
+            // Optionally, implement token refresh logic here
+            const token = getJsonValueFromLocalStorage('token');
+            if (token) {
+                originalRequest.headers['Authorization'] = `Bearer ${token}`;
+                return axiosInstance(originalRequest); // Retry the original request with updated token
+            }
         }
         return Promise.reject(error);
     }
-)
+);
 
 export default axiosInstance;
