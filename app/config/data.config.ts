@@ -1,19 +1,33 @@
 export const colors = {
-    primary: [
-      { name: 'Red', hex: '#FF5733' },
-      { name: 'Blue', hex: '#3498DB' },
-      { name: 'Green', hex: '#1ABC9C' },
-      { name: 'Purple', hex: '#9B59B6' },
-      { name: 'Orange', hex: '#E74C3C' },
-    ],
-    secondary: [
-      { name: 'Dark Red', hex: '#C70039' },
-      { name: 'Dark Blue', hex: '#2980B9' },
-      { name: 'Teal', hex: '#16A085' },
-      { name: 'Dark Purple', hex: '#8E44AD' },
-      { name: 'Maroon', hex: '#C0392B' },
-    ],
-  };
+  primary: [
+    { name: 'Red', hex: '#FF0000' },
+    { name: 'Blue', hex: '#0000FF' },
+    { name: 'Green', hex: '#008000' },
+    { name: 'Yellow', hex: '#FFFF00' },
+    { name: 'Orange', hex: '#FFA500' },
+    { name: 'Purple', hex: '#800080' },
+    { name: 'Pink', hex: '#FFC0CB' },
+    { name: 'Cyan', hex: '#00FFFF' },
+    { name: 'Magenta', hex: '#FF00FF' },
+    { name: 'Lime', hex: '#00FF00' },
+  ],
+  secondary: [
+    { name: 'Dark Red', hex: '#8B0000' },
+    { name: 'Dark Blue', hex: '#00008B' },
+    { name: 'Dark Green', hex: '#006400' },
+    { name: 'Gold', hex: '#FFD700' },
+    { name: 'Dark Orange', hex: '#FF8C00' },
+    { name: 'Violet', hex: '#EE82EE' },
+    { name: 'Brown', hex: '#A52A2A' },
+    { name: 'Navy', hex: '#000080' },
+    { name: 'Olive', hex: '#808000' },
+    { name: 'Teal', hex: '#008080' },
+    { name: 'Maroon', hex: '#800000' },
+    { name: 'Gray', hex: '#808080' },
+    { name: 'Light Gray', hex: '#D3D3D3' },
+  ],
+};
+
   
  export const categories = {
     Electronics: {

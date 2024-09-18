@@ -208,7 +208,7 @@ const ProductsList = () => {
                 />): (<Image src={placeholderImage} alt="img"></Image>) }
               </div>
               <div className={styles.cardHeader}>
-                <h3>{product.title}</h3>
+                <h3>{product.item_name}</h3>
               </div>
               <div className={styles.cardDetails}>
                 <p>
