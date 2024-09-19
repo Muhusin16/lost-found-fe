@@ -79,7 +79,7 @@ const ClaimItem = ({ params }: any) => {
                             <input readOnly value={dateRange.to} className={`${styles.inputField} p-2 w-full border border-gray-300 bg-gray-300 text-gray-600 rounded mt-1`} type="date" id="state" name="state" required /><br /><br />
 
                             <label className={styles.labelStyle} htmlFor="address">Location:</label><br />
-                            <input readOnly className={`${styles.inputField} p-2 w-full border border-gray-300 bg-gray-300 text-gray-600 rounded mt-1`} value={itemData.location_description} type="text" id="address" name="address" required /><br /><br />
+                            <input readOnly className={`${styles.inputField} p-2 w-full border border-gray-300 bg-gray-300 text-gray-600 rounded mt-1`} value={itemData?.location_description} type="text" id="address" name="address" required /><br /><br />
                         </div>
                         <br />
                     </div>

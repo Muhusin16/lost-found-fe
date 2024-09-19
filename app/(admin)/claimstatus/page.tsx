@@ -115,7 +115,7 @@ const ClaimStatus: FC = () => {
                                         <tbody>
                                             {filteredClaimRequests && filteredClaimRequests.map(({item_details,claim_details,createdAt,_id}:any) => (
                                                 <tr key={item_details?._id} className="border-t">
-                                                     <td className="px-4 py-2 text-gray-800">{item_details?._id}</td>
+                                                     <td className="px-4 py-2 text-gray-800">{item_details?.custom_id}</td>
                                                     <td className="px-4 py-2 text-gray-800">{item_details?.item_name}</td>
                                                     <td className="px-4 py-2 text-gray-800">{item_details?.location_description}</td>
                                                     <td className="px-4 py-2 text-gray-800">{createdAt}</td>

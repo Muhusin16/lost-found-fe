@@ -29,6 +29,7 @@ const ProductsList = () => {
   const [selectedPrimaryColor, setSelectedPrimaryColor] = useState<string>('');
 
   const { products, status } = useSelector((state: RootState) => state.products);
+  // const [products, setProducts] = useState([]);
   const [filterProducts, setFilterProducts] = useState(products);
 
   const handleSearchChange = (e: any) => {
@@ -102,11 +103,29 @@ const ProductsList = () => {
     if (status === 'idle') {
       dispatch(fetchAllProducts());
     }
+    console.log(products,status);
+    
   }, [dispatch, status]);
 
   useEffect(() => {
     setFilterProducts(products);
   },[products])
+
+  // const getAllProducts = async () => {
+  //   try {
+  //     const response = await axiosInstance.get(apiUrls.products);
+  //     setProducts(response.data.data.reverse()); // Set products to the fetched data in descending order of date created
+  //     console.log(response.data.data);
+  //     setFilterProducts(response.data.data.reverse());
+  //   } catch (error) {
+  //     console.log(error);
+      
+  //   }
+  // }
+  // useEffect(() => {
+  //   getAllProducts();
+   
+  // },[])
 
 
   return (
@@ -199,9 +218,10 @@ const ProductsList = () => {
         <div className={styles.productsSection}>
           {filterProducts?.length > 0 && filterProducts.map((product:any, index) => (
             <div className={styles.card} key={index} onClick={() => handleProductDetails(product)}>
-              <div className={styles.cardImage}>
-                {product.imageUrl && product.imageUrl.length > 0 ? (<img
-                  src={product.imageUrl[0]}
+              <p className="text-start">{product.custom_id}</p>
+              <div className={styles.cardImage}> 
+                {product.image_urls && product.image_urls.length > 0 ? (<Image
+                  src={`${process.env.NEXT_PUBLIC_FIRESTORE_BASE_URL}${product.image_urls[0]}`}
                   alt={product.title}
                   width={100}
                   height={100}
@@ -212,13 +232,13 @@ const ProductsList = () => {
               </div>
               <div className={styles.cardDetails}>
                 <p>
-                  <strong>Colors:</strong> {product?.primaryColor}
+                  <strong>Color:</strong> {product?.primary_color}
                 </p>
                 <p>
                   <strong>Category:</strong> {product.category}
                 </p>
                 <p>
-                  <strong>Sub-category:</strong> {product.subCategory}
+                  <strong>Sub-category:</strong> {product.sub_category}
                 </p>
               </div>
             </div>
