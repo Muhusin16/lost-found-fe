@@ -66,17 +66,20 @@ const ReportFound = () => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       setUploading(true);
-
-      // Accumulate URLs for newly uploaded files
       const newImageUrls = await Promise.all(
         files.map(async (file) => {
           if (file) {
+            const formData = new FormData();
+          formData.append('file', file); 
             try {
-              const storage = getStorage(app);
-              const storageRef = ref(storage, `/images/${file.name}`);
-              await uploadBytes(storageRef, file);
-              const downloadUrl = await getDownloadURL(storageRef);
-              return downloadUrl;
+              const response = await axiosInstance.post(`${apiUrls.imageUpload}`, formData,
+                {
+                  headers: {
+                    'Content-Type': 'multipart/form-data',
+                  },})
+                  if (response.data.success) {
+                    return response.data.data.path;
+                  }
             } catch (error) {
               console.error(error);
               return '';
@@ -138,7 +141,7 @@ const ReportFound = () => {
         primary_color: selectedPrimaryColor,
         secondary_color: selectedSecondaryColor,
         item_type: selectedItemType,
-        image_url: previewImages,
+        image_urls: previewImages,
         };
       
       await dispatch(addProductAsync(payload)).unwrap();
@@ -261,8 +264,9 @@ const ReportFound = () => {
               </select>
             </div>
             <div className={styles.formItem}>
-              <label htmlFor="subCategory" className={styles.label} onChange={(e: any) => setFormData({ ...formData, sub_category: e.target.value })}>Subcategory</label>
-              <select id="subCategory" className={styles.input} >
+              <label htmlFor="subCategory" className={styles.label} >Subcategory</label>
+              <select id="subCategory" className={styles.input} 
+              onChange={(e: any) => setFormData({ ...formData, sub_category: e.target.value })}>
                 {subCategories && subCategories.map((subCategory: any,index:number) => (
                   <option key={index} value={subCategory.name}>
                     {subCategory.name}
@@ -370,7 +374,7 @@ const ReportFound = () => {
               {previewImages && previewImages.length > 0  ?  previewImages.map((previewImage: any) => (
                 <div className='flex flex-wrap '>
                   <div className={styles.imageWrapper}>
-                    <img src={previewImage} alt="Preview" className={styles.image} width={100} height={100} />
+                    <Image src={`${process.env.NEXT_PUBLIC_FIRESTORE_BASE_URL}${previewImage}`} alt="Preview" className={styles.image} width={100} height={100} />
                   </div>
                 </div>
               )): (<>

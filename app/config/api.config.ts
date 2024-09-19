@@ -14,4 +14,6 @@ updateUserDetailsById: '/auth/users',
 resetPassword: '/api/admin/reset-password',
 verifyOtp: '/api/admin/verify-otp',
 categories: '/categories',
+imageUpload: '/files/upload',
+imageDelete: '/files/delete'
 }

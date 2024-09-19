@@ -27,9 +27,9 @@ export const fetchAllProducts = createAsyncThunk<Product[]>(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(apiUrls.products);
-      console.log(response.data.items.reverse());
+      console.log(response.data.data.reverse());
       
-      return response.data.items.reverse();
+      return response.data.data.reverse();
     } catch (error:any) {
       // Log error to the console for debugging
       console.error('Error fetching products:', error);

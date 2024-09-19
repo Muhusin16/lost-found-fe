@@ -53,7 +53,7 @@ const ClaimRequest = () => {
                                 <>
                                     <tr className="hover:bg-gray-100 transition duration-300 ease-in-out">
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{claim?.item_details?.item_name}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{claim?.item_details?._id}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{claim?.item_details?.custom_id}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{claim?.claim_details?.item_details?.location}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{claim?.createdAt}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">
