@@ -35,3 +35,26 @@ export const removeJsonValueFromLocalStorage = (key: string) => {
         console.log(error);
     }
 }
+
+export const formatDate = (dateString: any) => {
+    const dateObj = new Date(dateString);
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+    const monthIndex = dateObj.getUTCMonth();
+    const day = dateObj.getUTCDate();
+    const year = dateObj.getUTCFullYear();
+    const formattedDate = `${monthNames[monthIndex]} ${day}, ${year}`;
+    return formattedDate;
+};
