@@ -1,7 +1,8 @@
 'use client'
 import { apiUrls } from '@/app/config/api.config'
 import axiosInstance from '@/app/services/axiosInterceptor'
-import axios from 'axios'
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 import React, { useEffect, useState } from 'react'
 import {
     Accordion,
@@ -115,82 +116,82 @@ const AdminTool = () => {
                     <div>
                         <h3>Manage Admins</h3>
                         <form className='w-4/6'>
-                                <div className="form-container">
-                                    <label htmlFor="user_name">
-                                        User Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="user_name"
-                                        className="form-control"
-                                    />
-                                </div>
+                            <div className="form-container">
+                                <label htmlFor="user_name">
+                                    User Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="user_name"
+                                    className="form-control"
+                                />
+                            </div>
 
-                                <div className="form-container">
-                                    <label htmlFor="email">
-                                        Email
-                                    </label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        required
-                                        className="form-control"
-                                    />
-                                </div>
+                            <div className="form-container">
+                                <label htmlFor="email">
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    required
+                                    className="form-control"
+                                />
+                            </div>
 
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700" htmlFor="phone_number">
-                                        Phone Number
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="phone_number"
-                                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
-                                    />
-                                </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700" htmlFor="phone_number">
+                                    Phone Number
+                                </label>
+                                <input
+                                    type="text"
+                                    id="phone_number"
+                                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
+                                />
+                            </div>
 
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700" htmlFor="role">
-                                        Role
-                                    </label>
-                                    <select
-                                        id="role"
-                                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
-                                    >
-                                        <option value="admin">Admin</option>
-                                        <option value="super_admin">Super Admin</option>
-                                    </select>
-                                </div>
-
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700" htmlFor="password">
-                                        Password
-                                    </label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        required
-                                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
-                                    />
-                                </div>
-
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700" htmlFor="address">
-                                        Address
-                                    </label>
-                                    <textarea 
-                                        rows={4}
-                                        id="address"
-                                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
-                                    />
-                                </div> 
-                                <button
-                                    type="button"
-                                    className="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700" htmlFor="role">
+                                    Role
+                                </label>
+                                <select
+                                    id="role"
+                                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
                                 >
-                                    Add Admin/Super Admin
-                                </button>
-                            </form>
+                                    <option value="admin">Admin</option>
+                                    <option value="super_admin">Super Admin</option>
+                                </select>
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700" htmlFor="password">
+                                    Password
+                                </label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    required
+                                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
+                                />
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700" htmlFor="address">
+                                    Address
+                                </label>
+                                <textarea
+                                    rows={4}
+                                    id="address"
+                                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                className="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
+                            >
+                                Add Admin/Super Admin
+                            </button>
+                        </form>
                     </div>
                 }
 
@@ -198,120 +199,113 @@ const AdminTool = () => {
                 {
                     activeTab === 'MANAGE_CATEGORIES' &&
                     <div className="w-2/3 min-h-screen">
-                <div className="flex items-center justify-between mb-4 bg-white p-4 shadow-md rounded-md">
-                    <div className="flex space-x-4">
-                        <input
-                            className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
-                            value={category.name}
-                            onChange={(e) => setCategory((prev: any) => ({ ...prev, name: e.target.value }))}
-                            placeholder="Category Name"
-                            type="text"
-                        />
-                        <input
-                            className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
-                            value={category.description}
-                            onChange={(e) => setCategory((prev: any) => ({ ...prev, description: e.target.value }))}
-                            placeholder="Category Description"
-                            type="text"
-                        />
-                    </div>
-                    <button
-                        className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
-                        onClick={addNewCategory}
-                    >
-                        Add Category
-                    </button>
-                </div>
-                {allCategory &&
-                    allCategory.map((each: any, index: any) => (
-                        <div key={index} className="bg-blue-50 shadow-md rounded-md px-2 mb-4">
-
-
-                            <Accordion open={open === index} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                                <AccordionHeader onClick={() => toggleAccordion(index)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                                    <div className="w-full flex items-center justify-between">
-                                        <p className="text-xl font-semibold">{each.name}</p>
-                                        <div className="space-x-2">
-                                            <button
-                                                className="bg-yellow-500 text-white p-1 px-2 rounded-md hover:bg-yellow-600 transition-colors"
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                className="bg-red-500 text-white p-1 px-2 rounded-md hover:bg-red-600 transition-colors"
-                                                onClick={() => handleDeleteCategory(each._id)}
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </div>
-                                </AccordionHeader>
-                                <AccordionBody className="bg-blue-100 rounded-md p-3">
-                                    <div className="space-y-2">
-                                        <div className="bg-blue-50 p-4 rounded-md border border-gray-300 my-2">
-                                            <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Description:
-                                            </label>
-                                            <p className="text-base text-gray-800">
-                                                {each.description}
-                                            </p>
-                                        </div>
-
-                                        <div className="flex space-x-4">
-                                            <input
-                                                className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
-                                                value={subCategory.name}
-                                                onChange={(e) => setSubCategory((prev: any) => ({ ...prev, name: e.target.value }))}
-                                                placeholder="Subcategory Name"
-                                                type="text"
-                                            />
-                                            <input
-                                                className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
-                                                value={subCategory.description}
-                                                onChange={(e) => setSubCategory((prev: any) => ({ ...prev, description: e.target.value }))}
-                                                placeholder="Subcategory Description"
-                                                type="text"
-                                            />
-                                            <button
-                                                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
-                                                onClick={() => addNewSubcategory(each)}
-                                            >
-                                                Add Subcategory
-                                            </button>
-                                        </div>
-
-                                        {each.sub_categories.map((subCategory: any) => (
-                                            <div key={subCategory.name} className="border-t border-gray-300 pt-4 flex items-center justify-between">
-                                                {/* Subcategory Name and Description */}
-                                                <div className='flex gap-10 items-center justify-start'>
-                                                    <p className="text-lg font-semibold text-gray-800">{subCategory.name}</p>
-                                                    <p className="text-sm text-gray-500">{subCategory.description}</p>
-                                                </div>
-
-                                                {/* Edit and Delete Buttons */}
-                                                <div className="space-x-2">
-                                                    <button
-                                                        className="bg-yellow-500 text-white p-1 px-2 rounded-md hover:bg-yellow-600 transition-colors"
-
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                    <button
-                                                        className="bg-red-500 text-white p-1 px-2 rounded-md hover:bg-red-600 transition-colors"
-
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-
-                                    </div>
-                                </AccordionBody>
-                            </Accordion>
+                        <div className="flex items-center justify-between mb-4 bg-white p-4 shadow-md rounded-md">
+                            <div className="flex space-x-4">
+                                <input
+                                    className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                                    value={category.name}
+                                    onChange={(e) => setCategory((prev: any) => ({ ...prev, name: e.target.value }))}
+                                    placeholder="Category Name"
+                                    type="text"
+                                />
+                                <input
+                                    className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                                    value={category.description}
+                                    onChange={(e) => setCategory((prev: any) => ({ ...prev, description: e.target.value }))}
+                                    placeholder="Category Description"
+                                    type="text"
+                                />
+                            </div>
+                            <button
+                                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                                onClick={addNewCategory}
+                            >
+                                Add Category
+                            </button>
                         </div>
-                    ))}
-            </div>
+                        {allCategory &&
+                            allCategory.map((each: any, index: any) => (
+                                <div key={index} className="bg-gray-400 shadow-md rounded-md mb-4">
+
+
+                                    <Accordion open={open === index} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                        <AccordionHeader onClick={() => toggleAccordion(index)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                            <div className="px-2 w-full flex items-center justify-between">
+                                                <p className="text-xl font-semibold">{each.name}</p>
+                                                <div className="flex gap-10 items-center">
+                                                <FaEdit className="" />
+                                                <MdDelete onClick={() => handleDeleteCategory(each._id)} />
+                                                    
+                                                </div>
+
+                                            </div>
+                                        </AccordionHeader>
+                                        <AccordionBody className="bg-gray-100 rounded-md p-3">
+                                            <div className="space-y-2">
+                                                <div className="bg-blue-50 p-4 rounded-md border border-gray-300 my-2">
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
+                                                        Description:
+                                                    </label>
+                                                    <p className="text-base text-gray-800">
+                                                        {each.description}
+                                                    </p>
+                                                </div>
+
+                                                <div className="flex space-x-4">
+                                                    <input
+                                                        className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                                                        value={subCategory.name}
+                                                        onChange={(e) => setSubCategory((prev: any) => ({ ...prev, name: e.target.value }))}
+                                                        placeholder="Subcategory Name"
+                                                        type="text"
+                                                    />
+                                                    <input
+                                                        className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                                                        value={subCategory.description}
+                                                        onChange={(e) => setSubCategory((prev: any) => ({ ...prev, description: e.target.value }))}
+                                                        placeholder="Subcategory Description"
+                                                        type="text"
+                                                    />
+                                                    <button
+                                                        className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                                                        onClick={() => addNewSubcategory(each)}
+                                                    >
+                                                        Add Subcategory
+                                                    </button>
+                                                </div>
+
+                                                {each.sub_categories.map((subCategory: any) => (
+                                                    <div key={subCategory.name} className="border-t border-gray-300 pt-4 flex items-center justify-between">
+                                                        {/* Subcategory Name and Description */}
+                                                        <div className='flex gap-10 items-center justify-start'>
+                                                            <p className="text-lg font-semibold text-gray-800">{subCategory.name}</p>
+                                                            <p className="text-sm text-gray-500">{subCategory.description}</p>
+                                                        </div>
+
+                                                        {/* Edit and Delete Buttons */}
+                                                        <div className="space-x-2">
+                                                            <button
+                                                                className="bg-yellow-500 text-white p-1 px-2 rounded-md hover:bg-yellow-600 transition-colors"
+
+                                                            >
+                                                                Edit
+                                                            </button>
+                                                            <button
+                                                                className="bg-red-500 text-white p-1 px-2 rounded-md hover:bg-red-600 transition-colors"
+
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+
+                                            </div>
+                                        </AccordionBody>
+                                    </Accordion>
+                                </div>
+                            ))}
+                    </div>
                 }
 
                 {activeTab === 'MANAGE_RETENTION_PERIODS' &&
