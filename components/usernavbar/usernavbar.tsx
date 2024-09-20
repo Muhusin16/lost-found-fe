@@ -8,18 +8,20 @@ import '../../app/styles/app.scss'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store/store'
 import { clearLocalStorage } from "@/app/services/coreServices";
+import { DeleteAllCookies } from "@/app/services/authServices";
 
 const UserNavbar = () => {
   const router = useRouter();
-  const role = useSelector((state:RootState) => state.role.role)
-  const userDetails = useSelector((state:RootState) => state.user.userDetails);
+  const role = useSelector((state: RootState) => state.role.role)
+  const userDetails = useSelector((state: RootState) => state.user.userDetails);
   const userName = userDetails?.user_name;
-  
+
   const handleLogout = () => {
-   clearLocalStorage();
+    clearLocalStorage();
+    DeleteAllCookies();
     router.push('/login');
   }
-  
+
   return (
     <nav className={`${styles.navbar} flex items-center justify-between p-4`}>
       <div className="flex items-center">
@@ -37,8 +39,8 @@ const UserNavbar = () => {
         </Link> */}
       </div>
       <div className="flex items-center">
-      <Link href="/user/userprofile" className="mr-6">
-        <p className="me-3  text-deep-purple-900 font-semibold"> {userName?.toUpperCase()} | {role?.toUpperCase()} </p>
+        <Link href="/user/userprofile" className="mr-6">
+          <p className="me-3  text-deep-purple-900 font-semibold"> {userName?.toUpperCase()} | {role?.toUpperCase()} </p>
         </Link>
         <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={handleLogout}>
           Logout
