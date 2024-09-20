@@ -14,9 +14,9 @@ import { RootState } from '@/app/store/store'
 
 const AdminTool = () => {
 
-    const [category, setCategory] = useState([]);
-    const [newCategory, setNewCategory] = useState('');
-    const [newSubCategory, setNewSubCategory] = useState('');
+    const [allCategory, setAllCategory] = useState([])
+    const [category, setCategory] = useState({ name: '', description: '' });
+    const [subCategory, setSubCategory] = useState({ name: '', description: '' });
     const [activeTab, setActiveTab] = useState('MANAGE_ADMINS');
     const role = useSelector((state: RootState) => state.role.role)
 
@@ -25,48 +25,62 @@ const AdminTool = () => {
         try {
             const response = await axiosInstance.get(`${apiUrls.categories}`)
             console.log(response.data)
-            setCategory(response.data);
-
+            setAllCategory(response.data.reverse());
         } catch (error) {
             console.log(error)
         }
     }
 
-    const handleInputChangeCategory = (e: any) => {
-        setNewCategory(e.target.value);
-    }
-
-    const handleInputChangeSubCategory = (e: any) => {
-        setNewSubCategory(e.target.value);
-    }
-
-    const addCategory = async () => {
+    const addNewCategory = async () => {
+        const payload = {
+            name: category.name,
+            description: category.description
+        }
         try {
-            const response = await axiosInstance.post(`${apiUrls.categories}`,
-                { name: newCategory });
-            setNewCategory('');
+            const response = await axiosInstance.post(`${apiUrls.categories}`, payload)
+            console.log('New category added..........', response.data);
+            setCategory({ name: '', description: '' });
             getCategories();
+
         } catch (error) {
-            console.log(error)
+
         }
     }
 
-    const addSubCategory = async (category: any) => {
-        try {
-            const subCategory = category.sub_categories;
-            const updatedSubCategory = [...subCategory, { name: newSubCategory }]
 
-            const response = await axiosInstance.put(`${apiUrls.categories}/${category._id}`, { sub_categories: updatedSubCategory })
-            console.log(response.data)
+
+    const addNewSubcategory = async (cat: any) => {
+        console.log(cat);
+        console.log(cat.sub_categories);
+        try {
+            const getSubCategory = cat.sub_categories;
+
+            const updatedSubCategory = [...getSubCategory, { name: subCategory.name, description: subCategory.description }]
+            const payload = { sub_categories: updatedSubCategory }
+            const response = await axiosInstance.put(`${apiUrls.categories}/${cat._id}`,
+                payload,
+            )
+            setSubCategory({ name: '', description: '' })
             getCategories();
-            setNewSubCategory('')
+        } catch (error) {
+            console.log(error);
+
+        }
+
+    }
+
+    const handleDeleteCategory = async (cat: any) => {
+        try {
+            const response = await axiosInstance.delete(`${apiUrls.categories}/${cat}`);
+            alert('Category deleted succesfully!!!')
+            getCategories();
         } catch (error) {
             console.log(error);
 
         }
     }
+
     const [open, setOpen] = React.useState(null);
-    // const handleOpen = (value: any) => setOpen(open === value ? value : 0);
 
     const toggleAccordion = (value: any) => {
         setOpen(open === value ? null : value);
@@ -78,8 +92,7 @@ const AdminTool = () => {
 
     useEffect(() => {
         getCategories();
-        addCategory();
-    }, [])
+    }, []);
 
     return (
         <div className='flex'>
@@ -184,32 +197,121 @@ const AdminTool = () => {
                 {/* Manage Categories */}
                 {
                     activeTab === 'MANAGE_CATEGORIES' &&
-                    <div>
-                        <div>
-                            <h3 className='mb-5'> Manage Categories</h3>
-                            <input className="bg-gray-200 p-2 border border-gray-300 rounded-md" value={newCategory} onChange={handleInputChangeCategory} type="text" />
-                            <Input onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} label='N'/>
-                            <button className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors" onClick={() => addCategory()}>Add Category</button>
-                        </div>
-                        {
-                            category && category.map((each: any, index: any) => (
-                                <Accordion key={index} open={open === index} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                                    <AccordionHeader onClick={() => toggleAccordion(index)} placeholder={undefined} onPointerLeaveCapture={undefined} onPointerEnterCapture={undefined}>{each.name}</AccordionHeader>
-                                    <AccordionBody>
-                                        <div>
-                                            <input className="bg-gray-200 p-1 border border-gray-300 rounded-md" value={newSubCategory} onChange={handleInputChangeSubCategory} type="text" />
-                                            <button className="bg-blue-500 text-white py-1 px-2 rounded-md hover:bg-blue-600 transition-colors" onClick={() => addSubCategory(each)}>Add Sub Category</button>
-                                        </div>
-                                        {
-                                            each.sub_categories.map((subCategory: any) => (
-                                                <p className='my-1 text-lg'>{subCategory.name}</p>
-                                            ))
-                                        }
-                                    </AccordionBody>
-                                </Accordion>
-                            ))
-                        }
+                    <div className="w-2/3 min-h-screen">
+                <div className="flex items-center justify-between mb-4 bg-white p-4 shadow-md rounded-md">
+                    <div className="flex space-x-4">
+                        <input
+                            className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                            value={category.name}
+                            onChange={(e) => setCategory((prev: any) => ({ ...prev, name: e.target.value }))}
+                            placeholder="Category Name"
+                            type="text"
+                        />
+                        <input
+                            className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                            value={category.description}
+                            onChange={(e) => setCategory((prev: any) => ({ ...prev, description: e.target.value }))}
+                            placeholder="Category Description"
+                            type="text"
+                        />
                     </div>
+                    <button
+                        className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                        onClick={addNewCategory}
+                    >
+                        Add Category
+                    </button>
+                </div>
+                {allCategory &&
+                    allCategory.map((each: any, index: any) => (
+                        <div key={index} className="bg-blue-50 shadow-md rounded-md px-2 mb-4">
+
+
+                            <Accordion open={open === index} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                <AccordionHeader onClick={() => toggleAccordion(index)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                    <div className="w-full flex items-center justify-between">
+                                        <p className="text-xl font-semibold">{each.name}</p>
+                                        <div className="space-x-2">
+                                            <button
+                                                className="bg-yellow-500 text-white p-1 px-2 rounded-md hover:bg-yellow-600 transition-colors"
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                className="bg-red-500 text-white p-1 px-2 rounded-md hover:bg-red-600 transition-colors"
+                                                onClick={() => handleDeleteCategory(each._id)}
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </AccordionHeader>
+                                <AccordionBody className="bg-blue-100 rounded-md p-3">
+                                    <div className="space-y-2">
+                                        <div className="bg-blue-50 p-4 rounded-md border border-gray-300 my-2">
+                                            <label className="block text-sm font-semibold text-gray-700 mb-1">
+                                                Description:
+                                            </label>
+                                            <p className="text-base text-gray-800">
+                                                {each.description}
+                                            </p>
+                                        </div>
+
+                                        <div className="flex space-x-4">
+                                            <input
+                                                className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                                                value={subCategory.name}
+                                                onChange={(e) => setSubCategory((prev: any) => ({ ...prev, name: e.target.value }))}
+                                                placeholder="Subcategory Name"
+                                                type="text"
+                                            />
+                                            <input
+                                                className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                                                value={subCategory.description}
+                                                onChange={(e) => setSubCategory((prev: any) => ({ ...prev, description: e.target.value }))}
+                                                placeholder="Subcategory Description"
+                                                type="text"
+                                            />
+                                            <button
+                                                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                                                onClick={() => addNewSubcategory(each)}
+                                            >
+                                                Add Subcategory
+                                            </button>
+                                        </div>
+
+                                        {each.sub_categories.map((subCategory: any) => (
+                                            <div key={subCategory.name} className="border-t border-gray-300 pt-4 flex items-center justify-between">
+                                                {/* Subcategory Name and Description */}
+                                                <div className='flex gap-10 items-center justify-start'>
+                                                    <p className="text-lg font-semibold text-gray-800">{subCategory.name}</p>
+                                                    <p className="text-sm text-gray-500">{subCategory.description}</p>
+                                                </div>
+
+                                                {/* Edit and Delete Buttons */}
+                                                <div className="space-x-2">
+                                                    <button
+                                                        className="bg-yellow-500 text-white p-1 px-2 rounded-md hover:bg-yellow-600 transition-colors"
+
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        className="bg-red-500 text-white p-1 px-2 rounded-md hover:bg-red-600 transition-colors"
+
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                    </div>
+                                </AccordionBody>
+                            </Accordion>
+                        </div>
+                    ))}
+            </div>
                 }
 
                 {activeTab === 'MANAGE_RETENTION_PERIODS' &&
