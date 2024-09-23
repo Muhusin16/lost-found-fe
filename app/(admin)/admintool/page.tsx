@@ -102,82 +102,82 @@ const AdminTool = () => {
                     <div>
                         <h3>Manage Admins</h3>
                         <form className='w-4/6'>
-                                <div className="form-container">
-                                    <label htmlFor="user_name">
-                                        User Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="user_name"
-                                        className="form-control"
-                                    />
-                                </div>
+                            <div className="form-container">
+                                <label htmlFor="user_name">
+                                    User Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="user_name"
+                                    className="form-control"
+                                />
+                            </div>
 
-                                <div className="form-container">
-                                    <label htmlFor="email">
-                                        Email
-                                    </label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        required
-                                        className="form-control"
-                                    />
-                                </div>
+                            <div className="form-container">
+                                <label htmlFor="email">
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    required
+                                    className="form-control"
+                                />
+                            </div>
 
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700" htmlFor="phone_number">
-                                        Phone Number
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="phone_number"
-                                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
-                                    />
-                                </div>
+                            <div className="form-container">
+                                <label htmlFor="phone_number">
+                                    Phone Number
+                                </label>
+                                <input
+                                    type="text"
+                                    id="phone_number"
+                                    className='form-control'
+                                />
+                            </div>
 
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700" htmlFor="role">
-                                        Role
-                                    </label>
-                                    <select
-                                        id="role"
-                                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
-                                    >
-                                        <option value="admin">Admin</option>
-                                        <option value="super_admin">Super Admin</option>
-                                    </select>
-                                </div>
-
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700" htmlFor="password">
-                                        Password
-                                    </label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        required
-                                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
-                                    />
-                                </div>
-
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700" htmlFor="address">
-                                        Address
-                                    </label>
-                                    <textarea 
-                                        rows={4}
-                                        id="address"
-                                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
-                                    />
-                                </div> 
-                                <button
-                                    type="button"
-                                    className="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
+                            <div className="form-container">
+                                <label htmlFor="role">
+                                    Role
+                                </label>
+                                <select
+                                    id="role"
+                                    className="form-control"
                                 >
-                                    Add Admin/Super Admin
-                                </button>
-                            </form>
+                                    <option value="admin">Admin</option>
+                                    <option value="super_admin">Super Admin</option>
+                                </select>
+                            </div>
+
+                            <div className="form-container">
+                                <label htmlFor="password">
+                                    Password
+                                </label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    required
+                                    className="form-control"
+                                />
+                            </div>
+
+                            <div className="form-container">
+                                <label htmlFor="address">
+                                    Address
+                                </label>
+                                <textarea
+                                    rows={4}
+                                    id="address"
+                                    className='form-control'
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                className="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
+                            >
+                                Add Admin/Super Admin
+                            </button>
+                        </form>
                     </div>
                 }
 
