@@ -1,7 +1,7 @@
 'use client'
 import { apiUrls } from '@/app/config/api.config'
 import axiosInstance from '@/app/services/axiosInterceptor'
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaRegWindowClose } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import React, { useEffect, useState } from 'react'
 import {
@@ -17,16 +17,18 @@ const AdminTool = () => {
 
     const [allCategory, setAllCategory] = useState([])
     const [category, setCategory] = useState({ name: '', description: '' });
-    const [subCategory, setSubCategory] = useState({ name: '', description: '' });
+    const [subCategory, setSubCategory] = useState({ open: false, id: '', name: '', description: '' });
     const [activeTab, setActiveTab] = useState('MANAGE_ADMINS');
+    const [updateCategory, setUpdateCategory] = useState(false);
+    const [categoryId, setCategoryId] = useState('');
     const role = useSelector((state: RootState) => state.role.role)
 
     const getCategories = async () => {
-        console.log('categories')
         try {
             const response = await axiosInstance.get(`${apiUrls.categories}`)
-            console.log(response.data)
-            setAllCategory(response.data.reverse());
+            if (response.data.success) {
+                setAllCategory(response.data.data.reverse());
+            }
         } catch (error) {
             console.log(error)
         }
@@ -39,20 +41,16 @@ const AdminTool = () => {
         }
         try {
             const response = await axiosInstance.post(`${apiUrls.categories}`, payload)
-            console.log('New category added..........', response.data);
             setCategory({ name: '', description: '' });
             getCategories();
-
         } catch (error) {
-
+            console.log(error);
         }
     }
 
 
 
     const addNewSubcategory = async (cat: any) => {
-        console.log(cat);
-        console.log(cat.sub_categories);
         try {
             const getSubCategory = cat.sub_categories;
 
@@ -61,7 +59,7 @@ const AdminTool = () => {
             const response = await axiosInstance.put(`${apiUrls.categories}/${cat._id}`,
                 payload,
             )
-            setSubCategory({ name: '', description: '' })
+            setSubCategory({ open: false, id: '', name: '', description: '' })
             getCategories();
         } catch (error) {
             console.log(error);
@@ -72,13 +70,89 @@ const AdminTool = () => {
 
     const handleDeleteCategory = async (cat: any) => {
         try {
-            const response = await axiosInstance.delete(`${apiUrls.categories}/${cat}`);
-            alert('Category deleted succesfully!!!')
+            var result = confirm('Are you sure you want to delete?');
+            if (result) {
+                const response = await axiosInstance.delete(`${apiUrls.categories}/${cat}`);
+                alert('Deleted succesfully!!!')
+            }
+
             getCategories();
         } catch (error) {
             console.log(error);
 
         }
+    }
+
+    const handleDeleteSubCategory = async (cat: any, subCategoryId: any) => {
+        const subCategories = cat.sub_categories;
+        var result = confirm('Are you sure you want to delete?')
+        if (result) {
+            const updatedSubCategoryAfterDelete = subCategories.filter((subCategory: any) => subCategory._id != subCategoryId);
+            const payload = { sub_categories: updatedSubCategoryAfterDelete }
+            const response = await axiosInstance.put(`${apiUrls.categories}/${cat._id}`,
+                payload
+            );
+
+            getCategories();
+        }
+
+    }
+
+    const handleUpdateCategory = async (category: any) => {
+        setUpdateCategory(true)
+        setCategoryId(category._id)
+        setCategory({ name: category.name, description: category.description })
+
+    }
+
+    const updateSelectedCategory = async () => {
+
+        try {
+            const payload = { name: category.name, description: category.description }
+            const response = await axiosInstance.put(`${apiUrls.categories}/${categoryId}`,
+                payload
+            );
+            setCategory({ name: '', description: '' });
+            setCategoryId('');
+            setUpdateCategory(false);
+            alert('category Updated succesfully!!')
+            getCategories();
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+    const closeUpdateCateory = () => {
+        setCategory({ name: '', description: '' });
+        setCategoryId('');
+        setUpdateCategory(false);
+    }
+
+    const handleUpdateSubCategory = async (subCategory: any) => {
+        setSubCategory({ open: true, id: subCategory._id, name: subCategory.name, description: subCategory.description });
+
+    }
+
+    const updateSubcategory = async (category: any) => {
+        try {
+            const subCategories = category.sub_categories;
+            
+            const subCategoriesToUpdate = subCategories.find((subCat: any) => subCat._id == subCategory.id)
+            const filteredSubCategory = subCategories.filter((subCat:any) => subCat._id != subCategory.id)
+            const updatedSubCategory = [...filteredSubCategory, { ...subCategoriesToUpdate, name: subCategory.name, description: subCategory.description }]
+            const payload = { sub_categories: updatedSubCategory }
+
+            const response = await axiosInstance.put(`${apiUrls.categories}/${category._id}`,
+                payload
+            );
+            setSubCategory({open: false, id: '', name:'', description:'' });
+            getCategories();
+        } catch (error) {
+
+        }
+
+
     }
 
     const [open, setOpen] = React.useState(null);
@@ -198,44 +272,64 @@ const AdminTool = () => {
                 {/* Manage Categories */}
                 {
                     activeTab === 'MANAGE_CATEGORIES' &&
-                    <div className="w-2/3 min-h-screen">
-                        <div className="flex items-center justify-between mb-4 bg-white p-4 shadow-md rounded-md">
-                            <div className="flex space-x-4">
+                    <div className="w-full min-h-screen">
+                        <div className="flex justify-between items-start mb-4 bg-white p-4 shadow-md rounded-md">
+                            <div className="w-2/3">
                                 <input
-                                    className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                                    className="bg-gray-200 p-2 border border-gray-300 rounded-md w-full mb-2"
                                     value={category.name}
                                     onChange={(e) => setCategory((prev: any) => ({ ...prev, name: e.target.value }))}
                                     placeholder="Category Name"
                                     type="text"
                                 />
-                                <input
-                                    className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                                <textarea
+                                    className="bg-gray-200 p-2 border border-gray-300 rounded-md w-full mb-2"
+                                    rows={5}
                                     value={category.description}
                                     onChange={(e) => setCategory((prev: any) => ({ ...prev, description: e.target.value }))}
                                     placeholder="Category Description"
-                                    type="text"
+
                                 />
+                                {
+                                    updateCategory ?
+                                        <button
+                                            className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                                            onClick={updateSelectedCategory}
+                                        >Update Category</button> :
+                                        <button
+                                            className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                                            onClick={addNewCategory}
+                                        >Add Category</button>
+                                }
                             </div>
-                            <button
-                                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
-                                onClick={addNewCategory}
-                            >
-                                Add Category
-                            </button>
+
+                            {
+                                updateCategory &&
+                                <FaRegWindowClose className='text-[30px] text-gray-700 cursor-pointer'
+                                    onClick={closeUpdateCateory}
+                                />
+                            }
+
+
+
                         </div>
                         {allCategory &&
                             allCategory.map((each: any, index: any) => (
                                 <div key={index} className="bg-gray-400 shadow-md rounded-md mb-4">
-
-
                                     <Accordion open={open === index} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                         <AccordionHeader onClick={() => toggleAccordion(index)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                             <div className="px-2 w-full flex items-center justify-between">
                                                 <p className="text-xl font-semibold">{each.name}</p>
                                                 <div className="flex gap-10 items-center">
-                                                <FaEdit className="" />
-                                                <MdDelete onClick={() => handleDeleteCategory(each._id)} />
-                                                    
+                                                    <FaEdit
+                                                        onClick={() => handleUpdateCategory(each)}
+                                                        className="text-blue-500 cursor-pointer"
+                                                    />
+                                                    <MdDelete
+                                                        onClick={() => handleDeleteCategory(each._id)}
+                                                        className="text-red-500 cursor-pointer"
+                                                    />
+
                                                 </div>
 
                                             </div>
@@ -266,12 +360,22 @@ const AdminTool = () => {
                                                         placeholder="Subcategory Description"
                                                         type="text"
                                                     />
-                                                    <button
-                                                        className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
-                                                        onClick={() => addNewSubcategory(each)}
-                                                    >
-                                                        Add Subcategory
-                                                    </button>
+                                                    {
+                                                        subCategory.open ?
+                                                            <button
+                                                                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                                                                onClick={() => updateSubcategory(each)}
+                                                            >
+                                                                Update Subcategory
+                                                            </button>
+                                                            :
+                                                            <button
+                                                                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                                                                onClick={() => addNewSubcategory(each)}
+                                                            >
+                                                                Add Subcategory
+                                                            </button>
+                                                    }
                                                 </div>
 
                                                 {each.sub_categories.map((subCategory: any) => (
@@ -283,19 +387,9 @@ const AdminTool = () => {
                                                         </div>
 
                                                         {/* Edit and Delete Buttons */}
-                                                        <div className="space-x-2">
-                                                            <button
-                                                                className="bg-yellow-500 text-white p-1 px-2 rounded-md hover:bg-yellow-600 transition-colors"
-
-                                                            >
-                                                                Edit
-                                                            </button>
-                                                            <button
-                                                                className="bg-red-500 text-white p-1 px-2 rounded-md hover:bg-red-600 transition-colors"
-
-                                                            >
-                                                                Delete
-                                                            </button>
+                                                        <div className="flex gap-5">
+                                                            <FaEdit onClick={() => handleUpdateSubCategory(subCategory)} />
+                                                            <MdDelete onClick={() => handleDeleteSubCategory(each, subCategory._id)} />
                                                         </div>
                                                     </div>
                                                 ))}
