@@ -1,7 +1,7 @@
 'use client'
 import { apiUrls } from '@/app/config/api.config'
 import axiosInstance from '@/app/services/axiosInterceptor'
-import { FaEdit, FaRegWindowClose } from "react-icons/fa";
+import { FaEdit, FaRegWindowClose, FaRegEye } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import React, { useEffect, useState } from 'react'
 import {
@@ -21,6 +21,7 @@ const AdminTool = () => {
     const [activeTab, setActiveTab] = useState('MANAGE_ADMINS');
     const [updateCategory, setUpdateCategory] = useState(false);
     const [categoryId, setCategoryId] = useState('');
+    const [open, setOpen] = React.useState(null);
     const role = useSelector((state: RootState) => state.role.role)
 
     const getCategories = async () => {
@@ -43,6 +44,7 @@ const AdminTool = () => {
             const response = await axiosInstance.post(`${apiUrls.categories}`, payload)
             setCategory({ name: '', description: '' });
             getCategories();
+            setOpen(null);
         } catch (error) {
             console.log(error);
         }
@@ -77,6 +79,7 @@ const AdminTool = () => {
             }
 
             getCategories();
+            setOpen(null);
         } catch (error) {
             console.log(error);
 
@@ -117,6 +120,7 @@ const AdminTool = () => {
             setUpdateCategory(false);
             alert('category Updated succesfully!!')
             getCategories();
+            setOpen(null);
         } catch (error) {
             console.log(error);
 
@@ -127,6 +131,7 @@ const AdminTool = () => {
         setCategory({ name: '', description: '' });
         setCategoryId('');
         setUpdateCategory(false);
+        setOpen(null);
     }
 
     const handleUpdateSubCategory = async (subCategory: any) => {
@@ -155,7 +160,6 @@ const AdminTool = () => {
 
     }
 
-    const [open, setOpen] = React.useState(null);
 
     const toggleAccordion = (value: any) => {
         setOpen(open === value ? null : value);
@@ -313,10 +317,14 @@ const AdminTool = () => {
                             allCategory.map((each: any, index: any) => (
                                 <div key={index} className="bg-gray-200 shadow-md rounded-md mb-4">
                                     <Accordion open={open === index} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                                        <AccordionHeader onClick={() => toggleAccordion(index)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                        <AccordionHeader placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                             <div className="px-2 w-full flex items-center justify-between">
                                                 <p className="text-xl font-semibold">{each.name}</p>
                                                 <div className="flex gap-10 items-center">
+                                                <FaRegEye
+                                                    onClick={() => toggleAccordion(index)}
+                                                    className="text-green-500 cursor-pointer"
+                                                    />
                                                     <FaEdit
                                                         onClick={() => handleUpdateCategory(each)}
                                                         className="text-blue-500 cursor-pointer"
@@ -325,7 +333,6 @@ const AdminTool = () => {
                                                         onClick={() => handleDeleteCategory(each._id)}
                                                         className="text-red-500 cursor-pointer"
                                                     />
-
                                                 </div>
 
                                             </div>
