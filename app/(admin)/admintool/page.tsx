@@ -273,22 +273,21 @@ const AdminTool = () => {
                 {
                     activeTab === 'MANAGE_CATEGORIES' &&
                     <div className="w-full min-h-screen">
-                        <div className="flex justify-between items-start mb-4 bg-white p-4 shadow-md rounded-md">
+                        <div className="bg-gray-50 flex justify-between items-start mb-4 border p-4 shadow-md rounded-md">
                             <div className="w-2/3">
                                 <input
-                                    className="bg-gray-200 p-2 border border-gray-300 rounded-md w-full mb-2"
+                                    className=" p-2 border border-gray-300 rounded-md w-full mb-2"
                                     value={category.name}
                                     onChange={(e) => setCategory((prev: any) => ({ ...prev, name: e.target.value }))}
                                     placeholder="Category Name"
                                     type="text"
                                 />
                                 <textarea
-                                    className="bg-gray-200 p-2 border border-gray-300 rounded-md w-full mb-2"
+                                    className=" p-2 border border-gray-300 rounded-md w-full mb-2"
                                     rows={5}
                                     value={category.description}
                                     onChange={(e) => setCategory((prev: any) => ({ ...prev, description: e.target.value }))}
                                     placeholder="Category Description"
-
                                 />
                                 {
                                     updateCategory ?
@@ -302,20 +301,17 @@ const AdminTool = () => {
                                         >Add Category</button>
                                 }
                             </div>
-
                             {
                                 updateCategory &&
                                 <FaRegWindowClose className='text-[30px] text-gray-700 cursor-pointer'
                                     onClick={closeUpdateCateory}
                                 />
                             }
-
-
-
                         </div>
+
                         {allCategory &&
                             allCategory.map((each: any, index: any) => (
-                                <div key={index} className="bg-gray-400 shadow-md rounded-md mb-4">
+                                <div key={index} className="bg-gray-200 shadow-md rounded-md mb-4">
                                     <Accordion open={open === index} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                         <AccordionHeader onClick={() => toggleAccordion(index)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                             <div className="px-2 w-full flex items-center justify-between">
@@ -382,7 +378,7 @@ const AdminTool = () => {
                                                     <div key={subCategory.name} className="border-t border-gray-300 pt-4 flex items-center justify-between">
                                                         {/* Subcategory Name and Description */}
                                                         <div className='flex gap-10 items-center justify-start'>
-                                                            <p className="text-lg font-semibold text-gray-800">{subCategory.name}</p>
+                                                            <p className="w-[230px] text-md font-semibold text-gray-800">{subCategory.name}</p>
                                                             <p className="text-sm text-gray-500">{subCategory.description}</p>
                                                         </div>
 
