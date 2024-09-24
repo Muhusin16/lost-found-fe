@@ -1,11 +1,29 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './userprofile.module.scss'
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/app/store/store';
+import { getJsonValueFromLocalStorage } from '@/app/services/coreServices';
+import axiosInstance from '@/app/services/axiosInterceptor';
+import { apiUrls } from '@/app/config/api.config';
 
 const UserProfile = () => {
-
     const [checked, setChecked] = useState(false);
 
+   const userDetails =  getJsonValueFromLocalStorage('userDetails');
+   console.log('userDetails', userDetails);
+  const payload = {
+    phone_number : '112324234',
+    address:"hsr layout "
+
+  }
+   const handleUserProfileSubmit = async () => {
+    const response = await axiosInstance.put(`${apiUrls.updateUserDetailsById}/${userDetails._id}`, payload);
+    console.log(response.data);
+    
+   }
+   
+   handleUserProfileSubmit();
     return (
         <div className="max-w-3xl mx-auto mt-10 p-8 bg-white shadow-xl rounded-xl border-t-4 border-indigo-600">
             <h1 className="text-3xl font-bold text-center text-indigo-600 mb-8">Complete Your Profile</h1>
@@ -36,7 +54,7 @@ const UserProfile = () => {
 
                 <div>
                     <label htmlFor="email" className="block text-base font-medium text-gray-700">Email</label>
-                    <input type="email" id="email" placeholder="john@example.com" className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out" />
+                    <input type="email" id="email" placeholder="john@example.com"  value={userDetails.email} className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out" />
                 </div>
 
                 <div>
@@ -51,7 +69,7 @@ const UserProfile = () => {
 
                 <div>
                     <label htmlFor="address" className="block text-base font-medium text-gray-700">Govt. ID card</label>
-                    <input id="address" placeholder="PAN/Adhar/Passport/Driving License" className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out" />
+                    <input id="address" type="file" placeholder="PAN/Adhar/Passport/Driving License" className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out" />
                 </div>
 
                 <div>
