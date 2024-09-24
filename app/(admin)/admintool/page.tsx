@@ -1,7 +1,7 @@
 'use client'
 import { apiUrls } from '@/app/config/api.config'
 import axiosInstance from '@/app/services/axiosInterceptor'
-import { FaEdit, FaRegWindowClose, FaRegEye } from "react-icons/fa";
+import { FaEdit, FaRegWindowClose, FaRegEye, FaEyeSlash  } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import React, { useEffect, useState } from 'react'
 import {
@@ -141,23 +141,21 @@ const AdminTool = () => {
 
     const updateSubcategory = async (category: any) => {
         try {
-            const subCategories = category.sub_categories;
-            
+            const subCategories = category.sub_categories; // apple, mango, chiku
+
             const subCategoriesToUpdate = subCategories.find((subCat: any) => subCat._id == subCategory.id)
-            const filteredSubCategory = subCategories.filter((subCat:any) => subCat._id != subCategory.id)
+            const filteredSubCategory = subCategories.filter((subCat: any) => subCat._id != subCategory.id)
             const updatedSubCategory = [...filteredSubCategory, { ...subCategoriesToUpdate, name: subCategory.name, description: subCategory.description }]
             const payload = { sub_categories: updatedSubCategory }
 
             const response = await axiosInstance.put(`${apiUrls.categories}/${category._id}`,
                 payload
             );
-            setSubCategory({open: false, id: '', name:'', description:'' });
+            setSubCategory({ open: false, id: '', name: '', description: '' });
             getCategories();
         } catch (error) {
 
         }
-
-
     }
 
 
@@ -274,9 +272,11 @@ const AdminTool = () => {
                 }
 
                 {/* Manage Categories */}
+
                 {
                     activeTab === 'MANAGE_CATEGORIES' &&
                     <div className="w-full min-h-screen">
+                        <h3>Manage Catagories</h3>
                         <div className="bg-gray-50 flex justify-between items-start mb-4 border p-4 shadow-md rounded-md">
                             <div className="w-2/3">
                                 <input
@@ -296,11 +296,11 @@ const AdminTool = () => {
                                 {
                                     updateCategory ?
                                         <button
-                                            className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                                            className="bg-indigo-500 text-white p-2 rounded-md hover:bg-indigo-600 transition-colors"
                                             onClick={updateSelectedCategory}
                                         >Update Category</button> :
                                         <button
-                                            className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                                            className="bg-indigo-500 text-white p-2 rounded-md hover:bg-indigo-600 transition-colors"
                                             onClick={addNewCategory}
                                         >Add Category</button>
                                 }
@@ -321,17 +321,22 @@ const AdminTool = () => {
                                             <div className="px-2 w-full flex items-center justify-between">
                                                 <p className="text-xl font-semibold">{each.name}</p>
                                                 <div className="flex gap-10 items-center">
-                                                <FaRegEye
-                                                    onClick={() => toggleAccordion(index)}
-                                                    className="text-green-500 cursor-pointer"
+                                                    <FaRegEye
+                                                        onClick={() => toggleAccordion(index)}
+                                                        className="text-[24px] text-green-500 cursor-pointer"
                                                     />
+
+                                                    {/* <FaEyeSlash 
+                                                    className="text-[24px] text-green-500 cursor-pointer"
+                                                    onClick={() => toggleAccordion(index)}
+                                                    /> */}
                                                     <FaEdit
                                                         onClick={() => handleUpdateCategory(each)}
-                                                        className="text-blue-500 cursor-pointer"
+                                                        className="text-[24px] text-indigo-500 cursor-pointer"
                                                     />
                                                     <MdDelete
                                                         onClick={() => handleDeleteCategory(each._id)}
-                                                        className="text-red-500 cursor-pointer"
+                                                        className="text-[24px] text-red-600 cursor-pointer"
                                                     />
                                                 </div>
 
@@ -339,7 +344,7 @@ const AdminTool = () => {
                                         </AccordionHeader>
                                         <AccordionBody className="bg-gray-100 rounded-md p-3">
                                             <div className="space-y-2">
-                                                <div className="bg-blue-50 p-4 rounded-md border border-gray-300 my-2">
+                                                <div className="bg-indigo-50 p-4 rounded-md border border-gray-300 my-2">
                                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
                                                         Description:
                                                     </label>
@@ -350,14 +355,14 @@ const AdminTool = () => {
 
                                                 <div className="flex space-x-4">
                                                     <input
-                                                        className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                                                        className="bg-indigo-50 p-2 border border-gray-300 rounded-md w-64"
                                                         value={subCategory.name}
                                                         onChange={(e) => setSubCategory((prev: any) => ({ ...prev, name: e.target.value }))}
                                                         placeholder="Subcategory Name"
                                                         type="text"
                                                     />
                                                     <input
-                                                        className="bg-gray-200 p-2 border border-gray-300 rounded-md w-64"
+                                                        className="bg-indigo-50 p-2 border border-gray-300 rounded-md w-64"
                                                         value={subCategory.description}
                                                         onChange={(e) => setSubCategory((prev: any) => ({ ...prev, description: e.target.value }))}
                                                         placeholder="Subcategory Description"
@@ -366,14 +371,14 @@ const AdminTool = () => {
                                                     {
                                                         subCategory.open ?
                                                             <button
-                                                                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                                                                className="bg-indigo-500 text-white p-2 rounded-md hover:bg-indigo-600 transition-colors"
                                                                 onClick={() => updateSubcategory(each)}
                                                             >
                                                                 Update Subcategory
                                                             </button>
                                                             :
                                                             <button
-                                                                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                                                                className="bg-indigo-500 text-white p-2 rounded-md hover:bg-indigo-600 transition-colors"
                                                                 onClick={() => addNewSubcategory(each)}
                                                             >
                                                                 Add Subcategory
@@ -390,9 +395,9 @@ const AdminTool = () => {
                                                         </div>
 
                                                         {/* Edit and Delete Buttons */}
-                                                        <div className="flex gap-5">
-                                                            <FaEdit onClick={() => handleUpdateSubCategory(subCategory)} />
-                                                            <MdDelete onClick={() => handleDeleteSubCategory(each, subCategory._id)} />
+                                                        <div className="flex gap-10">
+                                                            <FaEdit className='text-[20px] cursor-pointer' onClick={() => handleUpdateSubCategory(subCategory)} />
+                                                            <MdDelete className='text-[20px] cursor-pointer' onClick={() => handleDeleteSubCategory(each, subCategory._id)} />
                                                         </div>
                                                     </div>
                                                 ))}
