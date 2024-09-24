@@ -1,22 +1,72 @@
+"use client"
+
+import React, { useState, useEffect } from "react";
+import axiosInstance from '@/app/services/axiosInterceptor';
+import { apiUrls } from "@/app/config/api.config";
 import Image from "next/image";
 import styles from "./dashboard.module.scss";
 
 const ProductActivity = () => {
+  const [itemCounts, setItemCounts] = useState({
+    totalItems: 0,
+    expiredItems: 0,
+    claimedItems: 0,
+    returnedItems: 0,
+    rejectItems: 0,
+    inProgressItems: 0,
+    remainingItems: 0, 
+  });
+
+  const fetchAnalytics = async () => {
+    try {
+      const response = await axiosInstance.get(apiUrls.getAnalytics);
+      if (response.status === 200) {
+        setItemCounts(response.data); // Set all the counts from the response
+      }
+    } catch (error) {
+      console.error("Error fetching analytics", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, []);
+
   const activities = [
     {
-      image: "/inventory.svg", // Replace with your actual image path
-      count: 245,
-      label: "Items Reported",
+      image: "/inventory.svg", 
+      count: itemCounts.totalItems,
+      label: "Total Items",
     },
     {
-      image: "/warehouse.svg", // Replace with your actual image path
-      count: 112,
-      label: "Item Out",
+      image: "/expired.svg", 
+      count: itemCounts.expiredItems,
+      label: "Expired Items",
     },
     {
-      image: "/itemsout.svg", // Replace with your actual image path
-      count: 36,
-      label: "Item Out",
+      image: "/claimed.svg", 
+      count: itemCounts.claimedItems,
+      label: "Claimed Items",
+    },
+    {
+      image: "/returned.svg", 
+      count: itemCounts.returnedItems,
+      label: "Returned Items",
+    },
+    {
+      image: "/rejected.svg", 
+      count: itemCounts.rejectItems,
+      label: "Rejected Items",
+    },
+    {
+      image: "/inprogress.svg", 
+      count: itemCounts.inProgressItems,
+      label: "Items In Progress",
+    },
+    {
+      image: "/warehouse.svg", 
+      count: itemCounts.remainingItems,
+      label: "Remaining Items",
     },
   ];
 
@@ -27,10 +77,7 @@ const ProductActivity = () => {
         {activities.map((activity, index) => (
           <div className={styles.activityCard} key={index}>
             <div className={styles.activityImage}>
-              <img
-                src={activity.image}
-                alt={activity.label}
-              />
+              <Image src={activity.image} alt={activity.label} width={100} height={100} />
             </div>
             <div className={styles.activityCount}>{activity.count}</div>
             <div className={styles.activityLabel}>{activity.label}</div>

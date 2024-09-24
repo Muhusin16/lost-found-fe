@@ -15,5 +15,6 @@ resetPassword: '/api/admin/reset-password',
 verifyOtp: '/api/admin/verify-otp',
 categories: '/categories',
 imageUpload: '/files/upload',
-imageDelete: '/files/delete'
+imageDelete: '/files/delete',
+getAnalytics: '/dashboard/analytics'
 }
