@@ -155,8 +155,11 @@ const ReportFound = () => {
   const getAllCategories = async () => {
     try {
       const response = await axiosInstance.get(`${apiUrls.categories}`);
-      setCategories(response.data);
-      setSubCategories(response.data[0].sub_categories);
+      if (response.data.success) {
+
+        setCategories(response.data.data);
+        setSubCategories(response.data.data[0].sub_categories);
+      }
     } catch (error) {
       console.log(error);
 
