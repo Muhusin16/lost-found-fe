@@ -3,6 +3,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import styles from './forgot-password.module.scss';
+import axiosInstance from '@/app/services/axiosInterceptor';
+import { apiUrls } from '@/app/config/api.config';
 
 const ResetPassword = () => {
   const [step, setStep] = useState<'forgot' | 'verify' | 'reset'>('forgot');
@@ -20,12 +22,16 @@ const ResetPassword = () => {
     setMessage('');
 
     try {
-      await axios.post('http://localhost:5002/api/admin/forgot-password', { email });
-      setMessage('Password reset link sent. Check your email for OTP.');
+      const response = await axiosInstance.post(apiUrls.forgotPassword, { email });
+      console.log(response);
+
+      setMessage('OTP sent to your email. Please check your email.');
       setStep('verify');
+      const { resetToken } = response.data.data; 
+      localStorage.setItem('resetToken', resetToken); 
     } catch (error) {
       console.error(error);
-      setMessage('Failed to send password reset link. Please try again.');
+      setMessage('Failed to send OTP. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -36,13 +42,16 @@ const ResetPassword = () => {
     setLoading(true);
     setMessage('');
 
+    const resetToken = localStorage.getItem('resetToken');
+    console.log('resetToken:', resetToken);
+
     try {
-      await axios.post('http://localhost:5002/api/admin/verify-otp', { email, otp });
-      setMessage('OTP verified. Please enter a new password.');
+      await axiosInstance.post(apiUrls.verifyOtp, { email, otp, resetToken });
+      setMessage('OTP verified. Please set a new password.');
       setStep('reset');
     } catch (error) {
       console.error(error);
-      setMessage('Failed to verify OTP. Please check your code and try again.');
+      setMessage('Failed to verify OTP. Please check your OTP and try again.');
     } finally {
       setLoading(false);
     }
@@ -53,6 +62,7 @@ const ResetPassword = () => {
     setLoading(true);
     setMessage('');
 
+    const resetToken = localStorage.getItem('resetToken');
     if (password !== confirmPassword) {
       setMessage('Passwords do not match.');
       setLoading(false);
@@ -60,18 +70,15 @@ const ResetPassword = () => {
     }
 
     try {
-      // const token = localStorage.getItem('token');
-      // console.log(token);
-
       if (password && email) {
-        const response = await axios.post('http://localhost:5002/api/admin/reset-password', { newPassword: password, email });
-        if (response) {
-          setMessage('Password reset successful. Redirecting to login...');
-          router.push('/login')
-        }
+        await axiosInstance.post(apiUrls.resetPassword, {
+          email,
+          newPassword: password,
+          resetToken, 
+        });
+        setMessage('Password reset successful. Redirecting to login...');
+        router.push('/login');
       }
-
-
     } catch (error) {
       console.error(error);
       setMessage('Failed to reset password. Please try again.');
@@ -84,6 +91,7 @@ const ResetPassword = () => {
     <div className={styles.container}>
       <h1>Find Your Account</h1>
       <h5>Please enter your email address to search for your account.</h5>
+
       {step === 'forgot' && (
         <div className="login-page__content">
           <form onSubmit={handleForgotPasswordSubmit} className={styles.form}>
@@ -98,8 +106,8 @@ const ResetPassword = () => {
                 className="form-control"
               />
             </div>
-            <button className="hfmn-btn hfmn-btn--primary" style={{ width: "100%" }} type="submit" disabled={loading}>
-              {loading ? 'Sending...' : 'Send Otp'}
+            <button className="hfmn-btn hfmn-btn--primary" style={{ width: '100%' }} type="submit" disabled={loading}>
+              {loading ? 'Sending...' : 'Send OTP'}
             </button>
             {message && <p className={styles.message}>{message}</p>}
           </form>
@@ -131,9 +139,9 @@ const ResetPassword = () => {
                 className="form-control"
               />
             </div>
-            <button className="hfmn-btn hfmn-btn--primary" style={{ width: "100%" }} type="submit" disabled={loading}>
+            <button className="hfmn-btn hfmn-btn--primary" style={{ width: '100%' }} type="submit" disabled={loading}>
               {loading ? 'Verifying...' : 'Verify OTP'}
-            </button >
+            </button>
             {message && <p className={styles.message}>{message}</p>}
           </form>
         </div>
@@ -164,7 +172,7 @@ const ResetPassword = () => {
                 className="form-control"
               />
             </div>
-            <button className="hfmn-btn hfmn-btn--primary" style={{ width: "100%" }} type="submit" disabled={loading}>
+            <button className="hfmn-btn hfmn-btn--primary" style={{ width: '100%' }} type="submit" disabled={loading}>
               {loading ? 'Resetting...' : 'Reset Password'}
             </button>
             {message && <p className={styles.message}>{message}</p>}
