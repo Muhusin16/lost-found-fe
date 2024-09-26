@@ -6,11 +6,12 @@ import { getJsonValueFromLocalStorage, setJsonValueInLocalStorage } from '@/app/
 import axiosInstance from '@/app/services/axiosInterceptor';
 import { apiUrls } from '@/app/config/api.config';
 import { FaEdit, FaRegWindowClose } from "react-icons/fa";
+import Image from 'next/image';
 
 const UserProfile = () => {
     const [checked, setChecked] = useState(false);
-    const [isReadOnly, setIsReadOnly] = useState(true)
-    const [editProfile, setEditProfile] = useState(false)
+    const [isReadOnly, setIsReadOnly] = useState(true);
+    const [editProfile, setEditProfile] = useState(false);
     const initialFormData = {
         full_name: '',
         title: '',
@@ -27,26 +28,13 @@ const UserProfile = () => {
     const [formData, setFormData] = useState(initialFormData)
     const userDetails = getJsonValueFromLocalStorage('userDetails');
 
-    const payload = {
-        full_name: formData.full_name,
-        title: formData.title,
-        phone_number: formData.phone_number,
-        date_of_birth: formData.date_of_birth,
-        address: formData.address,
-        pincode: formData.pincode,
-        city: formData.city,
-        state: formData.state,
-        gender: formData.gender,
-        profile_pic: formData.profile_pic
 
-    }
 
     const fetchUserProfileDetail = async () => {
         try {
             const response = await axiosInstance.get(`${apiUrls.getUserDetails}/${userDetails._id}`);
 
             const userProfileDetail = response.data.data
-            console.log(userProfileDetail);
             setFormData({
                 full_name: userProfileDetail.full_name,
                 title: userProfileDetail.title,
@@ -66,12 +54,9 @@ const UserProfile = () => {
         }
     }
 
-
-
     const handleUserProfileSubmit = async () => {
         try {
-            const response = await axiosInstance.put(`${apiUrls.updateUserDetailsById}/${userDetails._id}`, payload);
-            console.log(response.data);
+            const response = await axiosInstance.put(`${apiUrls.updateUserDetailsById}/${userDetails._id}`, formData);
             setIsReadOnly(true)
             fetchUserProfileDetail();
         } catch (error) {
@@ -79,6 +64,42 @@ const UserProfile = () => {
 
         }
     }
+
+    const uploadProfilePic = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const files = Array.from(e.target.files);
+            const newImageUrls = await Promise.all(
+                files.map(async (file) => {
+                    if (file) {
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        try {
+                            const response = await axiosInstance.post(`${apiUrls.imageUpload}`, formData,
+                                {
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data',
+                                    },
+                                }
+                            )
+                            if (response.data.success) {
+                                return response.data.data.path;
+                            }
+                        } catch (error) {
+                            console.error(error);
+                            return '';
+                        }
+                    }
+                    return '';
+                })
+            );
+
+            setFormData((prev: any) => ({
+                ...prev,
+                profile_pic: `${newImageUrls[0]}`
+            }))
+        }
+    }
+
 
     const updateUserProfile = () => {
         setEditProfile(true);
@@ -97,15 +118,16 @@ const UserProfile = () => {
         <div className="max-w-3xl mx-auto mt-10 p-8 bg-white shadow-xl rounded-xl border-t-4 border-indigo-600">
             <div className='flex justify-between items-start'>
                 {
-                    editProfile ? <>
-                        <h1 className="text-3xl font-bold text-center text-indigo-600 mb-8">Update Profile</h1>
-                        <div className='flex gap-2 items-center'>
+                    editProfile ?
+                        <>
+                            <h1 className="text-3xl font-bold text-center text-indigo-600 mb-8">Update Profile</h1>
+                            <div className='flex gap-2 items-center'>
 
-                            <FaRegWindowClose className='text-[30px] text-gray-700 cursor-pointer'
-                                onClick={closeEditProfile}
-                            />
-                        </div>
-                    </>
+                                <FaRegWindowClose className='text-[30px] text-gray-700 cursor-pointer'
+                                    onClick={closeEditProfile}
+                                />
+                            </div>
+                        </>
                         :
                         <>
                             <h1 className="text-3xl font-bold text-center text-indigo-600 mb-8">{formData.full_name}</h1>
@@ -117,29 +139,58 @@ const UserProfile = () => {
                             </div>
                         </>
                 }
-
             </div>
             <form className="space-y-6">
-
                 {
-                    editProfile ?
-                        <div>
-                            <label htmlFor="profilePic" className="block text-base font-medium text-gray-700 mb-2">Profile Picture</label>
-                            <input type="file"
-                                id="profilePic"
-                                accept="image/*"
-                                disabled={isReadOnly}
-                                className="w-full text-sm text-gray-500 py-2 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring focus:ring-indigo-200 transition duration-200 ease-in-out hover:bg-gray-100" />
-                        </div>
+                    !editProfile ?
+                        <>
+                            {formData.profile_pic && (
+                                <div className='h-full w-full flex justify-center items-center mt-4'>
+                                    <Image
+                                        width={100} height={100}
+                                        src={`${process.env.NEXT_PUBLIC_FIRESTORE_BASE_URL}${formData.profile_pic}`}
+                                        alt="Profile Preview"
+                                        className="w-32 h-32 object-cover rounded-full border border-gray-300"
+                                    />
+                                </div>
+                            )}
+                        </>
                         :
-                        <div className='h-full flex justify-center items-center'>
+                        <>
+                            {formData.profile_pic && (
+                                <div className="h-full w-full flex justify-center items-center' mt-4">
+
+                                    <Image
+                                        width={100} height={100}
+                                        src={`${process.env.NEXT_PUBLIC_FIRESTORE_BASE_URL}${formData.profile_pic}`}
+                                        alt="Profile Preview"
+                                        className="w-32 h-32 object-cover rounded-full border border-gray-300"
+                                    />
+                                </div>
+                            )}
+                            <div>
+                                <label htmlFor="profilePic" className="block text-base font-medium text-gray-700 mb-2">Profile Picture</label>
+                                <input type="file"
+                                    id="profilePic"
+                                    accept="image/*"
+                                    disabled={isReadOnly}
+                                    onChange={uploadProfilePic}
+                                    className="w-full text-sm text-gray-500 py-2 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring focus:ring-indigo-200 transition duration-200 ease-in-out hover:bg-gray-100" />
+                            </div>
+                        </>
+
+                }
+
+                <>
+
+
+                </>
+
+                {/* <div className='h-full flex justify-center items-center'>
                             <div className="w-[140px] h-[140px] rounded-full overflow-hidden border border-gray-300 shadow-md flex items-center justify-center bg-gray-100">
                                 <img src="" alt="" className="w-full h-full object-cover" />
                             </div>
-                        </div>
-                }
-
-
+                        </div> */}
 
                 <div>
                     <label htmlFor="title" className="block text-base font-medium text-gray-700">Title</label>
@@ -214,11 +265,6 @@ const UserProfile = () => {
                         value={formData.date_of_birth}
                         className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out" />
                 </div>
-
-                {/* <div>
-                    <label htmlFor="address" className="block text-base font-medium text-gray-700">Govt. ID card</label>
-                    <input id="address" type="file" placeholder="PAN/Adhar/Passport/Driving License" className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out" />
-                </div> */}
 
                 <div>
                     <label htmlFor="address" className="block text-base font-medium text-gray-700">Address</label>
