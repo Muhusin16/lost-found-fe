@@ -11,6 +11,7 @@ const ProductActivity = () => {
     totalItems: 0,
     expiredItems: 0,
     claimedItems: 0,
+    approvedItems: 0, 
     returnedItems: 0,
     rejectItems: 0,
     inProgressItems: 0,
@@ -20,8 +21,9 @@ const ProductActivity = () => {
   const fetchAnalytics = async () => {
     try {
       const response = await axiosInstance.get(apiUrls.getAnalytics);
+      console.log(response)
       if (response.status === 200) {
-        setItemCounts(response.data); // Set all the counts from the response
+        setItemCounts(response.data); 
       }
     } catch (error) {
       console.error("Error fetching analytics", error);
@@ -47,6 +49,11 @@ const ProductActivity = () => {
       image: "/claimed.svg", 
       count: itemCounts.claimedItems,
       label: "Claimed Items",
+    },
+    {
+      image: "/approved.svg", 
+      count: itemCounts.approvedItems, 
+      label: "Approved Items",
     },
     {
       image: "/returned.svg", 
