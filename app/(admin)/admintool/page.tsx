@@ -122,7 +122,7 @@ const AdminTool = () => {
     const [allAdmins, setAllAdmins] = useState([])
     const [profilePicturePreview, setProfilePicturePreview] = useState<any>([]);
 
-    const [addOrEditAdmin, setAddOrEditAdmin] = useState({openForm:false,mode:'add'});
+    const [addOrEditAdmin, setAddOrEditAdmin] = useState({ openForm: false, mode: 'add' });
     const [addNewAdminOrEditFormData, setAddNewAdminOrEditFormData] = useState<any>(initialAdminFormData);
     const role = useSelector((state: RootState) => state.role.role)
 
@@ -315,12 +315,12 @@ const AdminTool = () => {
         }
     }
     const handleAddNewAdminsFromChange = (name: string, value: string) => {
-        setAddNewAdminOrEditFormData((prev:any) => ({...prev, [name]:value}));
-        console.log({[name]:value},addNewAdminOrEditFormData)
+        setAddNewAdminOrEditFormData((prev: any) => ({ ...prev, [name]: value }));
+        console.log({ [name]: value }, addNewAdminOrEditFormData)
 
     }
 
-    const handleAddNewAdminsFormSubmit = async () => { 
+    const handleAddNewAdminsFormSubmit = async () => {
         try {
             console.log(addNewAdminOrEditFormData);
             const payload = {
@@ -332,7 +332,7 @@ const AdminTool = () => {
                 alert('New admin added successfully!!!')
                 setAddNewAdminOrEditFormData(initialAdminFormData);
                 getAllAdmins();
-                setAddOrEditAdmin({openForm:false,mode:'add'})
+                setAddOrEditAdmin({ openForm: false, mode: 'add' })
             }
         } catch (error) {
             console.log(error);
@@ -340,12 +340,14 @@ const AdminTool = () => {
     }
 
     const handleEditAdminForm = (formData: any) => {
-        setAddOrEditAdmin({openForm:true,mode:'edit'});
+        console.log(formData);
+        
+        setAddOrEditAdmin({ openForm: true, mode: 'edit' });
         setAddNewAdminOrEditFormData(formData);
         setProfilePicturePreview([formData.profile_pic])
     }
 
-    const handleEditAdminsFormSubmit = async () =>{
+    const handleEditAdminsFormSubmit = async () => {
         try {
             const payload = {
                 ...addNewAdminOrEditFormData,
@@ -356,7 +358,7 @@ const AdminTool = () => {
                 alert('Admin updated successfully!!!')
                 setAddNewAdminOrEditFormData(initialAdminFormData);
                 getAllAdmins();
-                setAddOrEditAdmin({openForm:false,mode:'add'})
+                setAddOrEditAdmin({ openForm: false, mode: 'add' })
             }
         } catch (error) {
             console.log(error);
@@ -403,7 +405,7 @@ const AdminTool = () => {
                                         <Button variant="outlined" size="sm" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                             view all
                                         </Button>
-                                        <Button className="flex items-center gap-3" size="sm" onClick={() => {setAddOrEditAdmin({openForm:true,mode:'add'}); setProfilePicturePreview([])}} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                        <Button className="flex items-center gap-3" size="sm" onClick={() => { setAddOrEditAdmin({ openForm: true, mode: 'add' }); setProfilePicturePreview([]) }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                             <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Admin
                                         </Button>
                                     </div>
@@ -447,9 +449,9 @@ const AdminTool = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {allAdmins && allAdmins.length > 0 && allAdmins.map(
-                                            (admin:any, index:number) => {
-                                                const isLast = index === TABLE_ROWS.length - 1;
+                                        {allAdmins && allAdmins.length > 0 ? (
+                                            allAdmins.map((admin: any, index: number) => {
+                                                const isLast = index === allAdmins.length - 1; // Update this to allAdmins.length
                                                 const classes = isLast
                                                     ? "p-4"
                                                     : "p-4 border-b border-blue-gray-50";
@@ -458,20 +460,33 @@ const AdminTool = () => {
                                                     <tr key={admin.full_name}>
                                                         <td className={classes}>
                                                             <div className="flex items-center gap-3">
-                                                                <Avatar src={`${process.env.NEXT_PUBLIC_FIRESTORE_BASE_URL}${admin.profile_pic}`} alt={admin.full_name} size="sm" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
+                                                                <Avatar
+                                                                    src={`${process.env.NEXT_PUBLIC_FIRESTORE_BASE_URL}${admin.profile_pic}`}
+                                                                    alt={admin.full_name}
+                                                                    size="sm"
+                                                                    placeholder={undefined}
+                                                                    onPointerEnterCapture={undefined}
+                                                                    onPointerLeaveCapture={undefined}
+                                                                />
                                                                 <div className="flex flex-col">
                                                                     <Typography
                                                                         variant="small"
                                                                         color="blue-gray"
                                                                         className="font-normal"
-                                                                        placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                                                        placeholder={undefined}
+                                                                        onPointerEnterCapture={undefined}
+                                                                        onPointerLeaveCapture={undefined}
+                                                                    >
                                                                         {admin?.full_name}
                                                                     </Typography>
                                                                     <Typography
                                                                         variant="small"
                                                                         color="blue-gray"
                                                                         className="font-normal opacity-70"
-                                                                        placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                                                        placeholder={undefined}
+                                                                        onPointerEnterCapture={undefined}
+                                                                        onPointerLeaveCapture={undefined}
+                                                                    >
                                                                         {admin.email}
                                                                     </Typography>
                                                                 </div>
@@ -483,14 +498,20 @@ const AdminTool = () => {
                                                                     variant="small"
                                                                     color="blue-gray"
                                                                     className="font-normal"
-                                                                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                                                    placeholder={undefined}
+                                                                    onPointerEnterCapture={undefined}
+                                                                    onPointerLeaveCapture={undefined}
+                                                                >
                                                                     {admin.city}
                                                                 </Typography>
                                                                 <Typography
                                                                     variant="small"
                                                                     color="blue-gray"
                                                                     className="font-normal opacity-70"
-                                                                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                                                    placeholder={undefined}
+                                                                    onPointerEnterCapture={undefined}
+                                                                    onPointerLeaveCapture={undefined}
+                                                                >
                                                                     {admin.state}
                                                                 </Typography>
                                                             </div>
@@ -501,20 +522,17 @@ const AdminTool = () => {
                                                                     variant="small"
                                                                     color="blue-gray"
                                                                     className="font-normal"
-                                                                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                                                    placeholder={undefined}
+                                                                    onPointerEnterCapture={undefined}
+                                                                    onPointerLeaveCapture={undefined}
+                                                                >
                                                                     {admin.phone_number}
                                                                 </Typography>
                                                             </div>
                                                         </td>
                                                         <td className={classes}>
                                                             <div className="w-max">
-                                                                <Chip
-                                                                    variant="ghost"
-                                                                    size="sm"
-                                                                    // value={online ? "online" : "offline"}
-                                                                    // color={online ? "green" : "blue-gray"}
-                                                                    value={admin.role}
-                                                                />
+                                                                <Chip variant="ghost" size="sm" value={admin.role} />
                                                             </div>
                                                         </td>
                                                         <td className={classes}>
@@ -522,24 +540,47 @@ const AdminTool = () => {
                                                                 variant="small"
                                                                 color="blue-gray"
                                                                 className="font-normal"
-                                                                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                                                placeholder={undefined}
+                                                                onPointerEnterCapture={undefined}
+                                                                onPointerLeaveCapture={undefined}
+                                                            >
                                                                 {formatDate(admin.createdAt)}
                                                             </Typography>
                                                         </td>
                                                         <td className={classes}>
                                                             <Tooltip content="Edit User">
-                                                                <IconButton variant="text" 
-                                                                 placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
-                                                                 onClick={() => handleEditAdminForm(admin)}>
+                                                                <IconButton
+                                                                    variant="text"
+                                                                    placeholder={undefined}
+                                                                    onPointerEnterCapture={undefined}
+                                                                    onPointerLeaveCapture={undefined}
+                                                                    onClick={() => handleEditAdminForm(admin)}
+                                                                >
                                                                     <PencilIcon className="h-4 w-4" />
                                                                 </IconButton>
                                                             </Tooltip>
                                                         </td>
                                                     </tr>
                                                 );
-                                            },
+                                            })
+                                        ) : (
+                                            <tr>
+                                                <td colSpan={6} className="p-4 text-center">
+                                                    <Typography
+                                                        variant="small"
+                                                        color="gray"
+                                                        className="font-normal"
+                                                        placeholder={undefined}
+                                                        onPointerEnterCapture={undefined}
+                                                        onPointerLeaveCapture={undefined}
+                                                    >
+                                                        No admin users found.
+                                                    </Typography>
+                                                </td>
+                                            </tr>
                                         )}
                                     </tbody>
+
                                 </table>
                             </CardBody>
                             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -559,7 +600,7 @@ const AdminTool = () => {
                         {addOrEditAdmin.openForm && <form className='w-4/6'>
                             <div className='flex justify-between items-center'>
                                 <div> <h3>Add/Edit Admin </h3>
-                                    <p className='cursor-pointer text-blue-600 mb-3' onClick={() => setAddOrEditAdmin({openForm:false,mode:'add'})}>Back To AdminsList</p></div>
+                                    <p className='cursor-pointer text-blue-600 mb-3' onClick={() => setAddOrEditAdmin({ openForm: false, mode: 'add' })}>Back To AdminsList</p></div>
                                 <div >{
                                     profilePicturePreview && profilePicturePreview.length > 0 ?
                                         <Image src={`${process.env.NEXT_PUBLIC_FIRESTORE_BASE_URL}${profilePicturePreview[0]}`} alt="" width={150} height={150} className='rounder-full' /> :
@@ -578,7 +619,7 @@ const AdminTool = () => {
                                     name='full_name'
                                     className="form-control"
                                     value={addNewAdminOrEditFormData.full_name}
-                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value )}
+                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value)}
                                 />
                             </div>
                             <div className="form-container">
@@ -592,7 +633,7 @@ const AdminTool = () => {
                                     required
                                     className="form-control"
                                     value={addNewAdminOrEditFormData.user_name}
-                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value )}
+                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value)}
                                 />
                             </div>
 
@@ -607,7 +648,7 @@ const AdminTool = () => {
                                     required
                                     className="form-control"
                                     value={addNewAdminOrEditFormData.email}
-                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value )}
+                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value)}
                                 />
                             </div>
 
@@ -622,13 +663,13 @@ const AdminTool = () => {
                                     required
                                     className="form-control"
                                     value={addNewAdminOrEditFormData.password}
-                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value )}
+                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value)}
                                 />
                             </div>
-                            
+
                             <div className="form-container">
                                 <label htmlFor="date_of_birth">
-                                   Date of Birth  
+                                    Date of Birth
                                 </label>
                                 <input
                                     type="date"
@@ -636,7 +677,7 @@ const AdminTool = () => {
                                     name='date_of_birth'
                                     className='form-control'
                                     value={addNewAdminOrEditFormData.date_of_birth}
-                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value )}
+                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value)}
                                 />
                             </div>
 
@@ -650,7 +691,7 @@ const AdminTool = () => {
                                     name="phone_number"
                                     className='form-control'
                                     value={addNewAdminOrEditFormData.phone_number}
-                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value )}
+                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value)}
                                 />
                             </div>
 
@@ -663,7 +704,7 @@ const AdminTool = () => {
                                     name='role'
                                     className="form-control"
                                     value={addNewAdminOrEditFormData.role}
-                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value )}
+                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value)}
                                 >
                                     <option value="admin">Admin</option>
                                     <option value="super_admin">Super Admin</option>
@@ -692,7 +733,7 @@ const AdminTool = () => {
                                     name='address'
                                     className='form-control'
                                     value={addNewAdminOrEditFormData.address}
-                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value )}
+                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value)}
                                 />
                             </div>
                             <div className="form-container">
@@ -704,7 +745,7 @@ const AdminTool = () => {
                                     name='city'
                                     className='form-control'
                                     value={addNewAdminOrEditFormData.city}
-                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value )}
+                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value)}
                                 />
                             </div>
                             <div className="form-container">
@@ -716,17 +757,17 @@ const AdminTool = () => {
                                     name='state'
                                     className='form-control'
                                     value={addNewAdminOrEditFormData.state}
-                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value )}
+                                    onChange={(e) => handleAddNewAdminsFromChange(e.target.name, e.target.value)}
                                 />
                             </div>
-                           { addOrEditAdmin.mode == 'add' && <button
+                            {addOrEditAdmin.mode == 'add' && <button
                                 type="button"
                                 className="py-2 px-4 bg-indigo-800 text-white rounded-md bg-indigo-900 transition duration-200"
                                 onClick={handleAddNewAdminsFormSubmit}
                             >
                                 Add Admin/Super Admin
                             </button>}
-                            { addOrEditAdmin.mode == 'edit' && <button
+                            {addOrEditAdmin.mode == 'edit' && <button
                                 type="button"
                                 className="py-2 px-4 bg-indigo-800 text-white rounded-md bg-indigo-900 transition duration-200"
                                 onClick={handleEditAdminsFormSubmit}
