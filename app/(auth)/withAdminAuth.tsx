@@ -22,14 +22,14 @@ const withAdminAuth = (WrappedComponent: any) => {
     }, []);
 
     useEffect(() => {
-      if (isClient && (!isAuthenticated || !token || role !== 'admin')) {
+      if (isClient && (!isAuthenticated || !token || (role !== 'admin' && role !== 'super_admin'))) {
         clearLocalStorage();
         DeleteAllCookies();
         router.push("/login");
       }
     }, [isClient, isAuthenticated, token, router, role]);
 
-    if (!isClient || !isAuthenticated || !token || role !== 'admin') {
+    if (!isClient || !isAuthenticated || !token || (role !== 'admin' && role !== 'super_admin')) {
       return null; // Render nothing or a spinner while waiting for auth check
     }
 

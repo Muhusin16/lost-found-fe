@@ -42,6 +42,8 @@ const Login = () => {
           const decodedToken: any = jwtDecode(token);
           console.log(decodedToken)
           const userRole = decodedToken?.role;
+          console.log(userRole);
+          
           fetchUserDetails(decodedToken.id);
           if (userRole == 'user') {
             router.push('/user/dashboard');
