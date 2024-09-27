@@ -16,5 +16,6 @@ resetPassword: '/auth/reset-password',
 verifyOtp: '/auth/verify-otp',
 categories: '/categories',
 imageUpload: '/files/upload',
-imageDelete: '/files/delete'
+imageDelete: '/files/delete',
+getAnalytics: '/products/dashboard/analytics'
 }

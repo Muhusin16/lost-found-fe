@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFEFE4;}
+	.st1{fill:#69EBFC;}
+	.st2{fill:#EDD4C2;}
+	.st3{fill:#CFB6A4;}
+	.st4{fill:#D476E2;}
+	.st5{fill:#5861C7;}
+	.st6{fill:#FF8354;}
+	.st7{fill:#6770E6;}
+	.st8{fill:#3A43A9;}
+	.st9{fill:#B665C2;}
+	.st10{fill:#EA82FA;}
+	.st11{fill:#5FD4E3;}
+	.st12{fill:#69FFFF;}
+	.st13{fill:#858EFF;}
+	.st14{fill:#FFA171;}
+	.st15{fill:#FFF7F2;}
+	.st16{fill:#E0734A;}
+	.st17{fill:#FFBF8F;}
+	.st18{fill:#A1F1FC;}
+	.st19{fill:#7DB6C5;}
+	.st20{fill:#F0E0D5;}
+	.st21{fill:#8F95E6;}
+	.st22{fill:#FFAC8C;}
+	.st23{fill:#BFFFFC;}
+	.st24{fill:#FFFFFF;}
+	.st25{fill:#FFDEC7;}
+	.st26{fill:#FFA0FF;}
+	.st27{fill:#C2552C;}
+	.st28{fill:#FFCAAA;}
+	.st29{fill:#4E57BD;}
+	.st30{fill:#4952B8;}
+	.st31{fill:#5D66DC;}
+	.st32{fill:#7B84FA;}
+	.st33{fill:#BFFFFF;}
+</style>
+<g>
+	<path class="st2" d="M45,45H2v4.016C2,49.559,2.441,50,2.984,50H45V45z"/>
+	<path class="st0" d="M41,45H2c-1.105,0-2-0.895-2-2V15c0-1.105,0.895-2,2-2h34c2.761,0,5,2.239,5,5V45z"/>
+	<path class="st15" d="M36,13H2c-1.105,0-2,0.895-2,2v2c0-1.105,0.895-2,2-2h34c2.761,0,5,2.239,5,5v-2C41,15.239,38.761,13,36,13z"
+		/>
+	<path class="st6" d="M41,45h4.003c3.321,0,6.01,2.698,6,6.018L51,52h9c1.657,0,3-1.343,3-3V33.232l-3.412-12.994
+		C59.241,18.919,58.049,18,56.686,18H41V45z"/>
+	<path class="st14" d="M59.743,20.828l-0.155-0.59C59.241,18.919,58.049,18,56.686,18H41v2h16.686
+		C58.474,20,59.199,20.314,59.743,20.828z"/>
+	<circle class="st7" cx="45" cy="51" r="6"/>
+	<circle class="st5" cx="45" cy="51" r="3"/>
+	<circle class="st7" cx="9" cy="51" r="6"/>
+	<circle class="st5" cx="9" cy="51" r="3"/>
+	<path class="st16" d="M63,45h-6c-0.552,0-1,0.448-1,1v3c0,0.552,0.448,1,1,1h6c0.552,0,1-0.448,1-1v-3C64,45.448,63.552,45,63,45z"
+		/>
+	<path class="st1" d="M45,23v8.7c0,0.79,0.465,1.507,1.188,1.828l7.231,3.214C53.802,36.912,54.217,37,54.637,37H63v-3.768
+		L59.788,21H47C45.895,21,45,21.895,45,23z"/>
+	<path class="st4" d="M62,44h1v-5h-1c-1.105,0-2,0.895-2,2v1C60,43.105,60.895,44,62,44z"/>
+	<rect y="57" class="st4" width="64" height="7"/>
+	<rect y="62" class="st9" width="64" height="2"/>
+	<circle class="st1" cx="14" cy="14" r="14"/>
+	<path class="st18" d="M14,1c7.563,0,13.709,6.002,13.975,13.5C27.981,14.333,28,14.169,28,14c0-7.732-6.268-14-14-14S0,6.268,0,14
+		c0,0.169,0.019,0.333,0.025,0.5C0.291,7.002,6.437,1,14,1z"/>
+	<g>
+		<path class="st7" d="M11.667,20.667L11.667,20.667c-0.53,0-1.039-0.211-1.414-0.586l-4.667-4.667
+			c-0.781-0.781-0.781-2.047,0-2.828s2.048-0.781,2.828,0l3.252,3.253l7.919-7.92c0.78-0.781,2.047-0.781,2.828,0
+			s0.781,2.047,0,2.828l-9.333,9.334C12.706,20.456,12.197,20.667,11.667,20.667z"/>
+	</g>
+</g>
+</svg>
