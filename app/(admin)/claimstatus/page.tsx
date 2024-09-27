@@ -1,143 +1,260 @@
-"use client"
-import react, { FC, useEffect, useState } from 'react';
-import styles from './claimstatus.module.scss'
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/app/store/store';
-import { fetchAllProducts } from '@/app/store/productsSlice';
-import Image from 'next/image';
-import placeholderImage from '../../assets/placeholder-img.jpg'
-import axiosInstance from '@/app/services/axiosInterceptor';
-import { apiUrls } from '@/app/config/api.config';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { FC, useEffect, useState } from "react";
+import styles from "./claimstatus.module.scss";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/app/store/store";
+import axiosInstance from "@/app/services/axiosInterceptor";
+import { apiUrls } from "@/app/config/api.config";
+import { useRouter } from "next/navigation";
+import {
+    Tabs,
+    TabsHeader,
+    TabsBody,
+    Tab,
+    TabPanel,
+    Typography,
+    Button,
+    Input,
+} from "@material-tailwind/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const claimStatus = [
-    {
-        label: "New Claim Requests",
-        value: "NEW_REQUEST",
-    },
-    {
-        label: "In Progress Claims",
-        value: "IN_PROGRESS",
-    },
-    {
-        label: "Confirmed Claims",
-        value: "CLOSED",
-    },
-    {
-        label: "Returned Claims",
-        value: "RETURNED",
-    },
+    { label: "New Claim Requests", value: "NEW_REQUEST" },
+    { label: "In Progress Claims", value: "IN_PROGRESS" },
+    { label: "Confirmed Claims", value: "CLOSED" },
+    { label: "Returned Claims", value: "RETURNED" },
 ];
+
 const ClaimStatus: FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
-    const { products, status } = useSelector((state: RootState) => state.products)
     const [activeTab, setActiveTab] = useState("NEW_REQUEST");
     const [allClaims, setAllClaims] = useState([]);
-    const [filteredClaimRequests, setFilteredClaimRequests] = useState([])
+    const [filteredClaimRequests, setFilteredClaimRequests] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [claimsPerPage] = useState(10);
 
-    const handleProductClaimRequest = (product: any) => {
-        console.log('Clicked Product:', product)
-        // Add your logic to handle product claim request here.
-    }
-
-    const handleClaimRequestDetail = (claimId:any) => {
-        router.push(`/claimverification?claimId=${claimId}`);
-    }
-
-    const handleClaimStatusChange = (claimStatus: any): void => {
-        if (typeof claimStatus === 'string') {
-            const filteredClaims = allClaims.filter((claim: any) =>
+    const handleClaimStatusChange = (claimStatus: string): void => {
+        const filteredClaims = allClaims.filter(
+            (claim: any) =>
                 claim.status.toLowerCase() === claimStatus.toLowerCase()
-            );
-            setActiveTab(claimStatus);
-            console.log(filteredClaims);
-            setFilteredClaimRequests(filteredClaims);
-        } else {
-            console.error('Invalid claimStatus:', claimStatus);
-        }
-    }
+        );
+        setActiveTab(claimStatus);
+        setFilteredClaimRequests(filteredClaims);
+        setCurrentPage(1); // Reset to first page on status change
+    };
+
+    const handleSearch = (query: string) => {
+        setSearchQuery(query.toLowerCase());
+        const filteredClaims = allClaims.filter((claim: any) =>
+            claim.item_details?.item_name?.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredClaimRequests(filteredClaims);
+        setCurrentPage(1); // Reset to first page on search
+    };
 
     const fetchAllClaimProducts = async () => {
         try {
             const response = await axiosInstance.get(apiUrls.getAllClaims);
-            console.log(response.data);
             if (response.data.success) {
                 const claimRequests = response.data.data;
                 setAllClaims(claimRequests);
-                const filteredClaims = claimRequests.filter((claim: any) => {
-                 return  claim.status.toLowerCase() === 'NEW_REQUEST'.toLowerCase();
-                }
+                setFilteredClaimRequests(
+                    claimRequests.filter(
+                        (claim: any) =>
+                            claim.status.toLowerCase() === "NEW_REQUEST".toLowerCase()
+                    )
                 );
-                setFilteredClaimRequests(filteredClaims);
             }
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     useEffect(() => {
         fetchAllClaimProducts();
-    }, [])
+    }, []);
+
+    const handleClaimRequestDetail = (claimId: any) => {
+        router.push(`/claimverification?claimId=${claimId}`);
+    };
+
+    // Pagination logic
+    const indexOfLastClaim = currentPage * claimsPerPage;
+    const indexOfFirstClaim = indexOfLastClaim - claimsPerPage;
+    const currentClaims = filteredClaimRequests.slice(
+        indexOfFirstClaim,
+        indexOfLastClaim
+    );
+
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
     return (
         <div className={styles.claimStatusContainer}>
-            <div className="w-full mx-auto">
-                <div className="border-b border-gray-200">
-                    <nav className="flex space-x-20">
+            <div className="w-full mx-auto p-4 bg-white rounded-lg shadow-md">
+                <Tabs
+                    value={activeTab}
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                >
+                    <TabsHeader
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                    >
                         {claimStatus.map(({ label, value }) => (
-                            <button
+                            <Tab
                                 key={value}
-                                className={`py-2 px-4 font-semibold text-sm rounded-t-md transition duration-300 ${activeTab === value
-                                    ? "text-deep-purple-900 border-b-2 border-deep-purple-900 "
-                                    : "text-gray-600 hover:text-gray-700"
-                                    }`}
+                                value={value}
                                 onClick={() => handleClaimStatusChange(value)}
+                                placeholder={undefined}
+                                onPointerEnterCapture={undefined}
+                                onPointerLeaveCapture={undefined}
                             >
                                 {label}
-                            </button>
+                            </Tab>
                         ))}
-                    </nav>
-                </div>
-                <div className="mt-4">
-                            <div className="overflow-x-auto">
-                                {filteredClaimRequests.length > 0 && (
-                                    <table className="w-4/5 bg-white shadow-md rounded-lg">
-                                        <thead className="bg-gray-100">
-                                            <tr>
-                                                <th className="px-4 py-2 text-left text-gray-700">Product Id</th>
-                                                <th className="px-4 py-2 text-left text-gray-700">Name</th>
-                                                <th className="px-4 py-2 text-left text-gray-700">Location</th>
-                                                <th className="px-4 py-2 text-left text-gray-700">Claim Date</th>
-                                                <th className="px-4 py-2 text-left text-gray-700">Claimed By</th>
-                                                <th className="px-4 py-2 text-left text-gray-700">Action</th>
+                    </TabsHeader>
+
+                    <TabsBody
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                    >
+                        <TabPanel value={activeTab}>
+                            <div className="mt-4">
+                                <div className="flex justify-between items-center mb-4">
+                                    <div></div> {/* Placeholder for possible other content */}
+
+                                    {/* Container for search input */}
+                                    <div className="w-full md:w-72">
+                                        <Input
+                                            placeholder=''
+                                            label="Search"
+                                            icon={<MagnifyingGlassIcon className="h-5 w-5" />} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
+                                    </div>
+                                </div>
+                           
+                            {currentClaims.length > 0 ? (
+                                <div className="overflow-x-auto">
+                                    <table className="min-w-full table-auto border-collapse border border-gray-300">
+                                        <thead>
+                                            <tr className="bg-gray-200">
+                                                <th className="border border-gray-300 px-4 py-2">
+                                                    Product Id
+                                                </th>
+                                                <th className="border border-gray-300 px-4 py-2">
+                                                    Name
+                                                </th>
+                                                <th className="border border-gray-300 px-4 py-2">
+                                                    Location
+                                                </th>
+                                                <th className="border border-gray-300 px-4 py-2">
+                                                    Claim Date
+                                                </th>
+                                                <th className="border border-gray-300 px-4 py-2">
+                                                    Claimed By
+                                                </th>
+                                                <th className="border border-gray-300 px-4 py-2">
+                                                    Action
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {filteredClaimRequests && filteredClaimRequests.map(({item_details,claim_details,createdAt,_id}:any) => (
-                                                <tr key={item_details?._id} className="border-t">
-                                                     <td className="px-4 py-2 text-gray-800">{item_details?.custom_id}</td>
-                                                    <td className="px-4 py-2 text-gray-800">{item_details?.item_name}</td>
-                                                    <td className="px-4 py-2 text-gray-800">{item_details?.location_description}</td>
-                                                    <td className="px-4 py-2 text-gray-800">{createdAt}</td>
-                                                    <td className="px-4 py-2 text-gray-800">{claim_details?.user_id?.user_name}</td>
-                                                   
-                                                    <td className="px-4 py-2">
-                                                        <button className="bg-deep-purple-600 hover:bg-deep-purple-900 text-white font-bold py-2 px-4 rounded-lg"
-                                                        onClick={() => handleClaimRequestDetail(_id)}>
-                                                            View Details
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))}
+                                            {currentClaims.map(
+                                                ({
+                                                    item_details,
+                                                    claim_details,
+                                                    createdAt,
+                                                    _id,
+                                                }: any) => (
+                                                    <tr
+                                                        key={item_details?._id}
+                                                        className="hover:bg-gray-100"
+                                                    >
+                                                        <td className="border border-gray-300 px-4 py-2">
+                                                            {item_details?.custom_id}
+                                                        </td>
+                                                        <td className="border border-gray-300 px-4 py-2">
+                                                            {item_details?.item_name}
+                                                        </td>
+                                                        <td className="border border-gray-300 px-4 py-2">
+                                                            {item_details?.location_description}
+                                                        </td>
+                                                        <td className="border border-gray-300 px-4 py-2">
+                                                            {createdAt}
+                                                        </td>
+                                                        <td className="border border-gray-300 px-4 py-2">
+                                                            {claim_details?.user_id?.user_name}
+                                                        </td>
+                                                        <td className="border border-gray-300 px-4 py-2">
+                                                            <Button
+                                                                color="purple"
+                                                                onClick={() =>
+                                                                    handleClaimRequestDetail(_id)
+                                                                }
+                                                                placeholder={undefined}
+                                                                onPointerEnterCapture={undefined}
+                                                                onPointerLeaveCapture={undefined}
+                                                            >
+                                                                View Details
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )}
                                         </tbody>
                                     </table>
-                                )}
-                            </div>
 
-                </div>
-            </div>
+                                    {/* Pagination */}
+                                    <div className="flex justify-end mt-4">
+                                        <nav>
+                                            <ul className="inline-flex">
+                                                {Array.from(
+                                                    {
+                                                        length: Math.ceil(
+                                                            filteredClaimRequests.length / claimsPerPage
+                                                        ),
+                                                    },
+                                                    (_, index) => (
+                                                        <li key={index} className="mx-1">
+                                                            <button
+                                                                className={`px-3 py-1 rounded ${currentPage === index + 1
+                                                                        ? "bg-blue-500 text-white"
+                                                                        : "bg-gray-200"
+                                                                    }`}
+                                                                onClick={() => paginate(index + 1)}
+                                                            >
+                                                                {index + 1}
+                                                            </button>
+                                                        </li>
+                                                    )
+                                                )}
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            ) : (
+                                <Typography
+                                    variant="h6"
+                                    color="gray"
+                                    className="text-center mt-4"
+                                    placeholder={undefined}
+                                    onPointerEnterCapture={undefined}
+                                    onPointerLeaveCapture={undefined}
+                                >
+                                    No claims found for this status.
+                                </Typography>
+                            )}
+                        </div>
+                    </TabPanel>
+                </TabsBody>
+            </Tabs>
         </div>
-    )
-}
+    </div >
+  );
+};
 
 export default ClaimStatus;
