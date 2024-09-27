@@ -169,12 +169,12 @@ const ProductActivity = () => {
       <h2>Dashboard</h2>
       <div className={styles.activities}>
         <div className={styles.chartContainer}>
-          <h3>Item Analytics (Bar Chart)</h3>
+          <h3>Item Analytics</h3>
           <Bar data={barChartData} />
         </div>
 
         <div className={styles.chartContainer}>
-          <h3>Item Distribution (Pie Chart)</h3>
+          <h3>Item Distribution</h3>
           <Pie data={pieChartData} />
         </div>
 
