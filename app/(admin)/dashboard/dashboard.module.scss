@@ -1,50 +1,49 @@
 .activityContainer {
     margin-top: 20px;
-
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  
     h2 {
-        text-align: left;
-        font-size: 1.5rem;
-        margin-bottom: 20px;
+      text-align: left;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #333;
     }
-
+  
     .activities {
-        display: flex;
-        justify-content: center;
-        gap: 32px;
-
-        .activityCard {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border: 1px solid #e0e0e0;
-            padding: 20px;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 300px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            cursor: pointer;
-            transition: all ease .3s;
-
-            &:hover {
-                transform: scale(1.1);
-            }
-
-            .activityImage {
-                margin-bottom: 10px;
-            }
-
-            .activityCount {
-                font-size: 2rem;
-                font-weight: bold;
-                margin-bottom: 10px;
-            }
-
-            .activityLabel {
-                font-size: 1rem;
-                color: #666;
-            }
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 32px;
+  
+      .chartContainer {
+        flex: 1;
+        min-width: 300px;
+        max-width: 600px;
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+  
+        &:hover {
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
+  
+        h3 {
+          font-size: 1.5rem;
+          margin-bottom: 20px;
+          color: #444;
+          text-align: center;
+        }
+  
+        canvas {
+          max-width: 100%;
+          height: auto;
+        }
+      }
     }
-}
+  }
+  
