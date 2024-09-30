@@ -97,7 +97,7 @@ const Login = () => {
         </form>
         <div className='my-3'>
 
-          <Link className='link' href="/addnewuser"><span>Don't have account?</span> Create Account</Link>
+          <Link className='link' href="/addnewuser"><span>{`Don't`} have account?</span> Create Account</Link>
         </div>
       </div>
     </div>

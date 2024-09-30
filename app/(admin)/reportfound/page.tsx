@@ -350,11 +350,11 @@ const ReportFound = () => {
             </div>
             <div className={styles.tags}>
               {
-                tagsList.map((tag: any, index: any) => (<>
+                tagsList.map((tag: any, index: any) => (
                   <div key={index} className={styles.tagsList}>
                     <p>{tag}</p>
                     <p onClick={() => removeTag(tag)}>X</p>
-                  </div></>
+                  </div>
                 ))
               }
 
@@ -374,13 +374,13 @@ const ReportFound = () => {
           <div className={styles.imageContainer}>
             <label className={styles.label}>Image Preview</label>
             <div className={styles.imagePreview}>
-              {previewImages && previewImages.length > 0  ?  previewImages.map((previewImage: any) => (
-                <div className='flex flex-wrap '>
+              {previewImages && previewImages.length > 0  ?  previewImages.map((previewImage: any,index:number) => (
+                <div className='flex flex-wrap' key={index}>
                   <div className={styles.imageWrapper}>
                     <Image src={`${process.env.NEXT_PUBLIC_FIRESTORE_BASE_URL}${previewImage}`} alt="Preview" className={styles.image} width={100} height={100} />
                   </div>
                 </div>
-              )): (<>
+              )): (
               <div className='flex flex-wrap '>
                 <div className={styles.imageWrapper}>
                   <Image src={placeholderImg} alt="Preview" className={styles.image} width={100} height={100} />
@@ -388,7 +388,7 @@ const ReportFound = () => {
               <div className={styles.imageWrapper}>
                 <Image src={placeholderImg} alt="Preview" className={styles.image} width={100} height={100} />
               </div>
-              </div></>)}
+              </div>)}
               
             </div>
           </div>

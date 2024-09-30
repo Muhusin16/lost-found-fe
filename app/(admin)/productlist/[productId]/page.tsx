@@ -67,9 +67,9 @@ const ProductId = ({ params }: any) => {
                                 </div>
                             </div>
                             <div className='flex gap-10 mt-10'>
-                            {product?.imageUrl && product?.imageUrl.map((image:any) => (
+                            {product?.imageUrl && product?.imageUrl.map((image:any,index:number) => (
 
-                            <img src={image} width={100} height={100} alt="Image 1" className="w-full h-auto" />
+                            <img key={index} src={image} width={100} height={100} alt="Image 1" className="w-full h-auto" />
                             )) }
                     
                             </div>

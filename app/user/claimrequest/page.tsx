@@ -41,8 +41,8 @@ const ClaimRequest = () => {
                     <thead className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
                         <tr>
                             {
-                                TABLE_HEAD.map((header: any) => (
-                                    <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wide">{header}</th>
+                                TABLE_HEAD.map((header: any,index:number) => (
+                                    <th key={index} className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wide">{header}</th>
                                 ))
                             }
                         </tr>
