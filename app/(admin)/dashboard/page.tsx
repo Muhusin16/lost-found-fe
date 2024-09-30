@@ -19,8 +19,8 @@ interface ItemCounts {
   rejectItems: number;
   inProgressItems: number;
   remainingItems: number;
-  // weeklyExpiry: { _id: { week: number; year: number }; count: number }[];
-  // monthlyExpiry: { _id: { month: number; year: number }; count: number }[];
+  weeklyExpiry: { _id: { week: number; year: number }; count: number }[];
+  monthlyExpiry: { _id: { month: number; year: number }; count: number }[];
 }
 
 const ProductActivity = () => {
@@ -33,8 +33,8 @@ const ProductActivity = () => {
     rejectItems: 0,
     inProgressItems: 0,
     remainingItems: 0,
-    // weeklyExpiry: [],
-    // monthlyExpiry: [],
+    weeklyExpiry: [],
+    monthlyExpiry: [],
   });
 
   const fetchAnalytics = async () => {
@@ -130,67 +130,69 @@ const ProductActivity = () => {
     ],
   };
 
-  // // Prepare data for weekly expiry chart
-  // const weeklyLabels = itemCounts.weeklyExpiry.map(item => `Week ${item._id.week} ${item._id.year}`);
-  // const weeklyData = itemCounts.weeklyExpiry.map(item => item.count);
+  const weeklyLabels = itemCounts.weeklyExpiry.map(item => `Week ${item._id.week} ${item._id.year}`);
+  const weeklyData = itemCounts.weeklyExpiry.map(item => item.count);
   
-  // const weeklyChartData = {
-  //   labels: weeklyLabels,
-  //   datasets: [
-  //     {
-  //       label: "Weekly Expiry Count",
-  //       data: weeklyData,
-  //       fill: false,
-  //       borderColor: "rgba(75, 192, 192, 1)",
-  //       tension: 0.1,
-  //     },
-  //   ],
-  // };
+  const weeklyChartData = {
+    labels: weeklyLabels,
+    datasets: [
+      {
+        label: "Weekly Expiry Count",
+        data: weeklyData,
+        fill: false,
+        borderColor: "rgba(75, 192, 192, 1)",
+        tension: 0.1,
+      },
+    ],
+  };
 
-  // // Prepare data for monthly expiry chart
-  // const monthlyLabels = itemCounts.monthlyExpiry.map(item => `${item._id.month}/${item._id.year}`);
-  // const monthlyData = itemCounts.monthlyExpiry.map(item => item.count);
-  
-  // const monthlyChartData = {
-  //   labels: monthlyLabels,
-  //   datasets: [
-  //     {
-  //       label: "Monthly Expiry Count",
-  //       data: monthlyData,
-  //       fill: false,
-  //       borderColor: "rgba(255, 99, 132, 1)",
-  //       tension: 0.1,
-  //     },
-  //   ],
-  // };
+  const monthlyLabels = itemCounts.monthlyExpiry.map(item => `${item._id.month}/${item._id.year}`);
+  const monthlyData = itemCounts.monthlyExpiry.map(item => item.count);
+
+  const monthlyChartData = {
+    labels: monthlyLabels,
+    datasets: [
+      {
+        label: "Monthly Expiry Count",
+        data: monthlyData,
+        fill: false,
+        borderColor: "rgba(255, 99, 132, 1)",
+        tension: 0.1,
+      },
+    ],
+  };
 
   return (
-    <div className={styles.activityContainer}>
-      <h2>Dashboard</h2>
-      <div className={styles.activities}>
-        <div className={styles.chartContainer}>
-          <h3>Item Analytics</h3>
-          <Bar data={barChartData} />
-        </div>
+<div className={styles.activityContainer}>
+  <h2>Product Activity</h2>
 
-        <div className={styles.chartContainer}>
-          <h3>Item Distribution</h3>
-          <Pie data={pieChartData} />
-        </div>
-
-        {/* Line Chart for Weekly Expiry */}
-        {/* <div className={styles.chartContainer}>
-          <h3>Weekly Expiry Count (Line Chart)</h3>
-          <Line data={weeklyChartData} />
-        </div> */}
-
-        {/* Line Chart for Monthly Expiry */}
-        {/* <div className={styles.chartContainer}>
-          <h3>Monthly Expiry Count (Line Chart)</h3>
-          <Line data={monthlyChartData} />
-        </div> */}
-      </div>
+  <div className={styles.activities}>
+    {/* Bar Chart */}
+    <div className={styles.chartContainer}>
+      <h3>Item Counts (Bar Chart)</h3>
+      <Bar data={barChartData} />
     </div>
+
+    {/* Pie Chart */}
+    <div className={styles.chartContainer}>
+      <h3>Distribution of Items (Pie Chart)</h3>
+      <Pie data={pieChartData} />
+    </div>
+
+    {/* Line Chart for Weekly Expiry */}
+    <div className={styles.chartContainer}>
+      <h3>Weekly Expiry Count (Line Chart)</h3>
+      <Line data={weeklyChartData} />
+    </div>
+
+    {/* Line Chart for Monthly Expiry */}
+    <div className={styles.chartContainer}>
+      <h3>Monthly Expiry Count (Line Chart)</h3>
+      <Line data={monthlyChartData} />
+    </div>
+  </div>
+</div>
+
   );
 };
 
