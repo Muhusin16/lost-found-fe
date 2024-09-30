@@ -169,25 +169,25 @@ const ProductActivity = () => {
   <div className={styles.activities}>
     {/* Bar Chart */}
     <div className={styles.chartContainer}>
-      <h3>Item Counts (Bar Chart)</h3>
+      <h3>Item Counts</h3>
       <Bar data={barChartData} />
     </div>
 
     {/* Pie Chart */}
     <div className={styles.chartContainer}>
-      <h3>Distribution of Items (Pie Chart)</h3>
+      <h3>Distribution of Items</h3>
       <Pie data={pieChartData} />
     </div>
 
     {/* Line Chart for Weekly Expiry */}
     <div className={styles.chartContainer}>
-      <h3>Weekly Expiry Count (Line Chart)</h3>
+      <h3>Weekly Expiry Count</h3>
       <Line data={weeklyChartData} />
     </div>
 
     {/* Line Chart for Monthly Expiry */}
     <div className={styles.chartContainer}>
-      <h3>Monthly Expiry Count (Line Chart)</h3>
+      <h3>Monthly Expiry Count</h3>
       <Line data={monthlyChartData} />
     </div>
   </div>
