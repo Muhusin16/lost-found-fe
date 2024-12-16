@@ -1,7 +1,8 @@
 'use client'
 import { apiUrls } from '@/app/config/api.config'
 import axiosInstance from '@/app/services/axiosInterceptor'
-import { FaEdit, FaRegWindowClose, FaRegEye, FaEyeSlash } from "react-icons/fa";
+import { FaEdit, FaRegWindowClose, FaRegEye, FaTrashAlt, FaEyeSlash } from "react-icons/fa";
+// import debounce from 'lodash.debounce'
 import { MdDelete } from "react-icons/md";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
@@ -341,7 +342,7 @@ const AdminTool = () => {
 
     const handleEditAdminForm = (formData: any) => {
         console.log(formData);
-        
+
         setAddOrEditAdmin({ openForm: true, mode: 'edit' });
         setAddNewAdminOrEditFormData(formData);
         setProfilePicturePreview([formData.profile_pic])
@@ -364,6 +365,23 @@ const AdminTool = () => {
             console.log(error);
         }
     }
+
+    const handleDeleteAdmin = async (admin: any) => {
+        if (window.confirm(`Are you sure you want to delete the admin: ${admin.name}?`)) {
+            try {
+                const response = await axiosInstance.delete(`${apiUrls.deleteUserById}/${admin._id}`);
+                if (response.data.success) {
+                    alert('Admin deleted successfully!');
+                    getAllAdmins(); // Refresh the list of admins after deletion
+                } else {
+                    alert('Failed to delete admin. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error deleting admin:', error);
+                alert('An error occurred while deleting the admin. Please check the console for more details.');
+            }
+        }
+    };
 
     useEffect(() => {
         getCategories();
@@ -446,6 +464,13 @@ const AdminTool = () => {
                                                     </Typography>
                                                 </th>
                                             ))}
+                                            {/* Add a new header for the Delete action */}
+                                            <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
+                                                <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70"
+                                                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                                    Actions
+                                                </Typography>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -557,6 +582,19 @@ const AdminTool = () => {
                                                                     onClick={() => handleEditAdminForm(admin)}
                                                                 >
                                                                     <PencilIcon className="h-4 w-4" />
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                        </td>
+                                                        <td className={classes}>
+                                                            <Tooltip content="Delete Admin">
+                                                                <IconButton
+                                                                    variant="text"
+                                                                    placeholder={undefined}
+                                                                    onPointerEnterCapture={undefined}
+                                                                    onPointerLeaveCapture={undefined}
+                                                                    onClick={() => handleDeleteAdmin(admin)}
+                                                                >
+                                                                    <FaTrashAlt className="h-4 w-4 text-red-400" />
                                                                 </IconButton>
                                                             </Tooltip>
                                                         </td>

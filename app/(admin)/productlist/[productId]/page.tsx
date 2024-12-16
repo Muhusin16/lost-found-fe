@@ -1,168 +1,205 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import image1 from '../../../../public/paper-bag.svg'
-import image2 from '../../../../public/paper-bag.svg'
-import image3 from '../../../assets/335c.jpg'
-import image4 from '../../../assets/335d.jpg'
-import image5 from '../../../assets/335e.jpg'
-import image6 from '../../../assets/335f.jpg'
-import image7 from '../../../assets/335g.jpg'
-import styles from './productId.module.scss'
-import { initialProducts } from '../../../config/data.config'
+"use client";
+import React, { useEffect, useState } from "react";
+import imagePlaceholder from "../../../../public/paper-bag.svg";
+import styles from "./productId.module.scss";
+import { apiUrls } from "@/app/config/api.config";
+import axiosInstance from "@/app/services/axiosInterceptor";
+import Image from "next/image"; // Use Next.js Image component
+import placeholderImage from "../../../assets/placeholder-img.jpg";
 
-
-import Image from 'next/image';
-import axios from 'axios';
-import { apiUrls } from '@/app/config/api.config';
-import axiosInstance from '@/app/services/axiosInterceptor';
-// import { useRouter } from 'next/';
 const ProductId = ({ params }: any) => {
+  // Extract productId from the params
+  const { productId } = params;
 
-    // const router = useRouter();
-    // const { pId} = router.query;
-    const productId = params.productId;
-    console.log(productId);
-    // 
-    const imageCollection = [image1, image1, image1, image1];
-    const [product, setProduct] = useState<any>({});
-    const [prodImage, setProdImage] = useState(image3);
-    const [imageUrls, setImageUrls] = useState([]);
+  const [product, setProduct] = useState<any>({});
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
-    const fetchProductData = async () => {
-        try {
-            const response = await axiosInstance.get(`${apiUrls.products}/${productId}`);
-            console.log('Product Data...........', response.data);
-            setProduct(response.data);
-            setImageUrls(response.data.imageUrl);
-
-        } catch (error) {
-            console.log(error);
-        }
+  // Fetch product data based on ID
+  const fetchProductData = async () => {
+    try {
+      const response = await axiosInstance.get(`${apiUrls.getProductById}/${productId}`);
+      console.log(response);
+      setProduct(response.data.data);
+      setImageUrls(response.data.data.image_urls || []); // Set the image URLs
+    } catch (error) {
+      console.error("Error fetching product data:", error);
     }
+  };
 
-    const getImageUrl = (title: any) => {
+  // Update product data
+  const updateProduct = async () => {
+    try {
+      const updatedData = {
+        item_name: product.item_name, // Example update
+        item_lost_date: product.item_lost_date, // Example update
+        item_type: product.item_type,
+        model_number: product.model_number,
+        serial_number: product.serial_number,
+        primary_color: product.primary_color,
+        secondary_color: product.secondary_color,
+        category: product.category,
+        sub_category: product.sub_category,
+        brand: product.brand,
+        item_description: product.item_description,
+        location_description: product.location_description,
+        additional_remarks: product.additional_remarks,
+        image_urls: imageUrls, // Assuming you want to keep the uploaded images
+        tags: product.tags,
+        storage_info: product.storage_info,
+        retention_period_days: product.retention_period_days,
+      };
 
-        const imageUrl = initialProducts?.filter((product: any) => product.title?.toLowerCase().includes(title?.toLowerCase()))
-
-        if (imageUrl.length > 0) {
-            return imageUrl[0]?.image;
-        } else {
-            return "/shopping-bags.svg"
-        }
+      const response = await axiosInstance.put(`${apiUrls.updateProductById}/${productId}`, updatedData);
+      alert("Product updated successfully!");
+      fetchProductData(); // Refresh data after update
+    } catch (error) {
+      console.error("Error updating product:", error);
     }
+  };
 
-    useEffect(() => {
-        fetchProductData();
-    }, []);
+  // Delete the product
+  const deleteProduct = async () => {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+    try {
+      await axiosInstance.delete(`${apiUrls.deleteProductById}/${productId}`);
+      alert("Product deleted successfully!");
+      // Redirect or update the UI accordingly
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
 
-    return (
-             <div className={styles.productListMain} >
-                    <div className="flex max-w-fit mx-6">
-                        <div className="flex-1">
-                            <div className={styles.productsSection}>
-                                <div className='' >
-                                   { imageUrls && imageUrls.length > 0 &&
-                                     <img src={imageUrls[0]} width={100} height={100} alt="Image 1" className="w-full h-auto" />
-                                   }
-                                </div>
-                            </div>
-                            <div className='flex gap-10 mt-10'>
-                            {product?.imageUrl && product?.imageUrl.map((image:any,index:number) => (
+  useEffect(() => {
+    fetchProductData();
+  }, [productId]);
 
-                            <img key={index} src={image} width={100} height={100} alt="Image 1" className="w-full h-auto" />
-                            )) }
-                    
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex-1 bg-gray-100">
-                        <div className='m-5'>
-                            <h4 className={styles.heading}>Product Info</h4>
-                            <div className={`${styles.prodDetail} my-5`}>
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Item Name: </span></p>
-                                    <p>{product.title}</p>
-                                </div>
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Item Lost Date: </span></p>
-                                    <p>{product.dateLost}</p>
-                                </div>
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Item Worth: </span></p>
-                                    <p>INR 1.5 Lakhs</p>
-                                </div>
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Quantity: </span></p>
-                                    <p className='mb-3'>10</p>
-                                </div>
+  return (
+    <div className={styles.productListMain}>
+      <div className="flex max-w-fit mx-6">
+        <div className="flex-1">
+          <div className={styles.productsSection}>
+            <div className="">
+              {imageUrls.length > 0 ? (
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_FIRESTORE_BASE_URL}${imageUrls[0]}`} // Concatenate the Firestore base URL with the image path
+                  alt="Product Image"
+                  width={100}
+                  height={100}
+                  className="w-full h-auto"
+                />
+              ) : (
+                <Image
+                  src={placeholderImage} // Placeholder image
+                  alt="Placeholder Image"
+                  width={100}
+                  height={100}
+                  className="w-full h-auto"
+                />
+              )}
+            </div>
+          </div>
+          <div className="flex gap-10 mt-10">
+            {imageUrls.map((image: string, index: number) => (
+              <Image
+                key={index}
+                src={`${process.env.NEXT_PUBLIC_FIRESTORE_BASE_URL}${image}`} // Use Firestore base URL for each image
+                alt={`Product Image ${index + 1}`}
+                width={100}
+                height={100}
+                className="w-full h-auto"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
 
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Specific Description: </span></p>
-                                    <p className='mb-3 w-1/2'>{product.specificDescription
-                                    }</p>
-                                </div>
+      <div className="flex-1 bg-gray-100">
+        <div className="m-5">
+          <h4 className={styles.heading}>Product Info</h4>
+          <div className={`${styles.prodDetail} my-5`}>
+            <div className="flex justify-start">
+              <p className="mb-3 w-1/2">
+                <span>Item Name: </span>
+              </p>
+              <p>{product.item_name}</p>
+            </div>
+            <div className="flex justify-start">
+              <p className="mb-3 w-1/2">
+                <span>Item Lost Date: </span>
+              </p>
+              <p>{product.item_lost_date}</p>
+            </div>
+            <div className="flex justify-start">
+              <p className="mb-3 w-1/2">
+                <span>Specific Description: </span>
+              </p>
+              <p>{product.item_description}</p>
+            </div>
+            <div className="flex justify-start">
+              <p className="mb-3 w-1/2">
+                <span>Specific Location: </span>
+              </p>
+              <p>{product.location_description}</p>
+            </div>
+          </div>
 
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Specific Location: </span></p>
-                                    <p className='mb-3'>{product.specificLocation}</p>
-                                </div>
-                                <div className='flex justify-start'>
-                                    <p className='w-1/2'><span>Date Updated: </span></p>
-                                    <p>24 Aug 2024</p>
-                                </div>
+          <h4 className={`${styles.heading} mt-10`}>Product Details</h4>
+          <div className={`${styles.prodDetail} mt-5`}>
+            <div className="flex justify-start">
+              <p className="mb-3 w-1/2">
+                <span>Category: </span>
+              </p>
+              <p>{product.category}</p>
+            </div>
+            <div className="flex justify-start">
+              <p className="mb-3 w-1/2">
+                <span>Sub-category: </span>
+              </p>
+              <p>{product.sub_category}</p>
+            </div>
+            <div className="flex justify-start">
+              <p className="mb-3 w-1/2">
+                <span>Primary Color: </span>
+              </p>
+              <p>{product.primary_color}</p>
+            </div>
+          </div>
 
-                            </div>
-                            <h4 className={`${styles.heading} mt-10`}>Product Detail</h4>
-                            <div className={`${styles.prodDetail} mt-5`}>
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Category: </span></p>
-                                    <p className='mb-3'>Electronic</p>
-                                </div>
+          <h4 className={`${styles.heading} mt-10`}>Additional Remarks</h4>
+          <div className={`${styles.prodDetail} mt-5`}>
+            <p className="mb-3">{product.additional_remarks}</p>
+          </div>
 
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Sub-category: </span></p>
-                                    <p className='mb-3'>{product.subCategory}</p>
-                                </div>
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Brand Name: </span></p>
-                                    <p className='mb-3'>{product.brand}</p>
-                                </div>
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Item S/No. or Modal No.: </span></p>
-                                    <p>ES5100X0</p>
-                                </div>
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Primary Color: </span></p>
-                                    <p className='mb-3'>{product.primaryColor}</p>
-                                </div>
+          <div className="flex gap-4 mt-10">
+            <button
+              type="button"
+              className="px-4 py-2 bg-blue-700 text-white font-semibold rounded"
+              onClick={updateProduct}
+            >
+              Update Product
+            </button>
+            <button
+              type="button"
+              className="px-4 py-2 bg-red-700 text-white font-semibold rounded"
+              onClick={deleteProduct}
+            >
+              Delete Product
+            </button>
+          </div>
 
-                                <div className='flex justify-start'>
-                                    <p className='mb-3 w-1/2'><span>Secondary Color: </span></p>
-                                    <p className='mb-3'>{product.
-                                        secondaryColor}</p>
-                                </div>
+          <div className="flex justify-center mt-10">
+            <button
+              type="button"
+              className="px-4 py-2 bg-blue-700 text-white font-semibold rounded"
+              onClick={updateProduct}
+            >
+              Claim your Property
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-                            </div>
-                            <h4 className={`${styles.heading} mt-10`}>Additional Remarks</h4>
-                            <div className={`${styles.prodDetail} mt-5`}>
-                                <p className='mb-3'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet aliquam dui. Fusce scelerisque viverra tristique. Nam dolor massa, pharetra ut suscipit id, vehicula nec dui. Morbi vel diam porta. Fusce scelerisque viverra tristique. Nam dolor massa, pharetra ut suscipit id, vehicula nec dui. Morbi vel diam porta, elementum lacus quis, e
-                                    <br />
-                                    <br />
-                                    Elementum ex. Phasellus ut augue purus. Vestibulum nec fringilla eros. Cras et sapien sed odio fringilla molestie quis sit amet eros. Ut volutpat faucibus dui non aliquam. Praesent vel urna vitae enim auctor porta. Proin pellentesque dui a tellus varius convallis. Quisque mi mi, porttitor non nibh et, commodo vulputate neque. </p>
-                            </div>
-                        </div>
-                        <button
-                            type="button"
-                            className="flex ms-auto me-6 my-10 px-4 py-2 bg-red-700 text-white font-semibold rounded"
-
-                        >
-                            Claim your Property
-                        </button>
-                    </div>
-
-                </div>
-
-    )
-}
-
-export default ProductId
+export default ProductId;

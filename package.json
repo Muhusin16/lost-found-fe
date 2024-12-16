@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node ./node_modules/next/dist/bin/next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -17,7 +17,8 @@
     "cookies-next": "^4.2.1",
     "firebase": "^10.13.1",
     "jwt-decode": "^4.0.0",
-    "next": "^14.2.6",
+    "lodash.debounce": "^4.0.8",
+    "next": "^15.1.0",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
